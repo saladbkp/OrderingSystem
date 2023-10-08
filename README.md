@@ -1,6 +1,17 @@
 # OrderingSystem
 JAVA -- Assignemnt
 
-Function
+```
+20231006
+TextFunction -> readtext
 Login
-CustomerView
+
+20231008
+AdminVendorView
+AdminCustomerView
+CustomerTopUpView
+to do
+Vendor+Item 
++ data
+```
+

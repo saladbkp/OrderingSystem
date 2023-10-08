@@ -1,4 +1,4 @@
-package com.windows;
+package com.adminViews;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -32,8 +32,8 @@ public class Login {
 	JFrame jframe = new JFrame();
 	FlowLayout flowlayout;
 	
-	Login(){
-		this.title = "Login";
+	Login(String title){
+		this.title = title;
 		Init();
 		jframe.setVisible(true);
 		jframe.setResizable(false);
