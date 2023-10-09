@@ -15,17 +15,17 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
-public class AdminCustomerView extends JPanel {
+public class AdminRunnerView extends JPanel {
 	int WIDTH = 750;
 	int HEIGHT = 150;
 	
-	public AdminCustomerView(int x,int y, int width, int height) {
+	public AdminRunnerView(int x,int y, int width, int height) {
 		// separate 2 windows ?????? 
 		this.setBounds(x,y,width,height);
 		Init();
 	}
 	
-	String columns[] = {"CustomerID","CusName","Balance","Age","Gender"};
+	String columns[] = {"RunnerID","RunnerName","Age","Location","Vehicle"};
 	JTable tableitem = null;
 	JScrollPane jsrcollpane; //scrollbar
 	DefaultTableModel model;
@@ -41,10 +41,10 @@ public class AdminCustomerView extends JPanel {
 		jpanel1.setBounds(0,0,WIDTH,50);
 		jpanel1.setBackground(Color.YELLOW);
 		
-		JButton addvendorbutton = new JButton("Add customer");;
-		JButton removevendorbutton = new JButton("Remove customer");
-		JButton readvendorbutton = new JButton("Read customer");
-		JButton updatevendorbutton = new JButton("Update customer");
+		JButton addvendorbutton = new JButton("Add runner");;
+		JButton removevendorbutton = new JButton("Remove runner");
+		JButton readvendorbutton = new JButton("Read runner");
+		JButton updatevendorbutton = new JButton("Update runner");
 		
 		jpanel1.add(addvendorbutton);
 		jpanel1.add(removevendorbutton);
@@ -56,25 +56,32 @@ public class AdminCustomerView extends JPanel {
 		jpanel2.setBounds(0,60,WIDTH,50);
 		jpanel2.setBackground(Color.LIGHT_GRAY);
 		
-		JLabel jlabel = new JLabel("Customer Name");
+		JLabel jlabel = new JLabel("Runner Name");
 		jpanel2.add(jlabel);
 		JTextField jtextfield = new JTextField(10);
 		jpanel2.add(jtextfield);
-		JLabel jlabel1 = new JLabel("Balance");
+		JLabel jlabel1 = new JLabel("Age");
 		jpanel2.add(jlabel1);
 		JTextField jtextfield1 = new JTextField(5);
 		jpanel2.add(jtextfield1);
-		JLabel jlabel2 = new JLabel("Age");
+		JLabel jlabel2 = new JLabel("Location");
 		jpanel2.add(jlabel2);
-		JTextField jtextfield2 = new JTextField(5);
-		jpanel2.add(jtextfield2);
-		JLabel jlabel3 = new JLabel("Gender");
+		JComboBox cmblocation = new JComboBox();
+		cmblocation.addItem("--Select Location--");
+		cmblocation.addItem("KL");
+		cmblocation.addItem("Pahang");
+		cmblocation.addItem("Johor");
+		jpanel2.add(cmblocation);
+		JLabel jlabel3 = new JLabel("Vehicle");
 		jpanel2.add(jlabel3);
-		JComboBox cmbgender = new JComboBox();
-		cmbgender.addItem("--Select Gender--");
-		cmbgender.addItem("Male");
-		cmbgender.addItem("Female");
-		jpanel2.add(cmbgender);
+		JComboBox cmbvehicle = new JComboBox();
+		cmbvehicle.addItem("--Select Vehicle--");
+		cmbvehicle.addItem("Motor");
+		cmbvehicle.addItem("Car");
+		cmbvehicle.addItem("Bike");
+		jpanel2.add(cmbvehicle);
+		
+//		
 		
 		
 		this.add(jpanel2);
@@ -114,4 +121,5 @@ public class AdminCustomerView extends JPanel {
 		rows = new Vector(5); //???? not yet import data
 		return tableitem;
 	}
+
 }

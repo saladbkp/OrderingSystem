@@ -50,13 +50,16 @@ public class ManageAdminView {
 		jpanel2.add(vendor,(Integer)(JLayeredPane.PALETTE_LAYER));
 		AdminCustomerView customer = new AdminCustomerView(0,0,700+50,HEIGHT-50);
 		jpanel2.add(customer,(Integer)(JLayeredPane.PALETTE_LAYER));
+		AdminRunnerView runner = new AdminRunnerView(0,0,700+50,HEIGHT-50);
+		jpanel2.add(runner,(Integer)(JLayeredPane.PALETTE_LAYER));
 		CustomerTopUpView customertopup = new CustomerTopUpView(0,0,700+50,HEIGHT-50);
 		jpanel2.add(customertopup,(Integer)(JLayeredPane.PALETTE_LAYER));
-		
+		CustomerReceiptView customerrpt = new CustomerReceiptView(0,0,700+50,HEIGHT-50);
+		jpanel2.add(customerrpt,(Integer)(JLayeredPane.PALETTE_LAYER));
 		jpanel2.setBounds(215-50,5,700+50,HEIGHT-50);
 		
 		// dynamic set button
-		String buttonName[] = {"Vendor","Customer","Top Up"};
+		String buttonName[] = {"Vendor","Customer","Runner","Top Up","Receipt"};
 		
 		for(int i=0;i<buttonName.length;i++) {
 			JButton btn = new JButton(buttonName[i]);
@@ -73,9 +76,14 @@ public class ManageAdminView {
 						jpanel2.moveToFront(customer);
 					}
 					if(jbl.getName().equals(buttonName[2])) {
+						jpanel2.moveToFront(runner);
+					}
+					if(jbl.getName().equals(buttonName[3])) {
 						jpanel2.moveToFront(customertopup);
 					}
-					
+					if(jbl.getName().equals(buttonName[4])) {
+						jpanel2.moveToFront(customerrpt);
+					}
 				}
 			});
 		}
