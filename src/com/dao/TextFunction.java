@@ -8,15 +8,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.model.Users;
+import com.model.Vendors;
 
 public class TextFunction {
-	ArrayList<Users> txtarray = new ArrayList<Users>();
 	String filepath;
 	public TextFunction(String path) {
 		// "src/data/users.txt"
 		filepath = path;
 	}
-	public ArrayList<Users> readfile() {
+	public <T> ArrayList<T> readfile(Class<T> clazz) {
+		ArrayList<T> txtarray = new ArrayList<T>();
 		String line = null;
 		try {
 			FileReader f = new FileReader(filepath);
@@ -25,8 +26,14 @@ public class TextFunction {
 			while(((line=br.readLine())!=null)) {
 				// split ,
 				String[] spt = line.split(",");
-				Users user = new Users(spt[0],spt[1],Integer.parseInt(spt[2]));
-				txtarray.add(user);
+				if (clazz.equals(Users.class)) {
+	                Users user = new Users(spt[0], spt[1], Integer.parseInt(spt[2]));
+	                txtarray.add(clazz.cast(user));
+	            } 
+				else if (clazz.equals(Vendors.class)) {
+	                Vendors vendor = new Vendors(spt[0],spt[1], spt[2],spt[3]);
+	                txtarray.add(clazz.cast(vendor));
+	            }
 				
 				//System.out.println(spt[0]);
 			}
@@ -38,19 +45,13 @@ public class TextFunction {
 		}
 		catch(IOException e) {
 			e.printStackTrace();
-			return new ArrayList<Users>();
+			return txtarray;
 		}
+		
 		
 	}
 
-	// 1 is found, -1 not found
-	public int seek(String str) {
-		for (int i=0;i<txtarray.size();i++) {
-			if(txtarray.get(i).getUsername().equals(str)) {return i;}
-		}
-		
-		return -1;
-	}
+
 	
 	
 }

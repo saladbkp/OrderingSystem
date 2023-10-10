@@ -3,17 +3,22 @@ package com.adminViews;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+
+import com.dao.AddVendorDao;
 
 public class AdminVendorView extends JPanel {
 	int WIDTH = 750;
@@ -31,6 +36,7 @@ public class AdminVendorView extends JPanel {
 	DefaultTableModel model;
 	TableColumnModel columnModel;
 	Vector rows;
+	AddVendorDao vendorfunc = new AddVendorDao();
 	
 	void Init() {
 		this.setLayout(null);
@@ -78,14 +84,34 @@ public class AdminVendorView extends JPanel {
 		jbutton.setPreferredSize(new Dimension(80,25));
 		jpanel2.add(jbutton);
 		
-//		
-		
 		
 		this.add(jpanel2);
 		this.add(jpanel1);
 		table();
 		this.add(jsrcollpane);
 		
+		addvendorbutton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(jtextfield.getText().equals("") || jtextfield1.getText().equals("") || cmblocation.getSelectedIndex()==0) {
+					JOptionPane.showMessageDialog(null,"Fill Up Vendor Info","Invalid Operation",JOptionPane.WARNING_MESSAGE);
+					
+				}
+				else {
+					String Name = jtextfield.getText();
+					int existID = vendorfunc.checkVendor(Name);
+					if(existID==-1) {JOptionPane.showMessageDialog(null,"Add successfully " + Name,"Vendor",JOptionPane.WARNING_MESSAGE);}
+					else {JOptionPane.showMessageDialog(null, Name + " Existed","Vendor",JOptionPane.WARNING_MESSAGE);}
+					
+				}
+			}
+		});
+		
+//		cmbox listener
+//		cmblocation.addItemListener(new ItemListener() {
+//			public void itemStateChanged(ItemEvent e) {
+//				
+//			}
+//		});
 	}
 	
 	void table() {
@@ -119,4 +145,5 @@ public class AdminVendorView extends JPanel {
 		return tableitem;
 	}
 
+	
 }

@@ -1,0 +1,2 @@
+1,kfc,fast food,kepong,
+2,mcd,fast food,sri petaling,

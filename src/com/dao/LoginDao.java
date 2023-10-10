@@ -10,8 +10,8 @@ public class LoginDao {
 	}
 	public int checkLogin(String username, String pwd, int role) {
 		TextFunction txtfunc = new TextFunction("src/data/users.txt");
-		userarray = txtfunc.readfile();
-		int index = txtfunc.seek(username);
+		userarray = txtfunc.readfile(Users.class);
+		int index = seek(username);
 		
 		if (index == -1) {return -1;}
 		if(!userarray.isEmpty()) {
@@ -21,5 +21,12 @@ public class LoginDao {
 		}
 		return index;
 	}
-	
+	// 1 is found, -1 not found
+	private int seek(String str) {
+		for (int i=0;i<userarray.size();i++) {
+			if(userarray.get(i).getUsername().equals(str)) {return i;}
+		}
+		
+		return -1;
+	}
 }
