@@ -1,4 +1,4 @@
-package com.dao;
+package com.tool;
 
 
 
@@ -31,7 +31,7 @@ public class TextFunction {
 	                txtarray.add(clazz.cast(user));
 	            } 
 				else if (clazz.equals(Vendors.class)) {
-	                Vendors vendor = new Vendors(spt[0],spt[1], spt[2],spt[3]);
+	                Vendors vendor = new Vendors(spt[0],spt[1], spt[2],spt[3],spt[4]);
 	                txtarray.add(clazz.cast(vendor));
 	            }
 				

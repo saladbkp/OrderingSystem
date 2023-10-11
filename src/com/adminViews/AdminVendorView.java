@@ -12,6 +12,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -21,16 +22,17 @@ import javax.swing.table.TableColumnModel;
 import com.dao.AddVendorDao;
 
 public class AdminVendorView extends JPanel {
-	int WIDTH = 750;
+	int WIDTH;
 	int HEIGHT = 150;
 	
 	public AdminVendorView(int x,int y, int width, int height) {
 		// separate 2 windows ?????? 
 		this.setBounds(x,y,width,height);
+		this.WIDTH = width;
 		Init();
 	}
 	
-	String columns[] = {"VendorID","VendorName","Type","Location","Sample"};
+	String columns[] = {"VendorID","VendorPwd","VendorName","Type","Location","Sample"};
 	JTable tableitem = null;
 	JScrollPane jsrcollpane; //scrollbar
 	DefaultTableModel model;
@@ -66,10 +68,19 @@ public class AdminVendorView extends JPanel {
 		jpanel2.add(jlabel);
 		JTextField jtextfield = new JTextField(10);
 		jpanel2.add(jtextfield);
+		// password 
+		JLabel jlabelpwd = new JLabel("Password");
+		jpanel2.add(jlabelpwd);
+		JPasswordField jtextfieldpwd = new JPasswordField(5);
+		jpanel2.add(jtextfieldpwd);
 		JLabel jlabel1 = new JLabel("Type");
 		jpanel2.add(jlabel1);
-		JTextField jtextfield1 = new JTextField(5);
-		jpanel2.add(jtextfield1);
+		JComboBox cmbtype = new JComboBox();
+		cmbtype.addItem("--Select Type--");
+		cmbtype.addItem("Fast Food");
+		cmbtype.addItem("Cafe");
+		cmbtype.addItem("Mamak");
+		jpanel2.add(cmbtype);
 		JLabel jlabel2 = new JLabel("Location");
 		jpanel2.add(jlabel2);
 		JComboBox cmblocation = new JComboBox();
@@ -92,7 +103,7 @@ public class AdminVendorView extends JPanel {
 		
 		addvendorbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(jtextfield.getText().equals("") || jtextfield1.getText().equals("") || cmblocation.getSelectedIndex()==0) {
+				if(jtextfield.getText().equals("") || jtextfieldpwd.getPassword().length == 0 || cmblocation.getSelectedIndex()==0|| cmbtype.getSelectedIndex()==0) {
 					JOptionPane.showMessageDialog(null,"Fill Up Vendor Info","Invalid Operation",JOptionPane.WARNING_MESSAGE);
 					
 				}
@@ -125,7 +136,7 @@ public class AdminVendorView extends JPanel {
 	
 	JTable TableSetup() {
 		tableitem = new JTable();
-		int[] columnWidth = {150,150,150,150,150};
+		int[] columnWidth = {150,150,150,150,150,150};
 		model = new DefaultTableModel() {
 			public boolean isCellEditable(int row, int column) {
 				return false;

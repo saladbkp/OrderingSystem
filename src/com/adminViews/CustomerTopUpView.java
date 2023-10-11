@@ -14,12 +14,13 @@ import javax.swing.JTextField;
 import com.style.Style;
 
 public class CustomerTopUpView extends JPanel{
-	int WIDTH = 730;
+	int WIDTH;
 	int HEIGHT = 150;
 	
 	public CustomerTopUpView(int x,int y, int width, int height) {
 		// separate 2 windows ?????? 
 		this.setBounds(x,y,width,height);
+		this.WIDTH = width;
 		Init();
 	}
 	void Init() {

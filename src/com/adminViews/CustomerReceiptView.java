@@ -15,12 +15,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 public class CustomerReceiptView extends JPanel {
-		int WIDTH = 750;
+		int WIDTH;
 		int HEIGHT = 150;
 		
 		public CustomerReceiptView(int x,int y, int width, int height) {
 			// separate 2 windows ?????? 
 			this.setBounds(x,y,width,height);
+			this.WIDTH = width;
 			Init();
 		}
 		

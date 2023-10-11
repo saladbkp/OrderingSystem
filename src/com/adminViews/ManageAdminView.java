@@ -14,8 +14,11 @@ import javax.swing.JPanel;
 import com.tool.WindowSetup;
 
 public class ManageAdminView {
-	final int WIDTH = 930;
+	final int WIDTH = 1100;
 	final int HEIGHT = 600;
+	final int viewWidth = 900;
+	final int viewHeight = 550;
+	
 	JFrame jframe = new JFrame();
 	FlowLayout flowlayout;
 	
@@ -46,17 +49,17 @@ public class ManageAdminView {
 //		jpanel1.add(customerButton);
 		
 		// add tab of Customer View
-		AdminVendorView vendor = new AdminVendorView(0,0,700+50,HEIGHT-50);
+		AdminVendorView vendor = new AdminVendorView(0,0,viewWidth,viewHeight);
 		jpanel2.add(vendor,(Integer)(JLayeredPane.PALETTE_LAYER));
-		AdminCustomerView customer = new AdminCustomerView(0,0,700+50,HEIGHT-50);
+		AdminCustomerView customer = new AdminCustomerView(0,0,viewWidth,viewHeight);
 		jpanel2.add(customer,(Integer)(JLayeredPane.PALETTE_LAYER));
-		AdminRunnerView runner = new AdminRunnerView(0,0,700+50,HEIGHT-50);
+		AdminRunnerView runner = new AdminRunnerView(0,0,viewWidth,viewHeight);
 		jpanel2.add(runner,(Integer)(JLayeredPane.PALETTE_LAYER));
-		CustomerTopUpView customertopup = new CustomerTopUpView(0,0,700+50,HEIGHT-50);
+		CustomerTopUpView customertopup = new CustomerTopUpView(0,0,viewWidth,viewHeight);
 		jpanel2.add(customertopup,(Integer)(JLayeredPane.PALETTE_LAYER));
-		CustomerReceiptView customerrpt = new CustomerReceiptView(0,0,700+50,HEIGHT-50);
+		CustomerReceiptView customerrpt = new CustomerReceiptView(0,0,viewWidth,viewHeight);
 		jpanel2.add(customerrpt,(Integer)(JLayeredPane.PALETTE_LAYER));
-		jpanel2.setBounds(215-50,5,700+50,HEIGHT-50);
+		jpanel2.setBounds(215-50,5,viewWidth,viewHeight);
 		
 		// dynamic set button
 		String buttonName[] = {"Vendor","Customer","Runner","Top Up","Receipt"};

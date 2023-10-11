@@ -2,6 +2,7 @@ package com.dao;
 
 import java.util.ArrayList;
 import com.model.Users;
+import com.tool.TextFunction;
 
 public class LoginDao {
 	ArrayList<Users> userarray = new ArrayList<Users>();
