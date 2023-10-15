@@ -5,23 +5,24 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import com.adminViews.ManageAdminView;
 import com.dao.LoginDao;
 import com.style.Style;
-import com.tool.WindowSetup;
+import com.tool.Tools;
 
 public class Login {
 	
@@ -32,7 +33,9 @@ public class Login {
 	JFrame jframe = new JFrame();
 	FlowLayout flowlayout;
 	
-	Login(){
+	LoginDao login = new LoginDao();
+	
+	public Login(){
 		this.title = "Login";
 		Init();
 		jframe.setVisible(true);
@@ -40,10 +43,11 @@ public class Login {
 		jframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		jframe.validate();
 	}
+	
 	void Init() {
 		// title 
 		jframe.setTitle(title);
-		WindowSetup.WindowCenterScreen(WIDTH, HEIGHT, jframe);
+		Tools.WindowCenterScreen(WIDTH, HEIGHT, jframe);
 		
 		// simple config
 		flowlayout = new FlowLayout(flowlayout.CENTER);
@@ -124,13 +128,21 @@ public class Login {
 				if(r3.isSelected()) role = 3;
 				if(r4.isSelected()) role = 4;
 
-				LoginDao login = new LoginDao();
-				int userposition = login.checkLogin(account,password,role);
-				if(userposition != -1) {					
-					System.out.println("Clicked Button: "+ account);
-				}
-				else JOptionPane.showMessageDialog(null, "Invalid Account");
 				
+				int userposition = login.checkLogin(account,password,role);
+				
+				if(userposition==-1) {JOptionPane.showMessageDialog(null, "Invalid Account");}
+				else {
+					System.out.println("My role: "+role);
+					switch(role) {
+					case 1:
+						jframe.dispose();
+						ManageAdminView manageAdmin = new ManageAdminView();
+						break;
+					}
+					
+				}
+
 			}
 		});
 		
@@ -149,5 +161,6 @@ public class Login {
 		
 		
 	}
+	
 
 }

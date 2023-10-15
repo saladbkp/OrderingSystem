@@ -7,6 +7,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.model.Customers;
+import com.model.Orders;
+import com.model.Runners;
 import com.model.Users;
 import com.model.Vendors;
 
@@ -31,13 +34,24 @@ public class TextFunction {
 	                txtarray.add(clazz.cast(user));
 	            } 
 				else if (clazz.equals(Vendors.class)) {
-	                Vendors vendor = new Vendors(spt[0],spt[1], spt[2],spt[3],spt[4]);
+	                Vendors vendor = new Vendors(spt[0],spt[1], spt[2],spt[3],spt[4],spt[5]);
 	                txtarray.add(clazz.cast(vendor));
 	            }
-				
+				else if (clazz.equals(Customers.class)) {
+					Customers customer = new Customers(spt[0],spt[1],spt[2],Integer.parseInt(spt[3]),spt[4]);
+	                txtarray.add(clazz.cast(customer));
+	            }
+				else if (clazz.equals(Runners.class)) {
+					Runners customer = new Runners(spt[0],spt[1],spt[2],spt[3],spt[4]);
+	                txtarray.add(clazz.cast(customer));
+	            }
+				else if (clazz.equals(Orders.class)) {
+					Orders order = new Orders(spt[0],spt[1],spt[2],spt[3],Integer.parseInt(spt[4]),Float.parseFloat(spt[5]),spt[6]);
+	                txtarray.add(clazz.cast(order));
+	            }
 				//System.out.println(spt[0]);
 			}
-			System.out.println("Read file success...");
+			System.out.println("Read file "+ clazz.toString() +" success...");
 			br.close();
 			f.close();
 			return txtarray;

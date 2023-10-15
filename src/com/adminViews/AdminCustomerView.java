@@ -3,17 +3,25 @@ package com.adminViews;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.util.Vector;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+
+import com.dao.AddCustomerDao;
+import com.model.Customers;
+import com.tool.Tools;
 
 public class AdminCustomerView extends JPanel {
 	int WIDTH;
@@ -26,12 +34,12 @@ public class AdminCustomerView extends JPanel {
 		Init();
 	}
 	
-	String columns[] = {"CustomerID","CusName","Balance","Age","Gender"};
+	String columns[] = {"CustomerID","CustomerPwd","CustomerName","Balance","Gender"};
 	JTable tableitem = null;
 	JScrollPane jsrcollpane; //scrollbar
 	DefaultTableModel model;
 	TableColumnModel columnModel;
-	Vector rows;
+	AddCustomerDao customerfunc = new AddCustomerDao();
 	
 	void Init() {
 		this.setLayout(null);
@@ -42,33 +50,33 @@ public class AdminCustomerView extends JPanel {
 		jpanel1.setBounds(0,0,WIDTH,50);
 		jpanel1.setBackground(Color.YELLOW);
 		
-		JButton addvendorbutton = new JButton("Add customer");;
-		JButton removevendorbutton = new JButton("Remove customer");
-		JButton readvendorbutton = new JButton("Read customer");
-		JButton updatevendorbutton = new JButton("Update customer");
+		JButton addcusbutton = new JButton("Add customer");;
+		JButton removecusbutton = new JButton("Remove customer");
+		JButton readcusbutton = new JButton("Read customer");
+		JButton updatecusbutton = new JButton("Update customer");
 		
-		jpanel1.add(addvendorbutton);
-		jpanel1.add(removevendorbutton);
-		jpanel1.add(readvendorbutton);
-		jpanel1.add(updatevendorbutton);
+		jpanel1.add(addcusbutton);
+		jpanel1.add(removecusbutton);
+		jpanel1.add(readcusbutton);
+		jpanel1.add(updatecusbutton);
 		
 		JPanel jpanel2 = new JPanel();
 		jpanel2.setLayout(new FlowLayout(FlowLayout.LEFT,10,10));
 		jpanel2.setBounds(0,60,WIDTH,50);
 		jpanel2.setBackground(Color.LIGHT_GRAY);
 		
+		JLabel jlabelid = new JLabel("Customer Id");
+		jpanel2.add(jlabelid);
+		JTextField jtextfieldid = new JTextField(3);
+		jpanel2.add(jtextfieldid);
 		JLabel jlabel = new JLabel("Customer Name");
 		jpanel2.add(jlabel);
 		JTextField jtextfield = new JTextField(10);
 		jpanel2.add(jtextfield);
-		JLabel jlabel1 = new JLabel("Balance");
-		jpanel2.add(jlabel1);
-		JTextField jtextfield1 = new JTextField(5);
-		jpanel2.add(jtextfield1);
-		JLabel jlabel2 = new JLabel("Age");
-		jpanel2.add(jlabel2);
-		JTextField jtextfield2 = new JTextField(5);
-		jpanel2.add(jtextfield2);
+		JLabel jlabelpwd = new JLabel("Password");
+		jpanel2.add(jlabelpwd);
+		JPasswordField jtextfieldpwd = new JPasswordField(5);
+		jpanel2.add(jtextfieldpwd);
 		JLabel jlabel3 = new JLabel("Gender");
 		jpanel2.add(jlabel3);
 		JComboBox cmbgender = new JComboBox();
@@ -81,8 +89,89 @@ public class AdminCustomerView extends JPanel {
 		this.add(jpanel2);
 		this.add(jpanel1);
 		table();
+
+		model = Tools.addDataTable(customerfunc.findCustomerData(), model);
 		this.add(jsrcollpane);
 		
+		// button function 
+		
+		addcusbutton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String Id = jtextfieldid.getText();
+				String Name = jtextfield.getText();
+				String Pwd = String.valueOf(jtextfieldpwd.getPassword());
+				String Gender = cmbgender.getSelectedItem().toString();
+				if((Id+Name+Pwd).equals("")||cmbgender.getSelectedIndex()==0) {
+					JOptionPane.showMessageDialog(null,"Fill Up Custoemr Info","Invalid Operation",JOptionPane.WARNING_MESSAGE);
+				}
+				else {
+					int existID = customerfunc.checkCustomer(Id);
+					if(existID==-1) {
+						Customers c = new Customers(Id,Pwd,Name,0,Gender);
+						customerfunc.addCustomerData(c);
+						model = Tools.addDataTable(customerfunc.findCustomerData(), model);
+											    
+						JOptionPane.showMessageDialog(null,"Add successfully " + Id,"Customer",JOptionPane.WARNING_MESSAGE);
+						}
+					else {JOptionPane.showMessageDialog(null, Id + " Existed","Customer",JOptionPane.WARNING_MESSAGE);}
+					
+				}
+			}
+		});
+		readcusbutton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(jtextfieldid.getText().equals("")) {
+					
+					model = Tools.addDataTable(customerfunc.findCustomerData(), model);
+				}
+				else {
+					String id = jtextfieldid.getText();
+					int existID = customerfunc.checkCustomer(id);
+					if(existID==-1) {JOptionPane.showMessageDialog(null,"Invalid: " + id,"Customer",JOptionPane.WARNING_MESSAGE);}
+					else {model = Tools.addDataTable(customerfunc.findCustomerData(id), model);}
+				}
+			}
+		});
+		removecusbutton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String id = jtextfieldid.getText();
+				if(id.equals("")) {
+					JOptionPane.showMessageDialog(null,"Fill Up Customer Id","Invalid Operation",JOptionPane.WARNING_MESSAGE);
+				}
+				else {
+					int existID = customerfunc.checkCustomer(id);
+					if(existID==-1) {JOptionPane.showMessageDialog(null,"Invalid: " + id,"Customer",JOptionPane.WARNING_MESSAGE);}
+					else {
+						customerfunc.deleteCustomerData(id);
+						model = Tools.addDataTable(customerfunc.findCustomerData(), model);
+						JOptionPane.showMessageDialog(null,"Delete successfully " + id,"Customer",JOptionPane.WARNING_MESSAGE);
+						}
+				}
+			}
+		});
+		updatecusbutton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String Id = jtextfieldid.getText();
+				String Name = jtextfield.getText();
+				String Pwd = String.valueOf(jtextfieldpwd.getPassword());
+				String Gender = cmbgender.getSelectedItem().toString();
+				if((Id+Name+Pwd).equals("")||cmbgender.getSelectedIndex()==0) {
+					JOptionPane.showMessageDialog(null,"Fill Up Customer Info","Invalid Operation",JOptionPane.WARNING_MESSAGE);
+					
+				}
+				else {
+					int existID = customerfunc.checkCustomer(Id);
+					if(existID!=-1) {
+						Customers c = new Customers(Id,Pwd,Name,0,Gender);
+						customerfunc.updateCustomerData(c);
+						model = Tools.addDataTable(customerfunc.findCustomerData(), model);
+						JOptionPane.showMessageDialog(null,"Update successfully " + Id,"Customer",JOptionPane.WARNING_MESSAGE);
+						}
+					else {JOptionPane.showMessageDialog(null, Id + " Not Exist","Customer",JOptionPane.WARNING_MESSAGE);}
+					
+				}
+			}
+		});
 	}
 	
 	void table() {
@@ -112,7 +201,17 @@ public class AdminCustomerView extends JPanel {
 			javax.swing.table.TableColumn column = columnModel.getColumn(i);
 			column.setPreferredWidth(columnWidth[i]);
 		}
-		rows = new Vector(5); //???? not yet import data
 		return tableitem;
+	}
+	
+	void refreshTable() {
+		List<Customers> updatearray = CustomerTopUpView.updatearray;
+		if(updatearray!=null) {
+			for(int i=0;i<updatearray.size();i++) {
+				customerfunc.updateCustomerData(updatearray.get(i));
+			}
+		}
+		model = Tools.addDataTable(customerfunc.findCustomerData(), model);
+		
 	}
 }

@@ -5,10 +5,16 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -20,6 +26,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 import com.dao.AddVendorDao;
+import com.model.Vendors;
+import com.tool.ImageRender;
+import com.tool.JPEGImageFileFilter;
+import com.tool.Tools;
 
 public class AdminVendorView extends JPanel {
 	int WIDTH;
@@ -37,10 +47,13 @@ public class AdminVendorView extends JPanel {
 	JScrollPane jsrcollpane; //scrollbar
 	DefaultTableModel model;
 	TableColumnModel columnModel;
-	Vector rows;
 	AddVendorDao vendorfunc = new AddVendorDao();
+	String iconpath;
 	
 	void Init() {
+		
+		// layout 
+		
 		this.setLayout(null);
 		this.setBackground(Color.gray);
 		
@@ -63,6 +76,11 @@ public class AdminVendorView extends JPanel {
 		jpanel2.setLayout(new FlowLayout(FlowLayout.LEFT,10,10));
 		jpanel2.setBounds(0,60,WIDTH,50);
 		jpanel2.setBackground(Color.LIGHT_GRAY);
+
+		JLabel jlabelid = new JLabel("Vendor ID");
+		jpanel2.add(jlabelid);
+		JTextField jtextfieldid = new JTextField(3);
+		jpanel2.add(jtextfieldid);
 		
 		JLabel jlabel = new JLabel("Vendor Name");
 		jpanel2.add(jlabel);
@@ -91,29 +109,133 @@ public class AdminVendorView extends JPanel {
 		jpanel2.add(cmblocation);
 		JLabel jlabel3 = new JLabel("Sample");
 		jpanel2.add(jlabel3);
-		JButton jbutton = new JButton("Browse");
-		jbutton.setPreferredSize(new Dimension(80,25));
-		jpanel2.add(jbutton);
+		JButton jbuttonbrowse = new JButton("Browse");
+		jbuttonbrowse.setPreferredSize(new Dimension(80,25));
+		jpanel2.add(jbuttonbrowse);
+		JLabel jlabelpath = new JLabel("-");
+		jpanel2.add(jlabelpath);
 		
 		
 		this.add(jpanel2);
 		this.add(jpanel1);
 		table();
+		model = Tools.addDataTable(vendorfunc.findVendorData(), model);
 		this.add(jsrcollpane);
+		
+		// button function 
 		
 		addvendorbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(jtextfield.getText().equals("") || jtextfieldpwd.getPassword().length == 0 || cmblocation.getSelectedIndex()==0|| cmbtype.getSelectedIndex()==0) {
+				String Id = jtextfieldid.getText();
+				String Name = jtextfield.getText();
+				String Pwd = String.valueOf(jtextfieldpwd.getPassword());
+				String Lct = cmblocation.getSelectedItem().toString();
+				String Type = cmbtype.getSelectedItem().toString();
+				String Path = jlabelpath.getText();
+				if((Id+Name+Pwd).equals("")||(cmblocation.getSelectedIndex()+cmblocation.getSelectedIndex())==0) {
+					JOptionPane.showMessageDialog(null,"Fill Up Vendor Info","Invalid Operation",JOptionPane.WARNING_MESSAGE);
+				}
+				else {
+					int existID = vendorfunc.checkVendor(Id);
+					String iconname = Name+".jpg";
+					if(existID==-1) {
+						Vendors v = new Vendors(Id,Pwd,Name,Type,Lct,iconname);
+						vendorfunc.addVendorData(v);
+						model = Tools.addDataTable(vendorfunc.findVendorData(), model);
+						 
+						File copied = new File(iconpath);
+					    File pasted = new File("src/img/"+iconname);
+					    try {
+							Files.copy(copied.toPath(), pasted.toPath(), StandardCopyOption.REPLACE_EXISTING);
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					    
+				        // using copy(InputStream,Path Target); method 
+						JOptionPane.showMessageDialog(null,"Add successfully " + Id,"Vendor",JOptionPane.WARNING_MESSAGE);
+						}
+					else {JOptionPane.showMessageDialog(null, Id + " Existed","Vendor",JOptionPane.WARNING_MESSAGE);}
+					
+				}
+			}
+		});
+		
+		readvendorbutton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(jtextfieldid.getText().equals("")) {
+					
+					model = Tools.addDataTable(vendorfunc.findVendorData(), model);
+				}
+				else {
+					String id = jtextfieldid.getText();
+					int existID = vendorfunc.checkVendor(id);
+					if(existID==-1) {JOptionPane.showMessageDialog(null,"Invalid: " + id,"Vendor",JOptionPane.WARNING_MESSAGE);}
+					else {model = Tools.addDataTable(vendorfunc.findVendorData(id), model);}
+				}
+			}
+		});
+
+		removevendorbutton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String id = jtextfieldid.getText();
+				if(id.equals("")) {
+					JOptionPane.showMessageDialog(null,"Fill Up Vendor Id","Invalid Operation",JOptionPane.WARNING_MESSAGE);
+				}
+				else {
+					int existID = vendorfunc.checkVendor(id);
+					if(existID==-1) {JOptionPane.showMessageDialog(null,"Invalid: " + id,"Vendor",JOptionPane.WARNING_MESSAGE);}
+					else {
+						vendorfunc.deleteVendorData(id);
+						model = Tools.addDataTable(vendorfunc.findVendorData(), model);
+						JOptionPane.showMessageDialog(null,"Delete successfully " + id,"Vendor",JOptionPane.WARNING_MESSAGE);
+						}
+				}
+			}
+		});
+		updatevendorbutton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String Id = jtextfieldid.getText();
+				String Name = jtextfield.getText();
+				String Pwd = String.valueOf(jtextfieldpwd.getPassword());
+				String Lct = cmblocation.getSelectedItem().toString();
+				String Type = cmbtype.getSelectedItem().toString();
+				String Path = jlabelpath.getText();
+				if((Id+Name+Pwd).equals("")||(cmblocation.getSelectedIndex()+cmblocation.getSelectedIndex())==0) {
 					JOptionPane.showMessageDialog(null,"Fill Up Vendor Info","Invalid Operation",JOptionPane.WARNING_MESSAGE);
 					
 				}
 				else {
-					String Name = jtextfield.getText();
-					int existID = vendorfunc.checkVendor(Name);
-					if(existID==-1) {JOptionPane.showMessageDialog(null,"Add successfully " + Name,"Vendor",JOptionPane.WARNING_MESSAGE);}
-					else {JOptionPane.showMessageDialog(null, Name + " Existed","Vendor",JOptionPane.WARNING_MESSAGE);}
+					int existID = vendorfunc.checkVendor(Id);
+					if(existID!=-1) {
+						Vendors v = new Vendors(Id,Pwd,Name,Type,Lct,Path);
+						vendorfunc.updateVendorData(v);
+						model = Tools.addDataTable(vendorfunc.findVendorData(), model);
+						JOptionPane.showMessageDialog(null,"Update successfully " + Id,"Vendor",JOptionPane.WARNING_MESSAGE);
+						}
+					else {JOptionPane.showMessageDialog(null, Id + " Not Exist","Vendor",JOptionPane.WARNING_MESSAGE);}
 					
 				}
+			}
+		});
+		jbuttonbrowse.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+//				JFileChooser j = new JFileChooser();
+//				j.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+//				Integer opt = j.showSaveDialog(this);
+				JFileChooser fc = new JFileChooser();
+			    fc.setFileFilter(new JPEGImageFileFilter());
+			    int res = fc.showOpenDialog(null);
+			    // We have an image!
+			    try {
+			        if (res == JFileChooser.APPROVE_OPTION) {
+			            File file = fc.getSelectedFile();
+			            jlabelpath.setText(file.getName());
+			            iconpath = file.getAbsolutePath();
+			        }
+			    } catch (Exception iOException) {
+			    }
+
 			}
 		});
 		
@@ -147,12 +269,15 @@ public class AdminVendorView extends JPanel {
 		columnModel = tableitem.getColumnModel();
 		tableitem.getTableHeader().setReorderingAllowed(false);
 		tableitem.getTableHeader().setResizingAllowed(false);
+		tableitem.setRowHeight(50);
+		// column 5 is logo 
+		tableitem.getColumnModel().getColumn(5).setCellRenderer(new ImageRender());
 		int count = columnModel.getColumnCount();
+
 		for(int i=0;i<count;i++) {
 			javax.swing.table.TableColumn column = columnModel.getColumn(i);
 			column.setPreferredWidth(columnWidth[i]);
 		}
-		rows = new Vector(5); //???? not yet import data
 		return tableitem;
 	}
 

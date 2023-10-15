@@ -17,5 +17,12 @@ runner view
 
 20231010
 add vendor 
+
+20231012
+add read modify delete function -> vendor /
+set width as global par
+
+20231015
+admin done
 ```
 

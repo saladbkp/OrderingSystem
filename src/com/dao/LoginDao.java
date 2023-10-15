@@ -30,4 +30,7 @@ public class LoginDao {
 		
 		return -1;
 	}
+	public ArrayList<Users> currentUser(){
+		return this.userarray;
+	}
 }

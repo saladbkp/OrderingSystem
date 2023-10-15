@@ -3,26 +3,33 @@ package com.adminViews;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Label;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.dao.AddCustomerDao;
+import com.model.Customers;
 import com.style.Style;
 
 public class CustomerTopUpView extends JPanel{
 	int WIDTH;
 	int HEIGHT = 150;
-	
 	public CustomerTopUpView(int x,int y, int width, int height) {
 		// separate 2 windows ?????? 
 		this.setBounds(x,y,width,height);
 		this.WIDTH = width;
 		Init();
 	}
+	AddCustomerDao cusfunc = new AddCustomerDao();
+	public static List<Customers> updatearray;
+	
 	void Init() {
 		this.setLayout(null);
 		this.setBackground(Color.gray);
@@ -33,11 +40,12 @@ public class CustomerTopUpView extends JPanel{
 		jpanel2.setBounds(0,0,WIDTH,50);
 		jpanel2.setBackground(Color.CYAN);
 		// show customer name 
-		JLabel cuslabel = new JLabel("Customer Name:");
+		JLabel cuslabel = new JLabel("Customer Id:");
 		jpanel2.add(cuslabel);
-		JComboBox cmblocation = new JComboBox();
-		cmblocation.addItem("--Select Customer--");
-		jpanel2.add(cmblocation);
+		JComboBox cmbcustomer = new JComboBox(cusfunc.updateCombox().toArray());
+		cmbcustomer.insertItemAt("--Select Customer--", 0);
+		cmbcustomer.setSelectedIndex(0);
+		jpanel2.add(cmbcustomer);
 		JLabel cuslabel1 = new JLabel("Customer Balance:");
 		jpanel2.add(cuslabel1);
 		JLabel cuslabel2 = new JLabel("--");
@@ -62,7 +70,7 @@ public class CustomerTopUpView extends JPanel{
 		
 		// customer id
 		
-		JLabel jlabel1 = new JLabel("Customer ID:");
+		JLabel jlabel1 = new JLabel("Customer Name:");
 		jlabel1.setPreferredSize(new Dimension(320,35));
 		jlabel1.setFont(style.account);
 		jpanel1.add(jlabel1);
@@ -86,5 +94,31 @@ public class CustomerTopUpView extends JPanel{
 		this.add(jpanel3);
 		this.add(jpanel2);
 		this.add(jpanel1);
+		
+		cmbcustomer.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	String id = cmbcustomer.getSelectedItem().toString();
+		    	int balance = cusfunc.getCustomerBalance(id);
+		    	cuslabel2.setText(balance!=-1?""+balance:"--"); 
+		    	jlabel1.setText("Customer Name: "+cusfunc.getCustomerName(id)); 
+		    }
+		});
+		jbutton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(cmbcustomer.getSelectedIndex()!=0 && !jtextfield2.getText().equals("")) {
+					String id = cmbcustomer.getSelectedItem().toString();
+					int balance = Integer.parseInt(jtextfield2.getText());
+					cusfunc.customerTopUp(id, balance);
+					int newbalance = cusfunc.getCustomerBalance(id);
+			    	cuslabel2.setText(newbalance!=-1?""+newbalance:"--");
+			    	updatearray = cusfunc.findCustomerData();
+				}
+				else {
+					JOptionPane.showMessageDialog(null,"Fill up customer or top up amount","Invalid Operation",JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
+		
 	}
+
 }
