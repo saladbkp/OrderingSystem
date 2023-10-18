@@ -20,9 +20,12 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import com.adminViews.ManageAdminView;
+import com.customerViews.ManageCustomerView;
 import com.dao.LoginDao;
+import com.runnerViews.ManageRunnerView;
 import com.style.Style;
 import com.tool.Tools;
+import com.vendorViews.ManageVendorView;
 
 public class Login {
 	
@@ -139,7 +142,21 @@ public class Login {
 						jframe.dispose();
 						ManageAdminView manageAdmin = new ManageAdminView();
 						break;
+                                        case 2:
+						jframe.dispose();
+						ManageVendorView manageVendor = new ManageVendorView();
+						break;
+                                        case 3:
+						jframe.dispose();
+						ManageCustomerView managecustomer = new ManageCustomerView();
+						break;
+                                        case 4:
+						jframe.dispose();
+						ManageRunnerView manageRunner = new ManageRunnerView();
+						break;
 					}
+                                        
+                                        
 					
 				}
 
