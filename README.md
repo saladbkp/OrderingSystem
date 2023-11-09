@@ -11,6 +11,10 @@ AdminCustomerView
 CustomerTopUpView
 20231009
 TopUp + view customer
-CUstomer gui done 
+Customer gui done
+v2
+Customer gui add notification(blank) + modify (order)
+Model done(customer perspective)
+Txt function updated
 ```
 
