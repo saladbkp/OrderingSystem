@@ -14,6 +14,6 @@ public class ImageRender extends DefaultTableCellRenderer{
 	    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,int row, int column) {
 			String photopath = value.toString();
 			ImageIcon imageicon = new ImageIcon(new ImageIcon("src/img/"+photopath).getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
-			return new JLabel(imageicon);
+                        return new JLabel(imageicon);
 		}
 }

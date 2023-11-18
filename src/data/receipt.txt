@@ -1,0 +1,13 @@
+Date:15-11-2023 15:23
+Order No:o1
+
+Customer Details
+Username: c1
+Phone: 1235123
+Address: kepong
+
+OrderName       Price   Quantity           Total
+salad            9.90          2           19.80
+burger           5.20          5           26.00
+
+Subtotal: 45.8

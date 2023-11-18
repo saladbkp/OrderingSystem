@@ -1,0 +1,4 @@
+i1,salad,9.9,v1
+i2,chicken,10,v2
+i3,burger,5.2,v1
+i4,nasilemak,8,v3

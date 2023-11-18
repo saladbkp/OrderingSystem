@@ -26,8 +26,11 @@ import com.runnerViews.ManageRunnerView;
 import com.style.Style;
 import com.tool.Tools;
 import com.vendorViews.ManageVendorView;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class Login {
+ public class Login {
 	
 	final int WIDTH = 500;
 	final int HEIGHT = 330;
@@ -140,16 +143,30 @@ public class Login {
 					switch(role) {
 					case 1:
 						jframe.dispose();
-						ManageAdminView manageAdmin = new ManageAdminView();
+                                            {
+                                                try {
+                                                    ManageAdminView manageAdmin = new ManageAdminView();
+                                                } catch (IOException ex) {
+                                                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                                                }
+                                            }
 						break;
+
                                         case 2:
 						jframe.dispose();
 						ManageVendorView manageVendor = new ManageVendorView();
 						break;
                                         case 3:
 						jframe.dispose();
-						ManageCustomerView managecustomer = new ManageCustomerView();
+                                            {
+                                                try {
+                                                    ManageCustomerView managecustomer = new ManageCustomerView(account);
+                                                } catch (IOException ex) {
+                                                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                                                }
+                                            }
 						break;
+
                                         case 4:
 						jframe.dispose();
 						ManageRunnerView manageRunner = new ManageRunnerView();
@@ -175,7 +192,12 @@ public class Login {
 		jframe.add(jpanel2); 
 		jframe.add(jpanel1); 
 		jframe.add(bgimg); 
-		
+		jframe.addWindowListener(new WindowAdapter() {
+		    @Override
+		    public void windowClosing(WindowEvent  windowEvent) {
+                        System.exit(0);
+		    }
+		});
 		
 	}
 	

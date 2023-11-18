@@ -1,29 +1,36 @@
 package com.model;
 
-public class Customers {
-	private String customerID;
-	private String customerPwd;
-	private String customerName;
+public class Customers extends CommonAttrs{
 	private int balance;
 	private String gender;
+        private int phoneno;
+        private String address;
 	
-	public Customers(String id,String pwd,String name,int balance,String gender) {
-		this.customerID = id;
-		this.customerPwd = pwd;
-		this.customerName = name;
+        public Customers(String id,String pwd,String name,int balance,String gender,int pn,String address) {
+                super(id,name,pwd);
 		this.balance = balance;
 		this.gender = gender;
+                this.phoneno = pn;
+                this.address = address;
 	}
-	public String getCustomerID() {return this.customerID;}
-	public String getCustomerPwd() {return this.customerPwd;}
+        public Customers(String[] txtlist) {
+                super(txtlist[0],txtlist[1],txtlist[2]);
+		this.balance = Integer.parseInt(txtlist[3]);
+		this.gender = txtlist[4];
+                this.phoneno = Integer.parseInt(txtlist[5]);
+                this.address = txtlist[6];
+	}
+        
 	public int getCustomerBalance() {return this.balance;}
 	public void setCustomerBalance(int balance) 
 	{
 		this.balance = balance;
 	}
-	public String getCustomerName() {return this.customerName;}
+        public int getCustomerPhone(){return this.phoneno;}
+        public String getCustomerAddress(){return this.address;}
+        
 	public String toString() {
-		String output = String.format("%s,%s,%s,%s,%s", this.customerID,this.customerPwd,this.customerName,this.balance,this.gender);
+		String output = String.format("%s,%s,%s,%s,%s", super.getToString(),this.balance,this.gender,this.phoneno,this.address);
 		return output;
 	}
 }

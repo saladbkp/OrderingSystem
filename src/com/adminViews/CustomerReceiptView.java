@@ -17,7 +17,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 import com.dao.AddOrderDao;
+import com.model.Notifications;
 import com.tool.Tools;
+import com.model.Receipts;
+import java.util.Random;
 
 public class CustomerReceiptView extends JPanel {
 		int WIDTH;
@@ -30,7 +33,7 @@ public class CustomerReceiptView extends JPanel {
 			Init();
 		}
 		
-		String columns[] = {"CustomerID","ItemID","VendorID","RunnerID","Total","Amount","DateTime"};
+		String columns[] = {"OrderID","CustomerID","ItemID","VendorID","RunnerID","Total","Type","DateTime","Status"};
 		JTable tableitem = null;
 		JScrollPane jsrcollpane; //scrollbar
 		DefaultTableModel model;
@@ -55,6 +58,12 @@ public class CustomerReceiptView extends JPanel {
 			jpanel2.setBounds(0,0,WIDTH,50);
 			jpanel2.setBackground(Color.LIGHT_GRAY);
 			
+                        JLabel jlabelord = new JLabel("Order ID");
+			jpanel2.add(jlabelord);
+			JComboBox cmbord = new JComboBox(orderfunc.updateComboxOrd().toArray());
+			cmbord.insertItemAt("--Select Order--", 0);
+			cmbord.setSelectedIndex(0);
+			jpanel2.add(cmbord);
 			JLabel jlabelcus = new JLabel("Customer ID");
 			jpanel2.add(jlabelcus);
 			JComboBox cmbcus = new JComboBox(orderfunc.updateComboxCus().toArray());
@@ -80,12 +89,22 @@ public class CustomerReceiptView extends JPanel {
 			table();
 			model = Tools.addDataTable(orderfunc.findOrderData(), model);
 			this.add(jsrcollpane);
-			
+			cmbord.addActionListener (new ActionListener () {
+			    public void actionPerformed(ActionEvent e) {
+			    	if(cmbord.getSelectedIndex()==0) {return;}
+                                cmbcus.setSelectedIndex(0);
+			    	cmbvendor.setSelectedIndex(0);
+			    	cmbrunner.setSelectedIndex(0);
+			    	String id = cmbord.getSelectedItem().toString();
+			    	model = Tools.addDataTable(orderfunc.findDataByOrder(id), model);
+			    }
+			});
 			cmbcus.addActionListener (new ActionListener () {
 			    public void actionPerformed(ActionEvent e) {
 			    	if(cmbcus.getSelectedIndex()==0) {return;}
 			    	cmbvendor.setSelectedIndex(0);
 			    	cmbrunner.setSelectedIndex(0);
+                                cmbord.setSelectedIndex(0);
 			    	String id = cmbcus.getSelectedItem().toString();
 			    	model = Tools.addDataTable(orderfunc.findDataByCus(id), model);
 			    }
@@ -104,6 +123,7 @@ public class CustomerReceiptView extends JPanel {
 			    	if(cmbrunner.getSelectedIndex()==0) {return;}
 			    	cmbvendor.setSelectedIndex(0);
 			    	cmbcus.setSelectedIndex(0);
+                                cmbord.setSelectedIndex(0);
 			    	String id = cmbrunner.getSelectedItem().toString();
 			    	model = Tools.addDataTable(orderfunc.findDataByRun(id), model);
 			    }
@@ -114,7 +134,21 @@ public class CustomerReceiptView extends JPanel {
 			    	if(cmbcus.getSelectedIndex()!=0) {choice="Customer";}
 			    	if(cmbvendor.getSelectedIndex()!=0) {choice="Vendor";}
 			    	if(cmbrunner.getSelectedIndex()!=0) {choice="Runner";}
-					JOptionPane.showMessageDialog(null,"Sending to "+choice,"Notification",JOptionPane.WARNING_MESSAGE);
+                                if(cmbord.getSelectedIndex()!=0) 
+                                {
+                                    choice="Order";
+                                    // generate receipt
+                                    Receipts rc = new Receipts(cmbord.getSelectedItem().toString());
+                                    // generate notification
+                                    Random rand = new Random();
+                                    String notiid = "n"+ rand.nextInt(10);
+                                    Notifications noti = new Notifications(notiid,model.getValueAt(0, 1).toString(),"NEW RECEIPT ORDER");
+                                    Tools.writeFile("src/data/receipt.txt", rc.toString()); 
+                                    Tools.writeFile("src/data/notifications.txt", noti.toString()); 
+                                }
+                                JOptionPane.showMessageDialog(null,"Sending "+choice,"Notification",JOptionPane.WARNING_MESSAGE);
+                                ManageAdminView.client.sendMessasge("noti");
+
 			    }
 			});
 		}
@@ -130,7 +164,7 @@ public class CustomerReceiptView extends JPanel {
 		
 		JTable TableSetup() {
 			tableitem = new JTable();
-			int[] columnWidth = {150,150,150,150,150,150,150};
+			int[] columnWidth = {150,150,150,150,150,150,150,150,150};
 			model = new DefaultTableModel() {
 				public boolean isCellEditable(int row, int column) {
 					return false;

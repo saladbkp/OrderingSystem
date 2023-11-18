@@ -8,27 +8,24 @@ import com.model.Customers;
 import com.tool.TextFunction;
 
 public class AddCustomerDao {
+        AddCommonDao commonfunc = new AddCommonDao();
 	ArrayList<Customers> cusarray = new ArrayList<Customers>();
-	
+        TextFunction txtfunc = new TextFunction("src/data/customers.txt");
+
 	public AddCustomerDao() {
-		TextFunction txtfunc = new TextFunction("src/data/customers.txt");
 		cusarray = txtfunc.readfile(Customers.class);
 	}
 	public int checkCustomer(String id) {
 		int index = seek(id);
 		return index;
 	}
-	private int seek(String str) {
-		for (int i=0;i<cusarray.size();i++) {
-			if(cusarray.get(i).getCustomerID().equals(str)) {return i;}
-		}
-		
-		return -1;
+	private int seek(String str) {		
+		return commonfunc.seek(cusarray, str);
 	}
 	// view
 	public List<Customers> findCustomerData(String id) {
-		List<Customers> findarrayCus = this.cusarray.stream().filter(x->x.getCustomerID().equals(id)).toList();
-		return findarrayCus;
+		
+		return commonfunc.findData(cusarray, id);
 	}
 	public List<Customers> findCustomerData() {
 		return this.cusarray;
@@ -37,21 +34,24 @@ public class AddCustomerDao {
 	
 	public void addCustomerData(Customers v) {
 		cusarray.add(v);
+                txtfunc.arrayToStr(cusarray);
 	}
 	// modify
 	public void updateCustomerData(Customers v) {
-		int index = seek(v.getCustomerID());
+		int index = seek(v.getId());
 		cusarray.set(index,v);
+                txtfunc.arrayToStr(cusarray);
 	}
 	// delete
 	public void deleteCustomerData(String id) {
 		int index = seek(id);
 		cusarray.remove(index);
+                txtfunc.arrayToStr(cusarray);
 	}
 	// update combobox
 	public List<String> updateCombox() {
 	    return cusarray.stream()
-	                   .map(Customers::getCustomerID)
+	                   .map(Customers::getId)
 	                   .collect(Collectors.toList());
 	}
 	public int getCustomerBalance(String id) {
@@ -60,7 +60,7 @@ public class AddCustomerDao {
 	}
 	public String getCustomerName(String id) {
 		int index = seek(id);
-		return index!=-1?cusarray.get(index).getCustomerName():"";
+		return index!=-1?cusarray.get(index).getUsername():"";
 	}
 	public void customerTopUp(String id,int balance) {
 		int index = seek(id);

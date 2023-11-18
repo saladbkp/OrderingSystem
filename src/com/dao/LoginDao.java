@@ -25,7 +25,7 @@ public class LoginDao {
 	// 1 is found, -1 not found
 	private int seek(String str) {
 		for (int i=0;i<userarray.size();i++) {
-			if(userarray.get(i).getUsername().equals(str)) {return i;}
+			if(userarray.get(i).getId().equals(str)) {return i;}
 		}
 		
 		return -1;

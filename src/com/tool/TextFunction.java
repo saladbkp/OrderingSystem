@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.model.Customers;
+import com.model.Items;
+import com.model.Notifications;
 import com.model.Orders;
 import com.model.Runners;
 import com.model.Users;
@@ -38,16 +40,24 @@ public class TextFunction {
 	                txtarray.add(clazz.cast(vendor));
 	            }
 				else if (clazz.equals(Customers.class)) {
-					Customers customer = new Customers(spt[0],spt[1],spt[2],Integer.parseInt(spt[3]),spt[4]);
+					Customers customer = new Customers(spt[0],spt[1],spt[2],Integer.parseInt(spt[3]),spt[4],Integer.parseInt(spt[5]),spt[6]);
 	                txtarray.add(clazz.cast(customer));
 	            }
 				else if (clazz.equals(Runners.class)) {
-					Runners customer = new Runners(spt[0],spt[1],spt[2],spt[3],spt[4]);
-	                txtarray.add(clazz.cast(customer));
+					Runners runner = new Runners(spt[0],spt[1],spt[2],spt[3],spt[4]);
+	                txtarray.add(clazz.cast(runner));
 	            }
 				else if (clazz.equals(Orders.class)) {
-					Orders order = new Orders(spt[0],spt[1],spt[2],spt[3],Integer.parseInt(spt[4]),Float.parseFloat(spt[5]),spt[6]);
+					Orders order = new Orders(spt[0],spt[1],spt[2],spt[3],spt[4],Integer.parseInt(spt[5]),spt[6],spt[7],spt[8]);
 	                txtarray.add(clazz.cast(order));
+	            }
+                                else if (clazz.equals(Items.class)) {
+					Items item = new Items(spt[0],spt[1],Float.parseFloat(spt[2]),spt[3]);
+	                txtarray.add(clazz.cast(item));
+	            }
+                                else if (clazz.equals(Notifications.class)) {
+					Notifications noti = new Notifications(spt[0],spt[1],spt[2]);
+	                txtarray.add(clazz.cast(noti));
 	            }
 				//System.out.println(spt[0]);
 			}
@@ -64,8 +74,15 @@ public class TextFunction {
 		
 		
 	}
-
-
-	
+        // write array to content
+        public <T> void arrayToStr(ArrayList<T> list){
+            String listString = "";
+            for(T model: list){
+                listString += model.toString()+"\n";
+            }
+            Tools.writeFile(filepath, listString);
+        }
+        
+        
 	
 }

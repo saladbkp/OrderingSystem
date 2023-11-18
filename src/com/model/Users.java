@@ -1,17 +1,16 @@
 package com.model;
 
-public class Users {
-	private String username;
-	private String password;
+public class Users extends CommonAttrs{
 	private int role;
 	
-	public Users(String usn,String pwd,int role) {
-		this.username = usn;
-		this.password = pwd;
+	public Users(String id,String pwd,int role) {
+		super(id,pwd,id);
 		this.role = role;
 	}
-	public String getUsername() {return this.username;}
-	public String getPassword() {return this.password;}
+        public Users(String[] txtlist) {
+		super(txtlist[0],txtlist[1],txtlist[2]);
+		this.role =  Integer.parseInt(txtlist[3]);
+	}
 	public int getRole() {return this.role;}
 	
 }

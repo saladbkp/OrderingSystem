@@ -1,5 +1,9 @@
 package com.adminViews;
 
+import com.customerViews.ManageCustomerView;
+import static com.customerViews.ManageCustomerView.client;
+import com.services.Client;
+import com.services.Server;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -16,6 +20,11 @@ import javax.swing.JPanel;
 
 import com.tool.Tools;
 import com.windows.Login;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ManageAdminView {
 	final int WIDTH = 1300;
@@ -25,14 +34,23 @@ public class ManageAdminView {
 	
 	JFrame jframe = new JFrame();
 	FlowLayout flowlayout;
-	
-	public ManageAdminView(){
+        private Socket socket;
+	public static Client client;
+	public ManageAdminView() throws IOException{
 		Init();
 		jframe.setVisible(true);
 		jframe.setResizable(false);
 		jframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		jframe.validate();
+                //startClient("admin");
 	}
+
+        void startClient(String username) throws IOException{
+            socket = new Socket("localhost",1234);
+            client = new Client(socket,username);
+            client.listenForMessage();
+            client.sendMessasge("init");
+        }
 	void Init() {
 		// title 
 		jframe.setLayout(null);
@@ -106,14 +124,8 @@ public class ManageAdminView {
 		jframe.addWindowListener(new WindowAdapter() {
 		    @Override
 		    public void windowClosing(WindowEvent  windowEvent) {
-//		        if (JOptionPane.showConfirmDialog(jframe, 
-//		            "Are you sure you want to close this window?", "Close Window?", 
-//		            JOptionPane.YES_NO_OPTION,
-//		            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
-//		            
-//		        }
-		        jframe.dispose();
-	            Login login = new Login();
+                        jframe.dispose();
+                        Login login = new Login();
 		    }
 		});
 		

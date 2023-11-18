@@ -17,6 +17,10 @@ public class AddOrderDao {
 	}
 
 	// view
+        public List<Orders> findDataByOrder(String id) {
+		List<Orders> findarray = this.orderarray.stream().filter(x->x.getOrderId().equals(id)).toList();
+		return findarray;
+	}
 	public List<Orders> findDataByCus(String id) {
 		List<Orders> findarray = this.orderarray.stream().filter(x->x.getCustomerId().equals(id)).toList();
 		return findarray;
@@ -31,6 +35,11 @@ public class AddOrderDao {
 	}
 	public List<Orders> findOrderData() {
 		return this.orderarray;
+	}
+        public List<String> updateComboxOrd() {
+	    return orderarray.stream()
+	                   .map(Orders::getOrderId).distinct()
+	                   .collect(Collectors.toList());
 	}
 	public List<String> updateComboxCus() {
 	    return orderarray.stream()

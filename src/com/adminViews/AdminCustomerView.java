@@ -34,7 +34,7 @@ public class AdminCustomerView extends JPanel {
 		Init();
 	}
 	
-	String columns[] = {"CustomerID","CustomerPwd","CustomerName","Balance","Gender"};
+	String columns[] = {"CustomerID","CustomerPwd","CustomerName","Balance","Gender","Phone No","Address"};
 	JTable tableitem = null;
 	JScrollPane jsrcollpane; //scrollbar
 	DefaultTableModel model;
@@ -84,8 +84,18 @@ public class AdminCustomerView extends JPanel {
 		cmbgender.addItem("Male");
 		cmbgender.addItem("Female");
 		jpanel2.add(cmbgender);
-		
-		
+		JLabel jlabelpn = new JLabel("Phone No");
+		jpanel2.add(jlabelpn);
+		JTextField jtextfieldpn = new JTextField(10);
+		jpanel2.add(jtextfieldpn);
+                JLabel jlabeladdress = new JLabel("Address");
+		jpanel2.add(jlabeladdress);
+                JComboBox cmblocation = new JComboBox();
+		cmblocation.addItem("--Select Address--");
+		cmblocation.addItem("kepong");
+		cmblocation.addItem("pj");
+		jpanel2.add(cmblocation);
+                
 		this.add(jpanel2);
 		this.add(jpanel1);
 		table();
@@ -101,13 +111,15 @@ public class AdminCustomerView extends JPanel {
 				String Name = jtextfield.getText();
 				String Pwd = String.valueOf(jtextfieldpwd.getPassword());
 				String Gender = cmbgender.getSelectedItem().toString();
-				if((Id+Name+Pwd).equals("")||cmbgender.getSelectedIndex()==0) {
+                                String Phoneno =jtextfieldpn.getText();
+                                String Address = cmblocation.getSelectedItem().toString();
+				if((Id+Name+Pwd+Phoneno).equals("")||cmbgender.getSelectedIndex()+cmblocation.getSelectedIndex()==0) {
 					JOptionPane.showMessageDialog(null,"Fill Up Custoemr Info","Invalid Operation",JOptionPane.WARNING_MESSAGE);
 				}
 				else {
 					int existID = customerfunc.checkCustomer(Id);
 					if(existID==-1) {
-						Customers c = new Customers(Id,Pwd,Name,0,Gender);
+						Customers c = new Customers(Id,Pwd,Name,0,Gender,Integer.parseInt(Phoneno),Address);
 						customerfunc.addCustomerData(c);
 						model = Tools.addDataTable(customerfunc.findCustomerData(), model);
 											    
@@ -155,14 +167,16 @@ public class AdminCustomerView extends JPanel {
 				String Name = jtextfield.getText();
 				String Pwd = String.valueOf(jtextfieldpwd.getPassword());
 				String Gender = cmbgender.getSelectedItem().toString();
-				if((Id+Name+Pwd).equals("")||cmbgender.getSelectedIndex()==0) {
+                                String Phoneno = jtextfieldpn.getText();
+                                String Address = cmblocation.getSelectedItem().toString();
+				if((Id+Name+Pwd+Phoneno).equals("")||cmbgender.getSelectedIndex()+cmblocation.getSelectedIndex()==0) {
 					JOptionPane.showMessageDialog(null,"Fill Up Customer Info","Invalid Operation",JOptionPane.WARNING_MESSAGE);
 					
 				}
 				else {
 					int existID = customerfunc.checkCustomer(Id);
 					if(existID!=-1) {
-						Customers c = new Customers(Id,Pwd,Name,0,Gender);
+						Customers c = new Customers(Id,Pwd,Name,0,Gender,Integer.parseInt(Phoneno),Address);
 						customerfunc.updateCustomerData(c);
 						model = Tools.addDataTable(customerfunc.findCustomerData(), model);
 						JOptionPane.showMessageDialog(null,"Update successfully " + Id,"Customer",JOptionPane.WARNING_MESSAGE);
@@ -185,7 +199,7 @@ public class AdminCustomerView extends JPanel {
 	
 	JTable TableSetup() {
 		tableitem = new JTable();
-		int[] columnWidth = {150,150,150,150,150};
+		int[] columnWidth = {150,150,150,150,150,150,150};
 		model = new DefaultTableModel() {
 			public boolean isCellEditable(int row, int column) {
 				return false;

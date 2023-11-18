@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.model.Vendors;
+import com.model_cus.Menus;
 import com.tool.TextFunction;
+import java.util.stream.Collectors;
 
 public class AddVendorDao {
+        AddCommonDao commonfunc = new AddCommonDao();
 	ArrayList<Vendors> vendorarray = new ArrayList<Vendors>();
+        TextFunction txtfunc = new TextFunction("src/data/vendors.txt");
 	
 	public AddVendorDao() {
-		TextFunction txtfunc = new TextFunction("src/data/vendors.txt");
 		vendorarray = txtfunc.readfile(Vendors.class);
 	}
 	public int checkVendor(String id) {
@@ -18,35 +21,39 @@ public class AddVendorDao {
 		return index;
 	}
 	private int seek(String str) {
-		for (int i=0;i<vendorarray.size();i++) {
-			//System.out.println(vendorarray.get(i).getVendorID());
-			if(vendorarray.get(i).getVendorID().equals(str)) {return i;}
-		}
-		
-		return -1;
+		return commonfunc.seek(vendorarray, str);
 	}
 	// view
 	public List<Vendors> findVendorData(String id) {
-		List<Vendors> findarrayVendor = this.vendorarray.stream().filter(x->x.getVendorID().equals(id)).toList();
-		return findarrayVendor;
+		return commonfunc.findData(vendorarray, id);
 	}
 	public List<Vendors> findVendorData() {
 		return this.vendorarray;
+	}
+        public String findVendorID(String name) {
+		return commonfunc.nameFindID(vendorarray, name);
 	}
 	// add
 	
 	public void addVendorData(Vendors v) {
 		vendorarray.add(v);
+                txtfunc.arrayToStr(vendorarray);
 	}
 	// modify
 	public void updateVendorData(Vendors v) {
-		int index = seek(v.getVendorID());
+		int index = seek(v.getId());
 		vendorarray.set(index,v);
+                txtfunc.arrayToStr(vendorarray);
 	}
 	// delete
 	public void deleteVendorData(String id) {
 		int index = seek(id);
 		vendorarray.remove(index);
+                txtfunc.arrayToStr(vendorarray);
 	}
+        // add vendor menu 
+        public List<Menus> findVendorMenuData() {
+                return vendorarray.stream().map(Menus::new).collect(Collectors.toList());
+        }
 	
 }
