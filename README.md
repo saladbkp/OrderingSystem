@@ -24,5 +24,11 @@ set width as global par
 
 20231015
 admin done
+
+20231118
+customer bind
+page navigation
+customer menu + vendor food
+- order not done yet
 ```
 
