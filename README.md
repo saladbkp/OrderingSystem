@@ -30,6 +30,7 @@ customer bind
 page navigation
 customer menu + vendor food
 - order not done yet
+<<<<<<< HEAD
 
 20231126
 customer: 
@@ -62,5 +63,7 @@ history from order
 task tab let me think 2 
 
 
+=======
+>>>>>>> 5cf74dcc4bf97e16da9604d67adae8e8c1ca293d
 ```
 
