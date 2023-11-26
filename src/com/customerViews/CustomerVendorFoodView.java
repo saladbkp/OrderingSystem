@@ -48,7 +48,6 @@ public class CustomerVendorFoodView extends JPanel{
 	JScrollPane jsrcollpane; //scrollbar
 	DefaultTableModel model;
 	TableColumnModel columnModel;
-        TableRowSorter tableSorter;
 	String vendorid;
         AddItemDao itemfunc = new AddItemDao();
         
@@ -79,11 +78,18 @@ public class CustomerVendorFoodView extends JPanel{
                 
                 addtocartbutton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        tableSorter.setRowFilter(new TableRowFilter("v"));
-//                        CustomerCartView cart = new CustomerCartView(0,0,viewWidth,viewHeight);
-//                        ManageCustomerView.jpanel2.removeAll();
-//                        ManageCustomerView.jpanel2.add(cart,(Integer)(JLayeredPane.PALETTE_LAYER));
-//                        ManageCustomerView.jpanel2.moveToFront(cart); 
+                        double sumQty = Tools.sumColumnJTable(tableitem,2);
+                        if(sumQty>0){
+                            CustomerCartView cart = new CustomerCartView(0,0,viewWidth,viewHeight,tableitem.getModel());
+                            ManageCustomerView.jpanel2.removeAll();
+                            ManageCustomerView.jpanel2.add(cart,(Integer)(JLayeredPane.PALETTE_LAYER));
+                            ManageCustomerView.jpanel2.moveToFront(cart); 
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null,"Select a Food","Invalid Operation",JOptionPane.WARNING_MESSAGE);
+
+                        }
+
 
                         // stop here 2023/11/14
                     }
@@ -173,8 +179,6 @@ public class CustomerVendorFoodView extends JPanel{
 		};
 		model.setColumnIdentifiers(columns);
 		tableitem.setModel(model);
-                tableSorter = new TableRowSorter(model);
-                tableitem.setRowSorter(tableSorter);
 		columnModel = tableitem.getColumnModel();
 		tableitem.getTableHeader().setReorderingAllowed(false);
 		tableitem.getTableHeader().setResizingAllowed(false);

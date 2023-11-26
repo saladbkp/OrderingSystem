@@ -100,7 +100,7 @@ public class AdminCustomerView extends JPanel {
 		this.add(jpanel1);
 		table();
 
-		model = Tools.addDataTable(customerfunc.findCustomerData(), model);
+		model = Tools.addDataTable(customerfunc.findData(), model);
 		this.add(jsrcollpane);
 		
 		// button function 
@@ -120,8 +120,8 @@ public class AdminCustomerView extends JPanel {
 					int existID = customerfunc.checkCustomer(Id);
 					if(existID==-1) {
 						Customers c = new Customers(Id,Pwd,Name,0,Gender,Integer.parseInt(Phoneno),Address);
-						customerfunc.addCustomerData(c);
-						model = Tools.addDataTable(customerfunc.findCustomerData(), model);
+						customerfunc.addData(c);
+						model = Tools.addDataTable(customerfunc.findData(), model);
 											    
 						JOptionPane.showMessageDialog(null,"Add successfully " + Id,"Customer",JOptionPane.WARNING_MESSAGE);
 						}
@@ -134,13 +134,13 @@ public class AdminCustomerView extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if(jtextfieldid.getText().equals("")) {
 					
-					model = Tools.addDataTable(customerfunc.findCustomerData(), model);
+					model = Tools.addDataTable(customerfunc.findData(), model);
 				}
 				else {
 					String id = jtextfieldid.getText();
 					int existID = customerfunc.checkCustomer(id);
 					if(existID==-1) {JOptionPane.showMessageDialog(null,"Invalid: " + id,"Customer",JOptionPane.WARNING_MESSAGE);}
-					else {model = Tools.addDataTable(customerfunc.findCustomerData(id), model);}
+					else {model = Tools.addDataTable(customerfunc.findDataByID(id), model);}
 				}
 			}
 		});
@@ -154,8 +154,8 @@ public class AdminCustomerView extends JPanel {
 					int existID = customerfunc.checkCustomer(id);
 					if(existID==-1) {JOptionPane.showMessageDialog(null,"Invalid: " + id,"Customer",JOptionPane.WARNING_MESSAGE);}
 					else {
-						customerfunc.deleteCustomerData(id);
-						model = Tools.addDataTable(customerfunc.findCustomerData(), model);
+						customerfunc.deleteData(id);
+						model = Tools.addDataTable(customerfunc.findData(), model);
 						JOptionPane.showMessageDialog(null,"Delete successfully " + id,"Customer",JOptionPane.WARNING_MESSAGE);
 						}
 				}
@@ -177,8 +177,8 @@ public class AdminCustomerView extends JPanel {
 					int existID = customerfunc.checkCustomer(Id);
 					if(existID!=-1) {
 						Customers c = new Customers(Id,Pwd,Name,0,Gender,Integer.parseInt(Phoneno),Address);
-						customerfunc.updateCustomerData(c);
-						model = Tools.addDataTable(customerfunc.findCustomerData(), model);
+						customerfunc.updateData(c);
+						model = Tools.addDataTable(customerfunc.findData(), model);
 						JOptionPane.showMessageDialog(null,"Update successfully " + Id,"Customer",JOptionPane.WARNING_MESSAGE);
 						}
 					else {JOptionPane.showMessageDialog(null, Id + " Not Exist","Customer",JOptionPane.WARNING_MESSAGE);}
@@ -222,10 +222,10 @@ public class AdminCustomerView extends JPanel {
 		List<Customers> updatearray = CustomerTopUpView.updatearray;
 		if(updatearray!=null) {
 			for(int i=0;i<updatearray.size();i++) {
-				customerfunc.updateCustomerData(updatearray.get(i));
+				customerfunc.updateData(updatearray.get(i));
 			}
 		}
-		model = Tools.addDataTable(customerfunc.findCustomerData(), model);
+		model = Tools.addDataTable(customerfunc.findData(), model);
 		
 	}
 }

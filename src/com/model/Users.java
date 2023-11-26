@@ -13,4 +13,8 @@ public class Users extends CommonAttrs{
 	}
 	public int getRole() {return this.role;}
 	
+        @Override
+        public String toString(){
+            return String.format("%s,%s,%s", this.id,this.password,this.username);
+        }
 }

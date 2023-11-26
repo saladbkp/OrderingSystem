@@ -35,7 +35,7 @@ public class CustomerMenuView extends JPanel{
 	final int viewHeight = 550;
         
                  //table
-        String columns[] = {"Vendor","Name","Food Type","Delivery fee"};
+        String columns[] = {"Vendor","ID","Name","Food Type","Delivery fee"};
 	JTable tableitem = null;
 	JScrollPane jsrcollpane; //scrollbar
 	DefaultTableModel model;
@@ -72,8 +72,8 @@ public class CustomerMenuView extends JPanel{
                     public void actionPerformed(ActionEvent e) {
                         int selectedRow = tableitem.getSelectedRow();
                         if(selectedRow != -1){
-                            String vendorname = tableitem.getModel().getValueAt(selectedRow, 1).toString();
-                            String vendorid = vendorfunc.findVendorID(vendorname);
+                            String vendorid = tableitem.getModel().getValueAt(selectedRow, 1).toString();
+                            //String vendorid = vendorfunc.findVendorID(vendorname);
                             CustomerVendorFoodView vendorfood = new CustomerVendorFoodView(0,0,viewWidth,viewHeight,vendorid);
                             ManageCustomerView.jpanel2.removeAll();
                             ManageCustomerView.jpanel2.add(vendorfood,(Integer)(JLayeredPane.PALETTE_LAYER));
@@ -99,6 +99,7 @@ public class CustomerMenuView extends JPanel{
                 this.add(jpanel1);
                 table();
                 model = Tools.addDataTable(vendorfunc.findVendorMenuData(), model);
+                tableitem.removeColumn(tableitem.getColumnModel().getColumn(1));
                 this.add(jsrcollpane);
         }
         
@@ -113,7 +114,7 @@ public class CustomerMenuView extends JPanel{
 	
 	JTable TableSetup() {
 		tableitem = new JTable();
-		int[] columnWidth = {150,150,150,150};
+		int[] columnWidth = {150,150,150,150,150};
 		model = new DefaultTableModel() {
 			public boolean isCellEditable(int row, int column) {
                             return false;

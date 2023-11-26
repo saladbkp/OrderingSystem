@@ -2,10 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.model;
+package com.model_cus;
 
+/**
+ *
+ * @author ray
+ */
 public class Credits {
-	private String customerID;
+    	private String customerID;
 	private String customerName;
 	private double balance;
 	private String transaction;

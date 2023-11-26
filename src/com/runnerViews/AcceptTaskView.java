@@ -5,7 +5,7 @@
 package com.runnerViews;
 
 import com.runnerdao.AddTaskDao;
-import com.vendorViews.*;
+import com.style.Style;
 import com.tool.Tools;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,25 +14,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-import com.style.Style;
-import javax.swing.JDialog;
+
 /**
  *
- * @author khwon
+ * @author ivann
  */
-public class RunnerTaskView extends JPanel{
+public class AcceptTaskView extends JPanel{
         int WIDTH;
 	int HEIGHT = 150;
-        final int viewWidth = 1100;
-	final int viewHeight = 550;
 	
         String columns[] = {"Order ID","VendorID","RunnerID","VendorName","FoodID","FoodName","Amount","Service Type","TotalCost","Time","Status"};
         JTable tasktable = null;
@@ -41,13 +38,12 @@ public class RunnerTaskView extends JPanel{
         TableColumnModel columnModel;
         AddTaskDao runnerfunc = new AddTaskDao(); 
         Style style = new Style();
-	public RunnerTaskView(int x,int y, int width, int height) {
+	public AcceptTaskView(int x,int y, int width, int height) {
 		// separate 2 windows ?????? 
 		this.setBounds(x,y,width,height);
 		this.WIDTH = width;
 		Init();
 	}
-        public static JLayeredPane jpanel1;
         public static JLayeredPane jpanel2;
         void Init() {
 		
@@ -60,16 +56,12 @@ public class RunnerTaskView extends JPanel{
 		jpanel1.setBounds(0,0,WIDTH,50);
 		jpanel1.setBackground(Color.YELLOW);
                 
-                JPanel jpanel2 = new JPanel();
-                
                 // add button sample
-                JButton removeitembutton = new JButton("Decline");
-                JButton updateitembutton = new JButton("Update");
                 JButton additembutton = new JButton("Accept");
+		JButton removeitembutton = new JButton("Decline");
+                JButton updateitembutton = new JButton("Update");
                 
-		
-                
-                JLabel topuplabel = new JLabel("Task");
+                JLabel topuplabel = new JLabel("Accepted Task");
 		topuplabel.setFont(style.title);
 		
                 //add combo box
@@ -85,7 +77,7 @@ public class RunnerTaskView extends JPanel{
 		
                 
                 // add content panel
-                
+                JPanel jpanel2 = new JPanel();
                 jpanel2.setLayout(new FlowLayout(FlowLayout.LEFT,10,10));
 		jpanel2.setBounds(0,60,WIDTH,50);
                 jpanel2.add(cmb);
@@ -96,29 +88,31 @@ public class RunnerTaskView extends JPanel{
                 // **** jpanel 2 for table content 
                 // if u have better design, just go through ur pattern
                 
-                
                 this.add(jpanel2);
 		this.add(jpanel1);
                 table();
                 model = Tools.addDataTable(runnerfunc.findTaskData(), model);
                 
                 this.add(jscrollpane);
-               additembutton.addActionListener(new ActionListener() {
-    public void actionPerformed(ActionEvent e) {
-        // Create an instance of AcceptTaskView
-        AcceptTaskView accepttask = new AcceptTaskView(0, 0, viewWidth, viewHeight);
+                // Action listener for the "Update" button
+            updateitembutton.addActionListener(new ActionListener() {
+             public void actionPerformed(ActionEvent e) {
+            // Get the selected value from the combo box
+            String selectedStatus = cmb.getSelectedItem().toString();
 
-        // Create a JDialog to display the AcceptTaskView
-        JDialog dialog = new JDialog();
-        dialog.setSize(viewWidth, viewHeight);
-        dialog.setContentPane(accepttask);
-        dialog.setLocationRelativeTo(null);  // Center the dialog on the screen
-        dialog.setModal(true);  // Make the dialog modal (blocks user input to other windows)
+            // Get the selected row
+            int selectedRow = tasktable.getSelectedRow();
 
-        // Display the dialog
-        dialog.setVisible(true);
-    }
-});
+            // Check if a row is selected
+            if (selectedRow != -1) {
+                // Assuming the "Status" column is the 10th column (index 9)
+                model.setValueAt(selectedStatus, selectedRow, 10);
+            } else {
+                // Show a message if no row is selected
+                JOptionPane.showMessageDialog(null, "Please select a row to update.", "No Row Selected", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    });
         }
         void table() {
 		tasktable = TableSetup();
@@ -148,7 +142,7 @@ public class RunnerTaskView extends JPanel{
 			column.setPreferredWidth(columnWidth[i]);
 		}
 		return tasktable;
-                
 	}
-        
+
 }
+

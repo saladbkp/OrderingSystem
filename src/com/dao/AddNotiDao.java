@@ -22,6 +22,10 @@ public class AddNotiDao {
 	}
 
 	// view
+//        public List<Notifications> findDataByCus(String id) {
+//		List<Notifications> findarray = this.notiarray.stream().filter(x->x.getTargetId().equals(id)).toList();
+//		return findarray;
+//	}
         public List<Notifications> findDataByCus(String id) {
 		List<Notifications> findarray = this.notiarray.stream().filter(x->x.getTargetId().equals(id)).toList();
 		return findarray;

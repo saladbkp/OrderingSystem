@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import com.model.Customers;
 import com.tool.TextFunction;
 
-public class AddCustomerDao {
+public class AddCustomerDao implements IOperation{
         AddCommonDao commonfunc = new AddCommonDao();
 	ArrayList<Customers> cusarray = new ArrayList<Customers>();
         TextFunction txtfunc = new TextFunction("src/data/customers.txt");
@@ -19,35 +19,47 @@ public class AddCustomerDao {
 		int index = seek(id);
 		return index;
 	}
-	private int seek(String str) {		
+        // interface 
+        // seek index 
+        @Override
+	public int seek(String str) {		
 		return commonfunc.seek(cusarray, str);
 	}
 	// view
-	public List<Customers> findCustomerData(String id) {
+        @Override
+	public List<Customers> findDataByID(String id) {
 		
 		return commonfunc.findData(cusarray, id);
 	}
-	public List<Customers> findCustomerData() {
+        @Override
+	public List<Customers> findData() {
 		return this.cusarray;
 	}
 	// add
 	
-	public void addCustomerData(Customers v) {
-		cusarray.add(v);
+        @Override
+	public void addData(Object obj) {
+                Customers c = Customers.class.cast(obj);
+		cusarray.add(c);
                 txtfunc.arrayToStr(cusarray);
 	}
 	// modify
-	public void updateCustomerData(Customers v) {
-		int index = seek(v.getId());
-		cusarray.set(index,v);
+        @Override
+	public void updateData(Object obj) {
+                Customers c = Customers.class.cast(obj);
+		int index = seek(c.getId());
+		cusarray.set(index,c);
                 txtfunc.arrayToStr(cusarray);
 	}
 	// delete
-	public void deleteCustomerData(String id) {
+        @Override
+	public void deleteData(String id) {
 		int index = seek(id);
 		cusarray.remove(index);
                 txtfunc.arrayToStr(cusarray);
 	}
+        //////////////////////////////////////////
+        
 	// update combobox
 	public List<String> updateCombox() {
 	    return cusarray.stream()
@@ -68,6 +80,7 @@ public class AddCustomerDao {
 //		System.out.println(currentbalance+" "+balance);
 		Customers cus =  cusarray.get(index);
 		cus.setCustomerBalance(currentbalance+balance);
-		updateCustomerData(cus);
+		updateData(cus);
 	}
+
 }

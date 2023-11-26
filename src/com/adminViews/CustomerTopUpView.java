@@ -111,7 +111,7 @@ public class CustomerTopUpView extends JPanel{
 					cusfunc.customerTopUp(id, balance);
 					int newbalance = cusfunc.getCustomerBalance(id);
 			    	cuslabel2.setText(newbalance!=-1?""+newbalance:"--");
-			    	updatearray = cusfunc.findCustomerData();
+			    	updatearray = cusfunc.findData();
 				}
 				else {
 					JOptionPane.showMessageDialog(null,"Fill up customer or top up amount","Invalid Operation",JOptionPane.WARNING_MESSAGE);

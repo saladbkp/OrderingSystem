@@ -41,7 +41,8 @@ public class Orders {
 	public java.util.Date getDatetime() {return this.DateTime;}
 	public int getQuantity() {return this.Quantity;}
 	public String getType() {return this.Type;}
-	
+	public String getStatus() {return this.Status;}
+        
 	public String toString() {
 		String output = String.format("%s,%s,%s,%s,%s,%d,%s,%s,%s", this.OrderID,this.CustomerID,this.ItemID,this.VendorID,this.RunnerID,this.Quantity,this.Type,formatter.format(DateTime),this.Status);
 		return output;

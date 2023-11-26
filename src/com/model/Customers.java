@@ -29,6 +29,7 @@ public class Customers extends CommonAttrs{
         public int getCustomerPhone(){return this.phoneno;}
         public String getCustomerAddress(){return this.address;}
         
+        @Override
 	public String toString() {
 		String output = String.format("%s,%s,%s,%s,%s", super.getToString(),this.balance,this.gender,this.phoneno,this.address);
 		return output;

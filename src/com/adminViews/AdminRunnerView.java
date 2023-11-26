@@ -100,7 +100,7 @@ public class AdminRunnerView extends JPanel {
 		this.add(jpanel2);
 		this.add(jpanel1);
 		table();
-		model = Tools.addDataTable(runnerfunc.findRunnerData(), model);
+		model = Tools.addDataTable(runnerfunc.findData(), model);
 		this.add(jsrcollpane);
 		
 		// button function 
@@ -119,8 +119,8 @@ public class AdminRunnerView extends JPanel {
 							int existID = runnerfunc.checkRunner(Id);
 							if(existID==-1) {
 								Runners r = new Runners(Id,Pwd,Name,Location,Vehicle);
-								runnerfunc.addRunnerData(r);
-								model = Tools.addDataTable(runnerfunc.findRunnerData(), model);
+								runnerfunc.addData(r);
+								model = Tools.addDataTable(runnerfunc.findData(), model);
 													    
 								JOptionPane.showMessageDialog(null,"Add successfully " + Id,"Runner",JOptionPane.WARNING_MESSAGE);
 								}
@@ -133,13 +133,13 @@ public class AdminRunnerView extends JPanel {
 					public void actionPerformed(ActionEvent e) {
 						if(jtextfieldid.getText().equals("")) {
 							
-							model = Tools.addDataTable(runnerfunc.findRunnerData(), model);
+							model = Tools.addDataTable(runnerfunc.findData(), model);
 						}
 						else {
 							String id = jtextfieldid.getText();
 							int existID = runnerfunc.checkRunner(id);
 							if(existID==-1) {JOptionPane.showMessageDialog(null,"Invalid: " + id,"Runner",JOptionPane.WARNING_MESSAGE);}
-							else {model = Tools.addDataTable(runnerfunc.findRunnerData(id), model);}
+							else {model = Tools.addDataTable(runnerfunc.findDataByID(id), model);}
 						}
 					}
 				});
@@ -153,8 +153,8 @@ public class AdminRunnerView extends JPanel {
 							int existID = runnerfunc.checkRunner(id);
 							if(existID==-1) {JOptionPane.showMessageDialog(null,"Invalid: " + id,"Customer",JOptionPane.WARNING_MESSAGE);}
 							else {
-								runnerfunc.deleteRunnerData(id);
-								model = Tools.addDataTable(runnerfunc.findRunnerData(), model);
+								runnerfunc.deleteData(id);
+								model = Tools.addDataTable(runnerfunc.findData(), model);
 								JOptionPane.showMessageDialog(null,"Delete successfully " + id,"Customer",JOptionPane.WARNING_MESSAGE);
 								}
 						}
@@ -175,8 +175,8 @@ public class AdminRunnerView extends JPanel {
 							int existID = runnerfunc.checkRunner(Id);
 							if(existID!=-1) {
 								Runners c = new Runners(Id,Pwd,Name,Location,Vehicle);
-								runnerfunc.updateRunnerData(c);
-								model = Tools.addDataTable(runnerfunc.findRunnerData(), model);
+								runnerfunc.updateData(c);
+								model = Tools.addDataTable(runnerfunc.findData(), model);
 								JOptionPane.showMessageDialog(null,"Update successfully " + Id,"Runner",JOptionPane.WARNING_MESSAGE);
 								}
 							else {JOptionPane.showMessageDialog(null, Id + " Not Exist","Runner",JOptionPane.WARNING_MESSAGE);}

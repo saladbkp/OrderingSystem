@@ -39,7 +39,7 @@ public class ManageCustomerView {
 	FlowLayout flowlayout;
         private Socket socket;
         public static Client client;
-        public ManageCustomerView(String account) throws IOException{
+        public ManageCustomerView() throws IOException{
                 Init();
 		jframe.setVisible(true);
 		jframe.setResizable(false);

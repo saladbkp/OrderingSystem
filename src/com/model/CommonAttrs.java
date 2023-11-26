@@ -8,11 +8,15 @@ package com.model;
  *
  * @author khwon
  */
-public class CommonAttrs {
-        private String id;
-    	private String username;
-	private String password;
-        
+public abstract class CommonAttrs {
+//        private String id;
+//    	private String username;
+//	private String password;
+  
+        protected String id;
+    	protected String username;
+	protected String password;
+    
         public CommonAttrs(String id,String pwd,String usn){
             this.id = id;
             this.username = usn;
@@ -27,6 +31,9 @@ public class CommonAttrs {
         public String getPassword(){
             return this.password;
         }
+        @Override
+        public abstract String toString();
+        
         public String getToString(){
             return String.format("%s,%s,%s", this.id,this.password,this.username);
         }

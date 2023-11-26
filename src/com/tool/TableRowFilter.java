@@ -11,16 +11,17 @@ import javax.swing.RowFilter;
  * @author khwon
  */
 public class TableRowFilter extends RowFilter{
-    private String searchkey;
+    private int filterkey;
     private int numberCol;
-    public TableRowFilter(String key){
-        searchkey = key;
-//        numberCol = num;
+    public TableRowFilter(int num,int key){
+        filterkey = key;
+        numberCol = num;
     }
+    // filter integer only ~~~
     @Override
     public boolean include(Entry entry){
         
 //        System.out.println(entry.getStringValue(0));
-        return Integer.parseInt(entry.getValue(2).toString())>0;
+        return Integer.parseInt(entry.getValue(this.numberCol).toString())>this.filterkey;
     }
 }

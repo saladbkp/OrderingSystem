@@ -119,7 +119,7 @@ public class AdminVendorView extends JPanel {
 		this.add(jpanel2);
 		this.add(jpanel1);
 		table();
-		model = Tools.addDataTable(vendorfunc.findVendorData(), model);
+		model = Tools.addDataTable(vendorfunc.findData(), model);
 		this.add(jsrcollpane);
 		
 		// button function 
@@ -140,8 +140,8 @@ public class AdminVendorView extends JPanel {
 					String iconname = Name+".jpg";
 					if(existID==-1) {
 						Vendors v = new Vendors(Id,Pwd,Name,Type,Lct,iconname);
-						vendorfunc.addVendorData(v);
-						model = Tools.addDataTable(vendorfunc.findVendorData(), model);
+						vendorfunc.addData(v);
+						model = Tools.addDataTable(vendorfunc.findData(), model);
 						 
 						File copied = new File(iconpath);
 					    File pasted = new File("src/img/"+iconname);
@@ -165,13 +165,13 @@ public class AdminVendorView extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if(jtextfieldid.getText().equals("")) {
 					
-					model = Tools.addDataTable(vendorfunc.findVendorData(), model);
+					model = Tools.addDataTable(vendorfunc.findData(), model);
 				}
 				else {
 					String id = jtextfieldid.getText();
 					int existID = vendorfunc.checkVendor(id);
 					if(existID==-1) {JOptionPane.showMessageDialog(null,"Invalid: " + id,"Vendor",JOptionPane.WARNING_MESSAGE);}
-					else {model = Tools.addDataTable(vendorfunc.findVendorData(id), model);}
+					else {model = Tools.addDataTable(vendorfunc.findDataByID(id), model);}
 				}
 			}
 		});
@@ -186,8 +186,8 @@ public class AdminVendorView extends JPanel {
 					int existID = vendorfunc.checkVendor(id);
 					if(existID==-1) {JOptionPane.showMessageDialog(null,"Invalid: " + id,"Vendor",JOptionPane.WARNING_MESSAGE);}
 					else {
-						vendorfunc.deleteVendorData(id);
-						model = Tools.addDataTable(vendorfunc.findVendorData(), model);
+						vendorfunc.deleteData(id);
+						model = Tools.addDataTable(vendorfunc.findData(), model);
 						JOptionPane.showMessageDialog(null,"Delete successfully " + id,"Vendor",JOptionPane.WARNING_MESSAGE);
 						}
 				}
@@ -209,8 +209,8 @@ public class AdminVendorView extends JPanel {
 					int existID = vendorfunc.checkVendor(Id);
 					if(existID!=-1) {
 						Vendors v = new Vendors(Id,Pwd,Name,Type,Lct,Path);
-						vendorfunc.updateVendorData(v);
-						model = Tools.addDataTable(vendorfunc.findVendorData(), model);
+						vendorfunc.updateData(v);
+						model = Tools.addDataTable(vendorfunc.findData(), model);
 						JOptionPane.showMessageDialog(null,"Update successfully " + Id,"Vendor",JOptionPane.WARNING_MESSAGE);
 						}
 					else {JOptionPane.showMessageDialog(null, Id + " Not Exist","Vendor",JOptionPane.WARNING_MESSAGE);}

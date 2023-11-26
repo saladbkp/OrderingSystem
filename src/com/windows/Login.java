@@ -40,7 +40,8 @@ import java.util.logging.Logger;
 	FlowLayout flowlayout;
 	
 	LoginDao login = new LoginDao();
-	
+	public static String account = "";
+        
 	public Login(){
 		this.title = "Login";
 		Init();
@@ -126,7 +127,7 @@ import java.util.logging.Logger;
 		// button function 
 		jbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String account = jtextfield.getText();
+				account = jtextfield.getText();
 				String password = String.valueOf(jtextfield1.getPassword());
 				int role = -1;
 				if(r1.isSelected()) role = 1;
@@ -160,7 +161,7 @@ import java.util.logging.Logger;
 						jframe.dispose();
                                             {
                                                 try {
-                                                    ManageCustomerView managecustomer = new ManageCustomerView(account);
+                                                    ManageCustomerView managecustomer = new ManageCustomerView();
                                                 } catch (IOException ex) {
                                                     Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                                                 }

@@ -37,9 +37,9 @@ public class Receipts{
         Calendar cal = Calendar.getInstance();
         this.DateTime = cal.getTime();
         this.order = addorderdao.findDataByOrder(orderid);
-        this.customer = addcustomerdao.findCustomerData(order.get(0).getCustomerId()).get(0);
-        this.vendor = addvendordao.findVendorData(order.get(0).getVendorId()).get(0);
-        this.runner = addrunnerdao.findRunnerData(order.get(0).getRunnerId()).get(0);
+        this.customer = addcustomerdao.findDataByID(order.get(0).getCustomerId()).get(0);
+        this.vendor = addvendordao.findDataByID(order.get(0).getVendorId()).get(0);
+        this.runner = addrunnerdao.findDataByID(order.get(0).getRunnerId()).get(0);
     }
     private String customerInfo(){
         String infotxt = "";

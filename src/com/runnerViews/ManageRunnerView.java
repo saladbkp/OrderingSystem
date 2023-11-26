@@ -35,6 +35,7 @@ public class ManageRunnerView {
 		jframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		jframe.validate();
         }
+        
         // do all adding element code here
         void Init(){
             // title 
@@ -49,13 +50,16 @@ public class ManageRunnerView {
 		jpanel1.setLayout(new FlowLayout(flowlayout.CENTER));
                 
                 // add tab of Vendor View here
-		VendorItemView item = new VendorItemView(0,0,viewWidth,viewHeight);
+		RunnerTaskView task = new RunnerTaskView(0,0,viewWidth,viewHeight); //HIII
+                ReviewView review = new ReviewView(0,0,viewWidth,viewHeight);
+                RevenueView revenue = new RevenueView(0,0,viewWidth,viewHeight);
+                HistoryView history = new HistoryView(0,0,viewWidth,viewHeight);
                 // default vendor view
-		jpanel2.add(item,(Integer)(JLayeredPane.PALETTE_LAYER));
+		jpanel2.add(task,(Integer)(JLayeredPane.PALETTE_LAYER));
 		jpanel2.setBounds(215-50,5,viewWidth,viewHeight);
                 
                 // add button name
-		String buttonName[] = {"Items"};
+		String buttonName[] = {"Orders","Review","Revenue","History "}; //HIIII
                 for(int i=0;i<buttonName.length;i++) {
 			JButton btn = new JButton(buttonName[i]);
 			btn.setPreferredSize(new Dimension(100,30));
@@ -65,9 +69,25 @@ public class ManageRunnerView {
 				public void actionPerformed(ActionEvent e) {
 					jpanel2.removeAll();
 					JButton jbl = (JButton)e.getSource();
-					if(jbl.getName().equals(buttonName[0])) {
-						jpanel2.add(item,(Integer)(JLayeredPane.PALETTE_LAYER));
-						jpanel2.moveToFront(item);
+					if(jbl.getName().equals(buttonName[0])) {//HII ALL IF STATEMENT
+						jpanel2.add(task,(Integer)(JLayeredPane.PALETTE_LAYER));
+						jpanel2.moveToFront(task);
+                                               
+					}
+                                       
+                                        if(jbl.getName().equals(buttonName[1])) {
+						jpanel2.add(review,(Integer)(JLayeredPane.PALETTE_LAYER));
+						jpanel2.moveToFront(review);
+                                               
+					}
+                                        if(jbl.getName().equals(buttonName[2])) {
+						jpanel2.add(revenue,(Integer)(JLayeredPane.PALETTE_LAYER));
+						jpanel2.moveToFront(revenue);
+                                               
+					}
+                                        if(jbl.getName().equals(buttonName[3])) {
+						jpanel2.add(history,(Integer)(JLayeredPane.PALETTE_LAYER));
+						jpanel2.moveToFront(history);
                                                
 					}
                                         // add menu button here (copy paste only)

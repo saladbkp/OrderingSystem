@@ -19,6 +19,7 @@ public class Vendors extends CommonAttrs{
 	}
         public String getType(){return this.type;}
 	public String getVendorIcon() {return this.Icon;}
+        @Override
 	public String toString() {
 		String output = String.format("%s,%s,%s,%s", super.getToString(),this.type,this.Location,this.Icon);
 		return output;

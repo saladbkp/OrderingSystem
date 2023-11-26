@@ -6,7 +6,7 @@ import java.util.List;
 import com.model.Runners;
 import com.tool.TextFunction;
 
-public class AddRunnerDao {
+public class AddRunnerDao implements IOperation{
         AddCommonDao commonfunc = new AddCommonDao();
 	ArrayList<Runners> runnerarray = new ArrayList<Runners>();
         TextFunction txtfunc = new TextFunction("src/data/runners.txt");
@@ -18,31 +18,39 @@ public class AddRunnerDao {
 		int index = seek(id);
 		return index;
 	}
-	private int seek(String str) {
+        @Override
+	public int seek(String str) {
 		return commonfunc.seek(runnerarray, str);
 	}
 	// view
-	public List<Runners> findRunnerData(String id) {
+        @Override
+	public List<Runners> findDataByID(String id) {
 		return commonfunc.findData(runnerarray, id);
 	}
-	public List<Runners> findRunnerData() {
+        @Override
+	public List<Runners> findData() {
 		return this.runnerarray;
 	}
 	// add
 	
-	public void addRunnerData(Runners r) {
+        @Override
+	public void addData(Object obj) {
+                Runners r = Runners.class.cast(obj);
 		runnerarray.add(r);
                 txtfunc.arrayToStr(runnerarray);
 	}
 	// modify
-	public void updateRunnerData(Runners r) {
+        @Override
+	public void updateData(Object obj) {
+                Runners r = Runners.class.cast(obj);
 		int index = seek(r.getId());
 		runnerarray.set(index,r);
                 txtfunc.arrayToStr(runnerarray);
 
 	}
 	// delete
-	public void deleteRunnerData(String id) {
+        @Override
+	public void deleteData(String id) {
 		int index = seek(id);
 		runnerarray.remove(index);
                 txtfunc.arrayToStr(runnerarray);

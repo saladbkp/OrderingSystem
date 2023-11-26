@@ -24,6 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 /**
@@ -35,17 +36,20 @@ public class CustomerCartView extends JPanel{
 	int HEIGHT = 150;
 	
                          //table
+        TableRowSorter tableSorter;
         String columns[] = {"Food","Cost", "Amount","Action"};
         JTable tableitem = null;
 	JScrollPane jsrcollpane; //scrollbar
+        TableModel tableModel;
 	DefaultTableModel model;
 	TableColumnModel columnModel;
         AddItemDao itemfunc = new AddItemDao();
 
-	public CustomerCartView(int x,int y, int width, int height) {
+	public CustomerCartView(int x,int y, int width, int height, TableModel tableModel) {
 		// separate 2 windows ?????? 
 		this.setBounds(x,y,width,height);
 		this.WIDTH = width;
+                this.tableModel = tableModel;
 		Init();
 	}
         void Init() {
@@ -101,11 +105,13 @@ public class CustomerCartView extends JPanel{
 		jpanel5.add(jlabeltotalcost);
                 
                 JPanel jpanel6 = new JPanel();
-                jpanel6.setLayout(new FlowLayout(FlowLayout.LEFT,70,10));
+//                jpanel6.setLayout(new FlowLayout(FlowLayout.LEFT,70,10));
 		jpanel6.setBounds(0,420,WIDTH,50);
                 jpanel6.setBackground(Color.YELLOW);
                 JButton paybutton = new JButton("Pay");
-		jpanel6.add(paybutton);
+                JButton backbutton = new JButton("Back");
+		jpanel6.add(paybutton,new FlowLayout(FlowLayout.LEFT,70,10));
+		jpanel6.add(backbutton,new FlowLayout(FlowLayout.RIGHT,70,10));
                 
                 
                 
@@ -118,19 +124,27 @@ public class CustomerCartView extends JPanel{
                 this.add(jpanel4);
                 this.add(jpanel5);
                 this.add(jpanel6);
-                table();
-                model = Tools.addDataTableWithButton(itemfunc.findFoodByVendor("v1"),tableitem, model);
+                tablefood();
+                model = (DefaultTableModel)tableModel;
+                tableitem.setModel(model);
+
+                // remove action column
+                tableitem.removeColumn(tableitem.getColumnModel().getColumn(3));
+                //model = Tools.addDataTableWithButton(itemfunc.findFoodByVendor("v1"),tableitem, model);
+                tableSorter = new TableRowSorter(model);
+                tableitem.setRowSorter(tableSorter);
+                tableSorter.setRowFilter(new TableRowFilter(2,0));
                 this.add(jsrcollpane);
         }
-                void table() {
+          void tablefood() {
 		tableitem = TableSetup();
-		jsrcollpane = new JScrollPane(tableitem);
+                jsrcollpane = new JScrollPane(tableitem);
 		jsrcollpane.setPreferredSize(new Dimension(WIDTH-20,250));
 		tableitem.setPreferredSize(new Dimension(WIDTH-30,1000));
 		//jsrcollpane.setVerticalScrollBarPoicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		jsrcollpane.setBounds(0,0,WIDTH-20,200);
+		jsrcollpane.setBounds(0,10,WIDTH-10,180);
+                
 	}
-	
 
          //String [] columnname
 	JTable TableSetup() {
@@ -139,11 +153,11 @@ public class CustomerCartView extends JPanel{
 		model = new DefaultTableModel() {
 			public boolean isCellEditable(int row, int column) {
                                 return column!=3?false:true;
-				
 			}
 		};
+            
 		model.setColumnIdentifiers(columns);
-		tableitem.setModel(model);
+                tableitem.setModel(model);
 		columnModel = tableitem.getColumnModel();
 		tableitem.getTableHeader().setReorderingAllowed(false);
 		tableitem.getTableHeader().setResizingAllowed(false);

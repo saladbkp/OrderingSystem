@@ -85,5 +85,15 @@ public class Tools {
                         e.printStackTrace();
                       }
                 }
-         
+       
+        // sum a column 
+        public static double sumColumnJTable(JTable jtable,int col){
+            double total = 0;
+            for(int i = 0; i < jtable.getRowCount(); i++){
+
+                double Amount = Double.parseDouble(jtable.getValueAt(i, col).toString());
+                total += Amount;
+            }
+            return total;
+        }
 }
