@@ -44,7 +44,6 @@ public class AddCustomerDao implements IOperation{
                 txtfunc.arrayToStr(cusarray);
 	}
 	// modify
-        @Override
 	public void updateData(Object obj) {
                 Customers c = Customers.class.cast(obj);
 		int index = seek(c.getId());
@@ -52,7 +51,6 @@ public class AddCustomerDao implements IOperation{
                 txtfunc.arrayToStr(cusarray);
 	}
 	// delete
-        @Override
 	public void deleteData(String id) {
 		int index = seek(id);
 		cusarray.remove(index);

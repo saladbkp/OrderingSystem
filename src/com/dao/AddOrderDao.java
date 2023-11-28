@@ -41,6 +41,11 @@ public class AddOrderDao {
 	                   .map(Orders::getOrderId).distinct()
 	                   .collect(Collectors.toList());
 	}
+        public List<String> updateComboxOrd(List<Orders> array) {
+	    return array.stream()
+	                   .map(Orders::getOrderId).distinct()
+	                   .collect(Collectors.toList());
+	}
 	public List<String> updateComboxCus() {
 	    return orderarray.stream()
 	                   .map(Orders::getCustomerId).distinct()

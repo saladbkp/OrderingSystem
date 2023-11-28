@@ -4,21 +4,16 @@
  */
 package com.dao;
 
-import com.model.Notifications;
-import java.util.List;
-
 /**
  *
  * @author ray
  */
-
-// FOR 
 public interface IOperation {
     public Object findData();
     public Object findDataByID(String id);
     public int seek(String id);
     public void addData(Object obj);
-    public void updateData(Object obj);
-    public void deleteData(String id);
-    
+    //public void updateData(Object obj);
+    //public void deleteData(String id);
+
 }

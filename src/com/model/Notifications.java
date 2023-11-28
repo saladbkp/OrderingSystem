@@ -4,25 +4,36 @@
  */
 package com.model;
 
-import java.util.Random;
+import com.tool.Tools;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
- * @author khwon
+ * @author Ray
  */
-public class Notifications {
-    private String NotiId;
-    private String TargetId;
-    private String Content;
-    public Notifications(String notiid,String targetid,String content){
-        NotiId = notiid;
-        TargetId = targetid;
-        Content = content;
-    }
-    public String getNotiId(){return NotiId;}
-    public String getTargetId(){return TargetId;}
-    public String getContent(){return Content;}
-    public String toString(){
-        return String.format("%s,%s,%s",NotiId,TargetId,Content);
-    }
+public class Notifications extends TargetAttrs{
+        private java.util.Date datetime; 
+    	public Notifications(String senderid,String targetid,String orderid, String trans,String datetime) {
+            super(senderid,targetid,orderid,trans);
+            try {
+                this.datetime = Tools.formatter.parse(datetime);
+            } catch (ParseException ex) {
+                Logger.getLogger(Notifications.class.getName()).log(Level.SEVERE, null, ex);
+            }
+	}
+
+        public Date getDatetime() {
+            return datetime;
+        }
+         
+        @Override
+	public String toString() {
+		String output = String.format("%s,%s", this.getToString(),Tools.formatter.format(datetime));
+		return output;
+	}
 }

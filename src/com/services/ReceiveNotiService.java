@@ -17,10 +17,10 @@ import javax.swing.JOptionPane;
  */
 public class ReceiveNotiService {
     public static void receiveNotiService(String receiver){
-
+        // show dialog (noti)
         AddNotiDao noti = new AddNotiDao();
         List<Notifications> notiarray = new ArrayList<Notifications>();
-        notiarray = noti.findDataByCus(receiver);
+        notiarray = noti.findDataByID(receiver);
         for (Notifications notis : notiarray){
             ImageIcon img = new ImageIcon("src//img//info.png");
             JOptionPane.showMessageDialog(null, notis.getContent(),"noti",JOptionPane.INFORMATION_MESSAGE,img);

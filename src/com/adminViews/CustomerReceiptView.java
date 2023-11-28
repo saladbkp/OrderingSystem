@@ -20,6 +20,7 @@ import com.dao.AddOrderDao;
 import com.model.Notifications;
 import com.tool.Tools;
 import com.model.Receipts;
+import java.util.Calendar;
 import java.util.Random;
 
 public class CustomerReceiptView extends JPanel {
@@ -140,14 +141,18 @@ public class CustomerReceiptView extends JPanel {
                                     // generate receipt
                                     Receipts rc = new Receipts(cmbord.getSelectedItem().toString());
                                     // generate notification
-                                    Random rand = new Random();
-                                    String notiid = "n"+ rand.nextInt(10);
-                                    Notifications noti = new Notifications(notiid,model.getValueAt(0, 1).toString(),"NEW RECEIPT ORDER");
+                                    Calendar cal = Calendar.getInstance();
+                                    String datetime = Tools.formatter.format(cal.getTime());
+                                    String cusid = model.getValueAt(0, 1).toString();
+                                    String venid = model.getValueAt(0, 3).toString();
+                                    String orderid = model.getValueAt(0, 0).toString(); 
+                                    Notifications noti = new Notifications(venid,cusid,orderid,"NEW RECEIPT ORDER",datetime);
                                     Tools.writeFile("src/data/receipt.txt", rc.toString()); 
-                                    Tools.writeFile("src/data/notifications.txt", noti.toString()); 
+                                    Tools.appendFile("src/data/notifications.txt", noti.toString()); 
                                 }
                                 JOptionPane.showMessageDialog(null,"Sending "+choice,"Notification",JOptionPane.WARNING_MESSAGE);
-                                ManageAdminView.client.sendMessasge("noti");
+                                // show dialog 
+                                //ManageAdminView.client.sendMessasge("noti");
 
 			    }
 			});

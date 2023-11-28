@@ -6,6 +6,7 @@ package com.dao;
 
 import com.model.CommonAttrs;
 import com.model.Customers;
+import com.model.TargetAttrs;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,4 +32,15 @@ public class AddCommonDao {
             }
             return "";
     }
+        public <T extends TargetAttrs> List<T> findTargetData(List<T> dataArray, String id) {
+            return dataArray.stream()
+                    .filter(x -> x.getTargetId().equals(id))
+                    .collect(Collectors.toList());
+        }
+        public <T extends TargetAttrs> int seekTarget(List<T> dataArray, String id) {
+            for (int i=0;i<dataArray.size();i++) {
+                    if(dataArray.get(i).getOrderId().equals(id)) {return i;}
+            }
+            return -1;
+        }
 }

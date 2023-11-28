@@ -4,6 +4,7 @@
  */
 package com.customerViews;
 
+import com.customerdao.AddReviewDao;
 import com.dao.AddItemDao;
 import com.tool.TableRowFilter;
 import com.tool.TableWithButtons;
@@ -50,6 +51,7 @@ public class CustomerVendorFoodView extends JPanel{
 	TableColumnModel columnModel;
 	String vendorid;
         AddItemDao itemfunc = new AddItemDao();
+        AddReviewDao reviewfunc = new AddReviewDao();
         
 	public CustomerVendorFoodView(int x,int y, int width, int height,String vendorid) {
 		// separate 2 windows ?????? 
@@ -117,16 +119,10 @@ public class CustomerVendorFoodView extends JPanel{
 
                 // Create an ArrayList of Strings   **********GET DATA FROM TXT FILE THEN INPUT*******************
                 ArrayList<String> reviewList = new ArrayList<>();
-                reviewList.add("This burger shit");
-                reviewList.add("Decent");
-                reviewList.add("Delicious");
-                reviewList.add("Item 4");
-                reviewList.add("Item 5");
-                reviewList.add("Item 5");
-                reviewList.add("Item 5");
-                reviewList.add("Item 5");
-                reviewList.add("Item 5");
-
+                var reviewlist = reviewfunc.findDataByID(vendorid);
+                for (int i=0;i<reviewlist.size();i++){
+                    reviewList.add(reviewlist.get(i).getContent());
+                }
                 // Create a JList and populate it with the ArrayList
                 JList<String> list = new JList<>(reviewList.toArray(new String[0]));
                        // Set the desired width and height for the JList

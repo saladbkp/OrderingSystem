@@ -4,14 +4,18 @@
  */
 package com.customerViews;
 
+import com.dao.AddCustomerDao;
+import com.dao.AddTransactionDao;
 import com.vendorViews.*;
 import com.tool.Tools;
+import com.windows.Login;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -28,7 +32,9 @@ import javax.swing.JTextField;
 public class CustomerCreditView extends JPanel{
         int WIDTH;
 	int HEIGHT = 150;
-	
+	AddTransactionDao tranfunc = new AddTransactionDao();
+        AddCustomerDao cusfunc = new AddCustomerDao();
+
 	public CustomerCreditView(int x,int y, int width, int height) {
 		// separate 2 windows ?????? 
 		this.setBounds(x,y,width,height);
@@ -47,7 +53,7 @@ public class CustomerCreditView extends JPanel{
 		jpanel1.setBackground(Color.YELLOW);
                 
                 // add button sample
-                JButton topupbutton = new JButton("Top Up");
+                JButton topupbutton = new JButton("Request Top Up");
                 JTextField jtextfieldtopup = new JTextField(10);
 		jpanel1.add(jtextfieldtopup);
 		//JButton removeitembutton = new JButton("Remove item");
@@ -64,8 +70,13 @@ public class CustomerCreditView extends JPanel{
                 jpanel2.setLayout(new FlowLayout(FlowLayout.LEFT,10,10));
 		jpanel2.setBounds(0,60,WIDTH,50);
                 
-                JLabel jlabelbalance = new JLabel("Balance:");
+                JLabel jlabelbalance = new JLabel("Current Balance:");
 		jpanel2.add(jlabelbalance);
+                
+                String account = Login.account;
+                int newbalance = cusfunc.getCustomerBalance(account);
+                jlabelbalance.setText(newbalance!=-1?"Current Balance: "+newbalance:"Current Balance: --");
+                
                 
                 JPanel jpanel3 = new JPanel();
                 jpanel3.setLayout(new FlowLayout(FlowLayout.LEFT,10,10));
@@ -80,17 +91,8 @@ public class CustomerCreditView extends JPanel{
 		jpanel4.setBounds(0,170,WIDTH,380);
 
                 // Create an ArrayList of Strings   **********GET DATA FROM TXT FILE THEN INPUT*******************
-                ArrayList<String> transactionList = new ArrayList<>();
-                transactionList.add("-65");
-                transactionList.add("+50");
-                transactionList.add("-77");
-                transactionList.add("Item 4");
-                transactionList.add("Item 5");
-                transactionList.add("Item 5");
-                transactionList.add("Item 5");
-                transactionList.add("Item 5");
-                
-
+                List<String> transactionList = tranfunc.updateCombox();
+               
                 // Create a JList and populate it with the ArrayList
                 JList<String> list = new JList<>(transactionList.toArray(new String[0]));
                          

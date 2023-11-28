@@ -40,7 +40,6 @@ public class AddRunnerDao implements IOperation{
                 txtfunc.arrayToStr(runnerarray);
 	}
 	// modify
-        @Override
 	public void updateData(Object obj) {
                 Runners r = Runners.class.cast(obj);
 		int index = seek(r.getId());
@@ -49,7 +48,6 @@ public class AddRunnerDao implements IOperation{
 
 	}
 	// delete
-        @Override
 	public void deleteData(String id) {
 		int index = seek(id);
 		runnerarray.remove(index);

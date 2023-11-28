@@ -2,6 +2,7 @@
 JAVA -- Assignemnt
 
 ```
+First update: User Ineterface
 20231006
 TextFunction -> readtext
 Login
@@ -62,8 +63,18 @@ revenue do a common transaction txt (for all user)
 history from order 
 task tab let me think 2 
 
+```
 
-=======
->>>>>>> 5cf74dcc4bf97e16da9604d67adae8e8c1ca293d
+```
+Second version update: simple function for all user 
+20231128
+done review update 
+done customer credit -> make it looks better
+
+customer missing:
+menu calculate total sub total
+reorder
+request top up: beside transcation add listbox for pending top up
+noti: display done (send and receive simultaneously not yet)
 ```
 

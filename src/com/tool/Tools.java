@@ -14,9 +14,14 @@ import javax.swing.table.DefaultTableModel;
 import com.tool.TableWithButtons.AddAction;
 import com.tool.TableWithButtons.Buttons;
 import com.tool.TableWithButtons.MinusAction;
+import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import javax.swing.JTable;
 
 public class Tools {
+        public static DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        
 	public static void WindowCenterScreen(int WIDTH,int HEIGHT,JFrame jframe) {
 		Toolkit kit = Toolkit.getDefaultToolkit();
 		Dimension screenSize = kit.getScreenSize();
@@ -77,6 +82,19 @@ public class Tools {
         public static void writeFile(String filename,String content){
                     try {
                         FileWriter myWriter = new FileWriter(filename);
+                        myWriter.write("\n"+content);
+                        myWriter.close();
+                        System.out.println("Successfully wrote to the file.");
+                      } catch (IOException e) {
+                        System.out.println("An error occurred.");
+                        e.printStackTrace();
+                      }
+                }
+               public static void appendFile(String filename,String content){
+                    try {
+                        File file = new File(filename);
+                        FileWriter myWriter = new FileWriter(filename,true);
+                        content = file.length()!=0?"\n"+content:content;
                         myWriter.write(content);
                         myWriter.close();
                         System.out.println("Successfully wrote to the file.");
@@ -85,7 +103,6 @@ public class Tools {
                         e.printStackTrace();
                       }
                 }
-       
         // sum a column 
         public static double sumColumnJTable(JTable jtable,int col){
             double total = 0;

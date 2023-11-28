@@ -12,8 +12,10 @@ import com.model.Items;
 import com.model.Notifications;
 import com.model.Orders;
 import com.model.Runners;
+import com.model.Transactions;
 import com.model.Users;
 import com.model.Vendors;
+import com.model_cus.Reviews;
 
 public class TextFunction {
 	String filepath;
@@ -56,8 +58,15 @@ public class TextFunction {
 	                txtarray.add(clazz.cast(item));
 	            }
                                 else if (clazz.equals(Notifications.class)) {
-					Notifications noti = new Notifications(spt[0],spt[1],spt[2]);
+					Notifications noti = new Notifications(spt[0],spt[1],spt[2],spt[3],spt[4]);
 	                txtarray.add(clazz.cast(noti));
+	            }           else if (clazz.equals(Reviews.class)) {
+					Reviews rev = new Reviews(spt[0],spt[1],spt[2],spt[3]);
+	                txtarray.add(clazz.cast(rev));
+	            }
+                                else if (clazz.equals(Transactions.class)) {
+					Transactions tran = new Transactions(spt[0],spt[1],spt[2],spt[3]);
+	                txtarray.add(clazz.cast(tran));
 	            }
 				//System.out.println(spt[0]);
 			}

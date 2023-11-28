@@ -52,13 +52,13 @@ public class OrderNotificationView extends JPanel{
 //		jpanel1.setBackground(Color.YELLOW);
 
                 // add content panel
-                JPanel jpanel2 = new JPanel();
-                jpanel2.setLayout(new FlowLayout(FlowLayout.LEFT,10,10));
-		jpanel2.setBounds(0,0,WIDTH,50);
-                jpanel2.setBackground(Color.YELLOW);
+                JPanel jpanel1 = new JPanel();
+                jpanel1.setLayout(new FlowLayout(FlowLayout.LEFT,10,10));
+		jpanel1.setBounds(0,0,WIDTH,50);
+                jpanel1.setBackground(Color.YELLOW);
                 JLabel notificationlabel = new JLabel("Notification");
 		notificationlabel.setFont(style.title);
-		jpanel2.add(notificationlabel);
+		jpanel1.add(notificationlabel);
                 
                 
                 
@@ -66,7 +66,7 @@ public class OrderNotificationView extends JPanel{
                 // **** jpanel 2 for table content 
                 // if u have better design, just go through ur pattern
                 
-                this.add(jpanel2);
+                this.add(jpanel1);
 		//this.add(jpanel1);
                 table();
                 this.add(jsrcollpane);

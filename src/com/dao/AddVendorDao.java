@@ -45,7 +45,6 @@ public class AddVendorDao implements IOperation{
                 txtfunc.arrayToStr(vendorarray);
 	}
 	// modify
-        @Override
 	public void updateData(Object obj) {
                 Vendors v = Vendors.class.cast(obj);
 		int index = seek(v.getId());
@@ -53,7 +52,6 @@ public class AddVendorDao implements IOperation{
                 txtfunc.arrayToStr(vendorarray);
 	}
 	// delete
-        @Override
 	public void deleteData(String id) {
 		int index = seek(id);
 		vendorarray.remove(index);
