@@ -6,9 +6,12 @@ package com.customerViews;
 
 import static com.adminViews.ManageAdminView.client;
 import com.services.Client;
+import com.style.Style;
+import static com.style.Style.account;
 import com.vendorViews.*;
 import com.tool.Tools;
 import com.windows.Login;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -22,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
@@ -45,7 +49,7 @@ public class ManageCustomerView {
 		jframe.setResizable(false);
 		jframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		jframe.validate();
-//                startClient(account);
+                //startClient(Login.account);
                 
         }
         void startClient(String username) throws IOException{
@@ -122,8 +126,16 @@ public class ManageCustomerView {
 					}
 				});
 			}
-			
-			
+			Style style = new Style();
+                        JLabel account = new JLabel("I'm "+ Login.account);
+                        account.setFont(style.account);
+                        account.setForeground(Color.WHITE);
+			JPanel jpanel3 = new JPanel();
+                        jpanel3.setBounds(5,HEIGHT-80,120,30);
+			jpanel3.setBackground(Color.BLUE); // if u want to change just change
+			jpanel3.setLayout(new FlowLayout(flowlayout.CENTER));
+                        jpanel3.add(account);
+                        jframe.add(jpanel3);
 			jframe.add(jpanel2);
 			jframe.add(jpanel1);
                         
@@ -133,7 +145,7 @@ public class ManageCustomerView {
                         jframe.dispose();
                         Login login = new Login();
 		    }
-		});
+                    });
         }
                 
 

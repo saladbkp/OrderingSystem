@@ -1,8 +1,12 @@
-# OrderingSystem
-JAVA -- Assignemnt
+# Ordering Restaurant System
+JAVA -- Assignment APU
+
+- Role: customer, vendor, runner, admin
+
+First update: User Interface
 
 ```
-First update: User Ineterface
+
 20231006
 TextFunction -> readtext
 Login
@@ -65,16 +69,36 @@ task tab let me think 2
 
 ```
 
+Second version update: simple function for all user
+
 ```
-Second version update: simple function for all user 
 20231128
 done review update 
 done customer credit -> make it looks better
 
 customer missing:
-menu calculate total sub total
+done menu calculate total sub total
 reorder
 request top up: beside transcation add listbox for pending top up
 noti: display done (send and receive simultaneously not yet)
+
+vendor missing:
+done item: add remove read update 
+revenue ???
+status -> make a active order txt
+
+runner missing:
+task -> active order 
+revenue
+```
+
+Interact with each roles
+
+```
+20231201 
+customer: pay+back(back to ori?), top up, reorder 
+loading spin
+vendor: can accept or decline 
+
 ```
 

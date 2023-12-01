@@ -13,16 +13,18 @@ public class Items{
     private String ItemName;
     private Float Price;
     private String VendorId;
-    public Items(String id,String name,Float price,String vendorid){
+    public Items(String id,String name,String price,String vendorid){
         this.VendorId = vendorid;
         this.ItemId = id;
         this.ItemName = name;
-        this.Price = price;
+        this.Price = Float.parseFloat(price);
     }
     public String getItemId(){return this.ItemId;}
     public String getItemName(){return this.ItemName;}
     public Float getPrice(){return this.Price;}
     public String getItemVendor(){return this.VendorId;}
     
-    
+    public String toString(){
+        return String.format("%s,%s,%s,%s", this.ItemId,ItemName,Price,VendorId);
+    }
 }

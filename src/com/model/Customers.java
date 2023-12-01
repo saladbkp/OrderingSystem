@@ -6,11 +6,11 @@ public class Customers extends CommonAttrs{
         private int phoneno;
         private String address;
 	
-        public Customers(String id,String pwd,String name,int balance,String gender,int pn,String address) {
+        public Customers(String id,String pwd,String name,String balance,String gender,String pn,String address) {
                 super(id,name,pwd);
-		this.balance = balance;
+		this.balance = Integer.parseInt(balance);
 		this.gender = gender;
-                this.phoneno = pn;
+                this.phoneno = Integer.parseInt(pn);
                 this.address = address;
 	}
         public Customers(String[] txtlist) {

@@ -13,6 +13,7 @@ import com.model.Items;
 import com.model.Orders;
 import com.model.Runners;
 import com.model.Vendors;
+import com.style.Style;
 import com.vendorViews.*;
 import com.tool.Tools;
 import com.windows.Login;
@@ -50,7 +51,8 @@ public class CustomerOrderView extends JPanel{
         AddRunnerDao addrunnerdao = new AddRunnerDao();
         AddOrderDao addorderdao = new AddOrderDao();
         AddItemDao additemdao = new AddItemDao();
-    
+        Style style = new Style();
+        
 	public CustomerOrderView(int x,int y, int width, int height) {
 		// separate 2 windows ?????? 
 		this.setBounds(x,y,width,height);
@@ -67,41 +69,46 @@ public class CustomerOrderView extends JPanel{
 		jpanel1.setLayout(new FlowLayout(FlowLayout.LEFT,10,10)); // left alignment
 		jpanel1.setBounds(0,0,WIDTH,50);
 		jpanel1.setBackground(Color.YELLOW);
-//                
-                                    // add button sample
-                                JButton reorderbutton = new JButton("Reorder");
-                                                    jpanel1.add(reorderbutton);
-//                JLabel jlabelfood = new JLabel("Food");
-//		jpanel1.add(jlabelfood);
-//                JLabel jlabelvendor = new JLabel("Vendor");
-//		jpanel1.add(jlabelvendor);
-//                JLabel jlabeltime = new JLabel("Time");
-//		jpanel1.add(jlabeltime);
-//                JLabel jlabelstatus = new JLabel("Status");
-//		jpanel1.add(jlabelstatus);
-//                JLabel jlabelfoodservice= new JLabel("Food Service");
-//		jpanel1.add(jlabelfoodservice);
-//                JLabel jlabeltotalcost = new JLabel("Total Cost");
-//		jpanel1.add(jlabeltotalcost);
-//                
+//              
+                JLabel orderhistory = new JLabel("Order History");
+		orderhistory.setFont(style.title);
+                jpanel1.add(orderhistory);
+                    // add button sample
+                    
 
-                // add content panel
-                //JPanel jpanel2 = new JPanel();
-                //jpanel2.setLayout(new FlowLayout(FlowLayout.LEFT,10,10));
-		//jpanel2.setBounds(0,60,WIDTH,50);
-                
-                // **** jpanel 1 for selection
-                // **** jpanel 2 for table content 
-                // if u have better design, just go through ur pattern
-                
-                //this.add(jpanel2);
+
                 table();
                 assignOrderTable();
                 this.add(jsrcollpane);
                 this.add(jpanel1);
+                
+                int accountRole = Login.role;
+                if(accountRole == 3){
+                    JButton reorderbutton = new JButton("Reorder");
+                    jpanel1.add(reorderbutton);
+                }
+                else{
+                    // remove vendor and runner info
+                    tableitem.removeColumn(tableitem.getColumnModel().getColumn(1));
+                    tableitem.removeColumn(tableitem.getColumnModel().getColumn(1));
+                }
+                
         }
         void assignOrderTable(){
-            List<Orders> orderlist = addorderdao.findDataByCus(Login.account);
+            
+            List<Orders> orderlist = addorderdao.findDataByCus(Login.account);;
+            switch(Login.role){
+                case 2: 
+                    orderlist = addorderdao.findDataByVen(Login.account);
+                    break;
+                case 3: 
+                    orderlist = addorderdao.findDataByCus(Login.account);
+                    break;
+                case 4: 
+                    orderlist = addorderdao.findDataByRun(Login.account);
+                    break;
+                
+            }
             for (int i=0;i<orderlist.size();i++){
                 String itemid = orderlist.get(i).getItemId();
                 String vendorid = orderlist.get(i).getVendorId();
@@ -114,7 +121,7 @@ public class CustomerOrderView extends JPanel{
                 String vendorName = vendor.getUsername();
                 String runnerName = runner.getUsername();
                 int Quantity = orderlist.get(i).getQuantity();
-                java.util.Date Datetime = orderlist.get(i).getDatetime();
+                String Datetime = Tools.formatter.format(orderlist.get(i).getDatetime());
                 String serviceType = orderlist.get(i).getType();
                 String status = orderlist.get(i).getStatus().equals("1")?"Success":"Failed";
                 Float total = itemPrice*Quantity;

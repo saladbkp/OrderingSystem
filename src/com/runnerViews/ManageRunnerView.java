@@ -4,13 +4,18 @@
  */
 package com.runnerViews;
 
+import com.customerViews.CustomerNotificationView;
+import com.customerViews.CustomerOrderView;
 import com.vendorViews.*;
 import com.tool.Tools;
+import com.windows.Login;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
@@ -51,15 +56,16 @@ public class ManageRunnerView {
                 
                 // add tab of Vendor View here
 		RunnerTaskView task = new RunnerTaskView(0,0,viewWidth,viewHeight); //HIII
-                ReviewView review = new ReviewView(0,0,viewWidth,viewHeight);
-                RevenueView revenue = new RevenueView(0,0,viewWidth,viewHeight);
-                HistoryView history = new HistoryView(0,0,viewWidth,viewHeight);
+                CustomerReviewView review = new CustomerReviewView(0,0,viewWidth,viewHeight);
+                RevenueDashboardView revenue = new RevenueDashboardView(0,0,viewWidth,viewHeight);
+                CustomerOrderView history = new CustomerOrderView(0,0,viewWidth,viewHeight);
+                CustomerNotificationView notification = new CustomerNotificationView(0,0,viewWidth,viewHeight);
                 // default vendor view
 		jpanel2.add(task,(Integer)(JLayeredPane.PALETTE_LAYER));
 		jpanel2.setBounds(215-50,5,viewWidth,viewHeight);
                 
                 // add button name
-		String buttonName[] = {"Orders","Review","Revenue","History "}; //HIIII
+		String buttonName[] = {"Orders","Review","Revenue","History","Notification"}; //HIIII
                 for(int i=0;i<buttonName.length;i++) {
 			JButton btn = new JButton(buttonName[i]);
 			btn.setPreferredSize(new Dimension(100,30));
@@ -90,6 +96,11 @@ public class ManageRunnerView {
 						jpanel2.moveToFront(history);
                                                
 					}
+                                        if(jbl.getName().equals(buttonName[4])) {
+						jpanel2.add(notification,(Integer)(JLayeredPane.PALETTE_LAYER));
+						jpanel2.moveToFront(notification);
+                                               
+					}
                                         // add menu button here (copy paste only)
 					
 				}
@@ -99,5 +110,13 @@ public class ManageRunnerView {
 		
 		jframe.add(jpanel2);
 		jframe.add(jpanel1);
+                
+                jframe.addWindowListener(new WindowAdapter() {
+		    @Override
+		    public void windowClosing(WindowEvent  windowEvent) {
+                        jframe.dispose();
+                        Login login = new Login();
+		    }
+                });
         }
 }

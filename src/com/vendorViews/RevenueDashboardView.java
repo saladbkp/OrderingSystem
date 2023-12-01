@@ -1,23 +1,22 @@
 package com.vendorViews;
 
+import com.dao.AddTransactionDao;
+import com.model.Transactions;
 import com.style.Style;
 import com.tool.Tools;
+import com.windows.Login;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
+
 
 /**
  *
@@ -26,21 +25,14 @@ import javax.swing.table.TableColumnModel;
 public class RevenueDashboardView extends JPanel{
         int WIDTH;
 	int HEIGHT = 150;
-	
+	AddTransactionDao transfuc = new AddTransactionDao();
 	public RevenueDashboardView(int x,int y, int width, int height) {
 		// separate 2 windows ?????? 
 		this.setBounds(x,y,width,height);
 		this.WIDTH = width;
 		Init();
 	}
-        
-//        String columns[] = {"Order ID","Ordered On","Customer Name","Runner ID","Subtotal","Status","Actions"}; //Actions** ask ruiyi
-//	JTable tableitem = null;
-//	JScrollPane jsrcollpane; //scrollbar
-//	DefaultTableModel model;
-//	TableColumnModel columnModel;
 
-        
         void Init() {
 		
 		// layout 
@@ -67,6 +59,7 @@ public class RevenueDashboardView extends JPanel{
 		jpanel3.setLayout(new FlowLayout(FlowLayout.LEFT,10,20)); // left alignment
 		jpanel3.setBounds(50,150,250,275);
 		jpanel3.setBackground(Color.YELLOW);
+                jpanel3.setLayout(new BoxLayout(jpanel3, BoxLayout.Y_AXIS));
                 JLabel TotalRevenue = new JLabel("TotalRevenue");
 		TotalRevenue.setFont(style.title);
 		jpanel3.add(TotalRevenue);
@@ -75,6 +68,7 @@ public class RevenueDashboardView extends JPanel{
 		jpanel4.setLayout(new FlowLayout(FlowLayout.LEFT,10,20)); // left alignment
 		jpanel4.setBounds(350,150,250,275);
 		jpanel4.setBackground(Color.YELLOW);
+                jpanel4.setLayout(new BoxLayout(jpanel4, BoxLayout.Y_AXIS));
                 JLabel OrderPerMonth = new JLabel("Order /Month");
 		OrderPerMonth.setFont(style.title);
 		jpanel4.add(OrderPerMonth);
@@ -83,23 +77,12 @@ public class RevenueDashboardView extends JPanel{
 		jpanel5.setLayout(new FlowLayout(FlowLayout.LEFT,10,20)); // left alignment
 		jpanel5.setBounds(650,150,400,275);
 		jpanel5.setBackground(Color.YELLOW);
+                jpanel5.setLayout(new BoxLayout(jpanel5, BoxLayout.Y_AXIS));
                 JLabel graph = new JLabel("Graph");
 		graph.setFont(style.title);
 		jpanel5.add(graph);
                 
                 // add button sample
-
-
-                
-//                JLabel jlabelid = new JLabel("Food Id:");
-//		jpanel2.add(jlabelid);
-//		JTextField jtextfieldid = new JTextField(3);
-//		jpanel2.add(jtextfieldid);
-//                
-//		JLabel jlabel = new JLabel("Date | Time:");
-//		jpanel2.add(jlabel);
-//		JTextField jtextfield = new JTextField(10);
-//		jpanel2.add(jtextfield);
                 
                 JLabel jlabel1 = new JLabel("Month:");
 		jpanel2.add(jlabel1);
@@ -119,65 +102,45 @@ public class RevenueDashboardView extends JPanel{
 		MonthlySales.addItem("December");
 		jpanel2.add(MonthlySales);
                 
-
-
-
-
-                JButton readitembutton = new JButton("Read ");
-		jpanel2.add(readitembutton);
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                // **** jpanel 1 for selection
-                // **** jpanel 2 for table content 
-                // if u have better design, just go through ur pattern
-                
                 this.add(jpanel1);
                 this.add(jpanel2);
                 this.add(jpanel3);
                 this.add(jpanel4);
                 this.add(jpanel5);
 
+                JLabel TotalRevenueValue = new JLabel("RM: 0");
+                TotalRevenueValue.setFont(style.account);
+                jpanel3.add(TotalRevenueValue);
+                JLabel TotalOrderValue = new JLabel("0 order");
+                TotalOrderValue.setFont(style.account);
+                jpanel4.add(TotalOrderValue);
                 
+                String account = Login.account;                
+
                 
-//                table();
-//                this.add(jsrcollpane);
+                MonthlySales.addActionListener (new ActionListener () {
+                public void actionPerformed(ActionEvent e) {
+                        List<Transactions> translist  = transfuc.findDataByID(account);    
+                        translist  = transfuc.findDataByPeriod(translist,MonthlySales.getSelectedIndex());
+                        System.out.println(MonthlySales.getSelectedIndex());
+                        double totalRevenue = 0;
+                        int totalOrder = translist.size();
+                        if(totalOrder>0){
+                            for(int i = 0; i < translist.size(); i++){
+                                totalRevenue +=  Double.parseDouble(translist.get(i).getContent()); 
+                            }
+                        TotalRevenueValue.setText("RM"+Tools.decimformatter.format(totalRevenue));
+                        TotalOrderValue.setText(totalOrder+" orders");
+                    }
+                        else{
+                            TotalRevenueValue.setText("RM 0");
+                            TotalOrderValue.setText("0 orders");
+                        }
+                }
                 
+                });                
+
         }
-//        void table() {
-//		tableitem = TableSetup();
-//		jsrcollpane = new JScrollPane(tableitem);
-//		jsrcollpane.setPreferredSize(new Dimension(WIDTH-20,250));
-//		tableitem.setPreferredSize(new Dimension(WIDTH-30,1000));
-//		//jsrcollpane.setVerticalScrollBarPoicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-//		jsrcollpane.setBounds(0,120,WIDTH-20,420);
-//	}
-//	
-//	JTable TableSetup() {
-//		tableitem = new JTable();
-//		int[] columnWidth = {150,150,150,150,150,150,150};
-//		model = new DefaultTableModel() {
-//			public boolean isCellEditable(int row, int column) {
-//				return false;
-//			}
-//		};
-//		model.setColumnIdentifiers(columns);
-//		tableitem.setModel(model);
-//		columnModel = tableitem.getColumnModel();
-//		tableitem.getTableHeader().setReorderingAllowed(false);
-//		tableitem.getTableHeader().setResizingAllowed(false);
-//		int count = columnModel.getColumnCount();
-//		for(int i=0;i<count;i++) {
-//			javax.swing.table.TableColumn column = columnModel.getColumn(i);
-//			column.setPreferredWidth(columnWidth[i]);
-//		}
-//		return tableitem;
-//        }
 
 }
+

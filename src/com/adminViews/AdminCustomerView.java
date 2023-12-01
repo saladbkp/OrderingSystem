@@ -119,7 +119,7 @@ public class AdminCustomerView extends JPanel {
 				else {
 					int existID = customerfunc.checkCustomer(Id);
 					if(existID==-1) {
-						Customers c = new Customers(Id,Pwd,Name,0,Gender,Integer.parseInt(Phoneno),Address);
+						Customers c = new Customers(Id,Pwd,Name,"0",Gender,Phoneno,Address);
 						customerfunc.addData(c);
 						model = Tools.addDataTable(customerfunc.findData(), model);
 											    
@@ -176,7 +176,7 @@ public class AdminCustomerView extends JPanel {
 				else {
 					int existID = customerfunc.checkCustomer(Id);
 					if(existID!=-1) {
-						Customers c = new Customers(Id,Pwd,Name,0,Gender,Integer.parseInt(Phoneno),Address);
+						Customers c = new Customers(Id,Pwd,Name,"0",Gender,Phoneno,Address);
 						customerfunc.updateData(c);
 						model = Tools.addDataTable(customerfunc.findData(), model);
 						JOptionPane.showMessageDialog(null,"Update successfully " + Id,"Customer",JOptionPane.WARNING_MESSAGE);

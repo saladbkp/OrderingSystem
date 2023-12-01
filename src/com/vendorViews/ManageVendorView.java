@@ -4,14 +4,21 @@
  */
 package com.vendorViews;
 
+import com.customerViews.CustomerNotificationView;
+import com.customerViews.CustomerOrderView;
+import com.style.Style;
 import com.tool.Tools;
+import com.windows.Login;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
@@ -49,9 +56,11 @@ public class ManageVendorView {
                 
                 // add tab of Vendor View here
 		VendorItemView item = new VendorItemView(0,0,viewWidth,viewHeight);
-                OrderNotificationView notification = new OrderNotificationView(0,0,viewWidth,viewHeight);
+                //OrderNotificationView notification = new OrderNotificationView(0,0,viewWidth,viewHeight);
+                CustomerNotificationView notification = new CustomerNotificationView(0,0,viewWidth,viewHeight);
+
                 OrderStatusView status = new OrderStatusView(0,0,viewWidth,viewHeight);
-                OrderHistoryView history = new OrderHistoryView(0,0,viewWidth,viewHeight);
+                CustomerOrderView history = new CustomerOrderView(0,0,viewWidth,viewHeight);
                 CustomerReviewView review = new CustomerReviewView(0,0,viewWidth,viewHeight);
                 RevenueDashboardView revenue = new RevenueDashboardView(0,0,viewWidth,viewHeight);
                 
@@ -106,8 +115,25 @@ public class ManageVendorView {
 			});
 		}
 		
-		
+                Style style = new Style();
+                JLabel account = new JLabel("I'm "+ Login.account);
+                account.setFont(style.account);
+                account.setForeground(Color.WHITE);
+                JPanel jpanel3 = new JPanel();
+                jpanel3.setBounds(5,HEIGHT-80,120,30);
+                jpanel3.setBackground(Color.BLUE); // if u want to change just change
+                jpanel3.setLayout(new FlowLayout(flowlayout.CENTER));
+                jpanel3.add(account);
+                jframe.add(jpanel3);
 		jframe.add(jpanel2);
 		jframe.add(jpanel1);
+                
+                jframe.addWindowListener(new WindowAdapter() {
+		    @Override
+		    public void windowClosing(WindowEvent  windowEvent) {
+                        jframe.dispose();
+                        Login login = new Login();
+		    }
+                });
         }
 }

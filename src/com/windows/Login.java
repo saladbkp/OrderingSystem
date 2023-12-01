@@ -41,7 +41,7 @@ import java.util.logging.Logger;
 	
 	LoginDao login = new LoginDao();
 	public static String account = "";
-        
+        public static int role = -1;
 	public Login(){
 		this.title = "Login";
 		Init();
@@ -129,7 +129,7 @@ import java.util.logging.Logger;
 			public void actionPerformed(ActionEvent e) {
 				account = jtextfield.getText();
 				String password = String.valueOf(jtextfield1.getPassword());
-				int role = -1;
+//				int role = -1;
 				if(r1.isSelected()) role = 1;
 				if(r2.isSelected()) role = 2;
 				if(r3.isSelected()) role = 3;

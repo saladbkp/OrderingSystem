@@ -1,7 +1,9 @@
 package com.vendorViews;
 
+import com.customerdao.AddReviewDao;
 import com.style.Style;
 import com.tool.Tools;
+import com.windows.Login;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -34,12 +36,12 @@ public class CustomerReviewView extends JPanel{
 		Init();
 	}
         
-        String columns[] = {"Order ID","Review","DateTime"};
+        String columns[] = {"CustomerID","VendorID","Order ID","Review"};
 	JTable tableitem = null;
 	JScrollPane jsrcollpane; //scrollbar
 	DefaultTableModel model;
 	TableColumnModel columnModel;
-        
+        AddReviewDao reviewfunc = new AddReviewDao();
         void Init() {
 		
 		// layout 
@@ -70,6 +72,10 @@ public class CustomerReviewView extends JPanel{
                 this.add(jpanel2);
 		//this.add(jpanel1);
                 table();
+                String account = Login.account;
+                model = Tools.addDataTable(reviewfunc.findDataByID(account), model);
+                tableitem.removeColumn(tableitem.getColumnModel().getColumn(0));
+                tableitem.removeColumn(tableitem.getColumnModel().getColumn(0));
                 this.add(jsrcollpane);
                 
         }
@@ -85,7 +91,7 @@ public class CustomerReviewView extends JPanel{
        
   JTable TableSetup(){
     tableitem = new JTable();
-		int[] columnWidth = {150,150,150};
+		int[] columnWidth = {150,150,150,150};
 		model = new DefaultTableModel() {
 			public boolean isCellEditable(int row, int column) {
 				return false;

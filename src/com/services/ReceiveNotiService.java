@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author khwon
+ * @author ray
  */
 public class ReceiveNotiService {
     public static void receiveNotiService(String receiver){

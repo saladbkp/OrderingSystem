@@ -5,7 +5,11 @@
 package com.vendorViews;
 
 import com.dao.AddCustomerDao;
+import com.dao.AddItemDao;
+import com.model.Customers;
+import com.model.Items;
 import com.tool.Tools;
+import com.windows.Login;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -16,6 +20,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
@@ -39,12 +44,12 @@ public class VendorItemView extends JPanel{
 		Init();
 	}
         ///// ASK FOR TEAMATE DISCUSSION
-        String columns[] = {"Food ID","Food Name","Food Cost"};
+        String columns[] = {"Food ID","Food Name","Food Cost","VendorID"};
 	JTable tableitem = null;
 	JScrollPane jsrcollpane; //scrollbar
 	DefaultTableModel model;
 	TableColumnModel columnModel;
-
+        AddItemDao itemfunc = new AddItemDao();
         
         void Init() {
 		
@@ -92,29 +97,99 @@ public class VendorItemView extends JPanel{
                 JTextField jtextfieldprice = new JTextField(10); //Currency use TextFeild??
                 jpanel2.add(jtextfieldprice);
                 
-//		JLabel jlabelpwd = new JLabel("Password");
-//		jpanel2.add(jlabelpwd);
-//		JPasswordField jtextfieldpwd = new JPasswordField(5);
-//		jpanel2.add(jtextfieldpwd);
-//		JLabel jlabel3 = new JLabel("Gender");
-//		jpanel2.add(jlabel3);
-//		JComboBox cmbgender = new JComboBox();
-//		cmbgender.addItem("--Select Gender--");
-//		cmbgender.addItem("Male");
-//		cmbgender.addItem("Female");
-//		jpanel2.add(cmbgender);
-                
+                String account = Login.account;
                 
                 this.add(jpanel2);
 		this.add(jpanel1);
                 table();
+                model = Tools.addDataTable(itemfunc.findDataByVendor(account), model);
+                
                 this.add(jsrcollpane);
-        
+                tableitem.removeColumn(tableitem.getColumnModel().getColumn(3));
+                
+                // button function 
+		additembutton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String Id = jtextfieldid.getText();
+				String Name = jtextfield.getText();
+                                String Price = jtextfieldprice.getText();
+
+				if((Id+Name+Price).equals("")) {
+					JOptionPane.showMessageDialog(null,"Fill Up Food Info","Invalid Operation",JOptionPane.WARNING_MESSAGE);
+				}
+				else {
+					int existID = itemfunc.checkItem(Id);
+					if(existID==-1) {
+						Items c = new Items(Id,Name,Price,account);
+						itemfunc.addData(c);
+                                                model = Tools.addDataTable(itemfunc.findDataByVendor(account), model);											    
+						JOptionPane.showMessageDialog(null,"Add successfully " + Id,"Food",JOptionPane.WARNING_MESSAGE);
+						}
+					else {JOptionPane.showMessageDialog(null, Id + " Existed","Food",JOptionPane.WARNING_MESSAGE);}
+					
+				}
+			}
+		});
+                
+                readitembutton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(jtextfieldid.getText().equals("")) {
+					
+                                        model = Tools.addDataTable(itemfunc.findDataByVendor(account), model);											    
+
+				}
+				else {
+					String id = jtextfieldid.getText();
+					int existID = itemfunc.checkItem(id);
+					if(existID==-1) {JOptionPane.showMessageDialog(null,"Invalid: " + id,"Food",JOptionPane.WARNING_MESSAGE);}
+					else {model = Tools.addDataTable(itemfunc.findDataByItem(id), model);}
+				}
+			}
+		});
+		removeitembutton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String id = jtextfieldid.getText();
+				if(id.equals("")) {
+					JOptionPane.showMessageDialog(null,"Fill Up Customer Id","Invalid Operation",JOptionPane.WARNING_MESSAGE);
+				}
+				else {
+					int existID = itemfunc.checkItem(id);
+					if(existID==-1) {JOptionPane.showMessageDialog(null,"Invalid: " + id,"Food",JOptionPane.WARNING_MESSAGE);}
+					else {
+						itemfunc.deleteData(id);
+						model = Tools.addDataTable(itemfunc.findDataByVendor(account), model);
+						JOptionPane.showMessageDialog(null,"Delete successfully " + id,"Food",JOptionPane.WARNING_MESSAGE);
+						}
+				}
+			}
+		});
+		updateitembutton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String Id = jtextfieldid.getText();
+				String Name = jtextfield.getText();
+                                String Price = jtextfieldprice.getText();
+				if((Id+Name+Price).equals("")) {
+					JOptionPane.showMessageDialog(null,"Fill Up Food Info","Invalid Operation",JOptionPane.WARNING_MESSAGE);
+					
+				}
+				else {
+					int existID = itemfunc.checkItem(Id);
+					if(existID!=-1) {
+						Items c = new Items(Id,Name,Price,account);
+						itemfunc.updateData(c);
+						model = Tools.addDataTable(itemfunc.findDataByVendor(account), model);
+						JOptionPane.showMessageDialog(null,"Update successfully " + Id,"Food",JOptionPane.WARNING_MESSAGE);
+						}
+					else {JOptionPane.showMessageDialog(null, Id + " Not Exist","Food",JOptionPane.WARNING_MESSAGE);}
+					
+				}
+			}
+		});
         }
 
 
 
-void table() {
+        void table() {
 		tableitem = TableSetup();
 		jsrcollpane = new JScrollPane(tableitem);
 		jsrcollpane.setPreferredSize(new Dimension(WIDTH-20,250));
@@ -124,9 +199,9 @@ void table() {
 	}
 
 
-JTable TableSetup(){
-    tableitem = new JTable();
-		int[] columnWidth = {150,150,150,150,150};
+        JTable TableSetup(){
+                tableitem = new JTable();
+		int[] columnWidth = {150,150,150,150};
 		model = new DefaultTableModel() {
 			public boolean isCellEditable(int row, int column) {
 				return false;

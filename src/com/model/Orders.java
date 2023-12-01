@@ -3,6 +3,7 @@ package com.model;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,13 +19,13 @@ public class Orders {
         private String Status;
 	DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 	
-        public Orders(String orderid,String cusid,String itemid,String venid,String runid,int quantity,String type,String dt,String status){
+        public Orders(String orderid,String cusid,String itemid,String venid,String runid,String quantity,String type,String dt,String status){
 		this.OrderID = orderid;
                 this.CustomerID = cusid;
 		this.ItemID = itemid;
 		this.VendorID = venid;
 		this.RunnerID = runid;
-		this.Quantity = quantity;
+		this.Quantity = Integer.parseInt(quantity);
 		this.Type = type;
                 this.Status = status;   
                 try {
@@ -38,7 +39,7 @@ public class Orders {
 	public String getVendorId() {return this.VendorID;}
 	public String getItemId() {return this.ItemID;}
 	public String getRunnerId() {return this.RunnerID;}
-	public java.util.Date getDatetime() {return this.DateTime;}
+	public Date getDatetime() {return this.DateTime;}
 	public int getQuantity() {return this.Quantity;}
 	public String getType() {return this.Type;}
 	public String getStatus() {return this.Status;}

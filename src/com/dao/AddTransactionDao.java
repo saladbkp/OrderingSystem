@@ -5,10 +5,11 @@
 package com.dao;
 
 import com.model.Transactions;
-import com.model_cus.Reviews;
 import com.tool.TextFunction;
 import com.windows.Login;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,9 +33,21 @@ public class AddTransactionDao implements IOperation{
             return commonfunc.seekTarget(tranarray, str);
     	}
 	// view
+        public List<Transactions> findDataByPeriod(List<Transactions> tranarray,int period) {
+            if(period==0) return tranarray;
+            List<Transactions> output = new ArrayList<Transactions>();
+            for(int i=0;i<tranarray.size();i++){
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(tranarray.get(i).getDatetime());
+                int month = cal.get(Calendar.MONTH)+1;
+                if(month==period) output.add(tranarray.get(i));
+
+            }
+            return output;
+
+	}
         @Override
 	public List<Transactions> findDataByID(String id) {
-		
 		return commonfunc.findTargetData(tranarray, id);
 	}
         @Override

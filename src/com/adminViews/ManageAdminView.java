@@ -1,5 +1,6 @@
 package com.adminViews;
 
+import com.customerViews.CustomerNotificationView;
 import com.customerViews.ManageCustomerView;
 import static com.customerViews.ManageCustomerView.client;
 import com.services.Client;
@@ -63,13 +64,6 @@ public class ManageAdminView {
 		jpanel1.setBackground(Color.BLUE);
 		jpanel1.setLayout(new FlowLayout(flowlayout.CENTER));
 		
-//		JButton vendorButton = new JButton("Vendor");
-//		JButton customerButton = new JButton("Customer");
-//		vendorButton.setPreferredSize(new Dimension(100,30));
-//		customerButton.setPreferredSize(new Dimension(100,30));
-//		jpanel1.add(vendorButton);
-//		jpanel1.add(customerButton);
-		
 		// add tab of Customer View
 		AdminVendorView vendor = new AdminVendorView(0,0,viewWidth,viewHeight);
 		// default vendor view
@@ -78,10 +72,11 @@ public class ManageAdminView {
 		AdminRunnerView runner = new AdminRunnerView(0,0,viewWidth,viewHeight);
 		CustomerTopUpView customertopup = new CustomerTopUpView(0,0,viewWidth,viewHeight);
 		CustomerReceiptView customerrpt = new CustomerReceiptView(0,0,viewWidth,viewHeight);
-		jpanel2.setBounds(215-50,5,viewWidth,viewHeight);
+                CustomerNotificationView notification = new CustomerNotificationView(0,0,viewWidth,viewHeight);
+                jpanel2.setBounds(215-50,5,viewWidth,viewHeight);
 
 		// dynamic set button
-		String buttonName[] = {"Vendor","Customer","Runner","Top Up","Receipt"};
+		String buttonName[] = {"Vendor","Customer","Runner","Top Up","Receipt","Notification"};
 		
 		for(int i=0;i<buttonName.length;i++) {
 			JButton btn = new JButton(buttonName[i]);
@@ -112,6 +107,10 @@ public class ManageAdminView {
 					if(jbl.getName().equals(buttonName[4])) {
 						jpanel2.add(customerrpt,(Integer)(JLayeredPane.PALETTE_LAYER));
 						jpanel2.moveToFront(customerrpt);
+					}
+                                        if(jbl.getName().equals(buttonName[5])) {
+						jpanel2.add(notification,(Integer)(JLayeredPane.PALETTE_LAYER));
+						jpanel2.moveToFront(notification);
 					}
 				}
 			});

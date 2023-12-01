@@ -16,12 +16,13 @@ import com.tool.TableWithButtons.Buttons;
 import com.tool.TableWithButtons.MinusAction;
 import java.io.File;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import javax.swing.JTable;
 
 public class Tools {
         public static DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-        
+        public static DecimalFormat decimformatter = new DecimalFormat("0.00");
 	public static void WindowCenterScreen(int WIDTH,int HEIGHT,JFrame jframe) {
 		Toolkit kit = Toolkit.getDefaultToolkit();
 		Dimension screenSize = kit.getScreenSize();
@@ -82,7 +83,7 @@ public class Tools {
         public static void writeFile(String filename,String content){
                     try {
                         FileWriter myWriter = new FileWriter(filename);
-                        myWriter.write("\n"+content);
+                        myWriter.write(content);
                         myWriter.close();
                         System.out.println("Successfully wrote to the file.");
                       } catch (IOException e) {

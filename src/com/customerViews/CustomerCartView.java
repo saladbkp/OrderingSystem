@@ -14,6 +14,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -57,22 +58,8 @@ public class CustomerCartView extends JPanel{
 		// layout 
 		this.setLayout(null);
 		this.setBackground(Color.gray);
-		
-//		JPanel jpanel1 = new JPanel();
-//		jpanel1.setLayout(new FlowLayout(FlowLayout.LEFT,50,10)); // left alignment
-//		jpanel1.setBounds(0,0,WIDTH,50);
-//		jpanel1.setBackground(Color.WHITE);
-//                
-//                // add button sample
-//                JLabel jlabelfood = new JLabel("Food");
-//		jpanel1.add(jlabelfood);
-//                JLabel jlabelvendor = new JLabel("Vendor");
-//		jpanel1.add(jlabelvendor);
-//                JLabel jlabelcost = new JLabel("Cost");
-//		jpanel1.add(jlabelcost);
-//                JLabel jlabelamount = new JLabel("Amount");
-//		jpanel1.add(jlabelamount);
-//                // add content panel
+
+                // add content panel
                 JPanel jpanel2 = new JPanel();
                 jpanel2.setLayout(new FlowLayout(FlowLayout.LEFT,10,10));
 		jpanel2.setBounds(0,200,WIDTH,50);
@@ -83,26 +70,8 @@ public class CustomerCartView extends JPanel{
 		cmbfoodservice.addItem("--Select Food Service--");
 		cmbfoodservice.addItem("Dine-in");
 		cmbfoodservice.addItem("Takeaway");
-                                   cmbfoodservice.addItem("Delivery");
+                cmbfoodservice.addItem("Delivery");
 		jpanel2.add(cmbfoodservice);
-                
-                JPanel jpanel3 = new JPanel();
-                jpanel3.setLayout(new FlowLayout(FlowLayout.LEFT,70,10));
-		jpanel3.setBounds(0,260,WIDTH,50);
-                JLabel jlabelsubtotal= new JLabel("Subtotal");
-		jpanel3.add(jlabelsubtotal);
-                
-                JPanel jpanel4 = new JPanel();
-                jpanel4.setLayout(new FlowLayout(FlowLayout.LEFT,70,10));
-		jpanel4.setBounds(0,300,WIDTH,50);
-                JLabel jlabeldeliveryfee= new JLabel("Delivery fee");
-		jpanel4.add(jlabeldeliveryfee);
-                
-                JPanel jpanel5 = new JPanel();
-                jpanel5.setLayout(new FlowLayout(FlowLayout.LEFT,70,10));
-		jpanel5.setBounds(0,360,WIDTH,50);
-                JLabel jlabeltotalcost= new JLabel("Total cost");
-		jpanel5.add(jlabeltotalcost);
                 
                 JPanel jpanel6 = new JPanel();
 //                jpanel6.setLayout(new FlowLayout(FlowLayout.LEFT,70,10));
@@ -119,11 +88,6 @@ public class CustomerCartView extends JPanel{
                 // **** jpanel 2 for table content 
                 // if u have better design, just go through ur pattern
                 //this.add(jpanel1);
-                this.add(jpanel2);
-                this.add(jpanel3);
-                this.add(jpanel4);
-                this.add(jpanel5);
-                this.add(jpanel6);
                 tablefood();
                 model = (DefaultTableModel)tableModel;
                 tableitem.setModel(model);
@@ -135,7 +99,73 @@ public class CustomerCartView extends JPanel{
                 tableitem.setRowSorter(tableSorter);
                 tableSorter.setRowFilter(new TableRowFilter(2,0));
                 this.add(jsrcollpane);
+                
+                // do cal after init table
+                JPanel jpanel3 = new JPanel();
+                jpanel3.setLayout(new FlowLayout(FlowLayout.LEFT,70,10));
+		jpanel3.setBounds(0,260,WIDTH,50);
+                String subtotal = "Subtotal: RM" + Tools.decimformatter.format(subTotal());
+                JLabel jlabelsubtotal= new JLabel(subtotal);
+		jpanel3.add(jlabelsubtotal);
+                
+                JPanel jpanel4 = new JPanel();
+                jpanel4.setLayout(new FlowLayout(FlowLayout.LEFT,70,10));
+		jpanel4.setBounds(0,300,WIDTH,50);
+                JLabel jlabeldeliveryfee= new JLabel("Delivery fee: RM0");
+		jpanel4.add(jlabeldeliveryfee);
+                
+                JPanel jpanel5 = new JPanel();
+                jpanel5.setLayout(new FlowLayout(FlowLayout.LEFT,70,10));
+		jpanel5.setBounds(0,360,WIDTH,50);
+                String totalcost = "Total cost: RM" + Tools.decimformatter.format(subTotal());
+                JLabel jlabeltotalcost= new JLabel(totalcost);
+		jpanel5.add(jlabeltotalcost);
+                
+                this.add(jpanel2);
+                this.add(jpanel3);
+                this.add(jpanel4);
+                this.add(jpanel5);
+                this.add(jpanel6);
+                
+                // display calculation 
+                cmbfoodservice.addActionListener (new ActionListener () {
+                public void actionPerformed(ActionEvent e) {
+                    int Deliveryfee = DeliveryFee(cmbfoodservice.getSelectedIndex());
+                    jlabeldeliveryfee.setText("Delivery fee: RM"+Deliveryfee);
+                    jlabeltotalcost.setText("Total cost: RM"+Tools.decimformatter.format(Deliveryfee+subTotal()));
+
+                }
+                });
+                JLabel icon = new JLabel("", new ImageIcon("src/img/loading.gif"), JLabel.CENTER);        
+
+                this.add(icon);
+
+                // pay button 
+                paybutton.addActionListener (new ActionListener () {
+                public void actionPerformed(ActionEvent e) {
+
+                        
+                }
+                });
+                
         }
+        
+        double subTotal(){
+            double total = 0;
+            for(int i = 0; i < tableitem.getRowCount(); i++){
+                double Price = Double.parseDouble(tableitem.getValueAt(i, 1).toString());
+                double Amount = Double.parseDouble(tableitem.getValueAt(i, 2).toString());
+                total += Amount*Price;
+            }
+            return  Math.floor(total * 100) / 100;
+            
+        }
+        
+        int DeliveryFee(int index){
+            return index==3?5:0;
+        }
+        
+        
           void tablefood() {
 		tableitem = TableSetup();
                 jsrcollpane = new JScrollPane(tableitem);
