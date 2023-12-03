@@ -21,7 +21,6 @@ import com.model.Notifications;
 import com.tool.Tools;
 import com.model.Receipts;
 import java.util.Calendar;
-import java.util.Random;
 
 public class CustomerReceiptView extends JPanel {
 		int WIDTH;

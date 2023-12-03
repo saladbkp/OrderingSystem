@@ -1,2 +1,0 @@
-c1,c1,ian,20,male
-c2,c2,hz,100,female

@@ -82,7 +82,7 @@ public class CustomerVendorFoodView extends JPanel{
                     public void actionPerformed(ActionEvent e) {
                         double sumQty = Tools.sumColumnJTable(tableitem,2);
                         if(sumQty>0){
-                            CustomerCartView cart = new CustomerCartView(0,0,viewWidth,viewHeight,tableitem.getModel());
+                            CustomerCartView cart = new CustomerCartView(0,0,viewWidth,viewHeight,tableitem.getModel(),vendorid);
                             ManageCustomerView.jpanel2.removeAll();
                             ManageCustomerView.jpanel2.add(cart,(Integer)(JLayeredPane.PALETTE_LAYER));
                             ManageCustomerView.jpanel2.moveToFront(cart); 

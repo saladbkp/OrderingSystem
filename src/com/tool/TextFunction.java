@@ -11,6 +11,7 @@ import com.model.Customers;
 import com.model.Items;
 import com.model.Notifications;
 import com.model.Orders;
+import com.model.PendingOrders;
 import com.model.Runners;
 import com.model.Transactions;
 import com.model.Users;
@@ -67,6 +68,9 @@ public class TextFunction {
                                 else if (clazz.equals(Transactions.class)) {
 					Transactions tran = new Transactions(spt[0],spt[1],spt[2],spt[3],spt[4]);
 	                txtarray.add(clazz.cast(tran));
+	            }           else if (clazz.equals(PendingOrders.class)) {
+					PendingOrders pending = new PendingOrders(spt[0],spt[1],spt[2],spt[3]);
+	                txtarray.add(clazz.cast(pending));
 	            }
 				//System.out.println(spt[0]);
 			}

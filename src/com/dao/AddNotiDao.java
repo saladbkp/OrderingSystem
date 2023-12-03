@@ -5,16 +5,12 @@
 package com.dao;
 
 import com.model.Notifications;
-import com.model.Transactions;
-import com.model_cus.Reviews;
 import com.tool.TextFunction;
-import com.tool.Tools;
 import com.windows.Login;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -65,11 +61,13 @@ public class AddNotiDao implements IOperation{
                 String noti = notiarray.get(i).getContent();
                 long datediff = cal.getTime() - notiarray.get(i).getDatetime().getTime();
                 long diffHours = datediff / (60 * 60 * 1000);
+                long diffMins = datediff / (60 * 1000) % 60;
+                String dur = diffHours>0?String.format("(%s hours ago)",diffHours ):String.format("(%s mins ago)",diffMins );
                 int sendStatus = sender.equals(account)?1:0;
                 int rcptStatus = rcpt.equals(account)?1:0;
                 if(sendStatus+rcptStatus>0){
                     
-                    String outputStr = String.format("Noti from %s: %s (%s hours ago)",order,noti,diffHours);
+                    String outputStr = String.format("Noti from %s: %s %s",order,noti,dur);
                     output.add(outputStr);
                 }
             }

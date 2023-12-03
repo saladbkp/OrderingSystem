@@ -1,0 +1,13 @@
+
+Date:28-11-2023 11:31
+Order No:o4
+
+Customer Details
+Username: c1
+Phone: 1235123
+Address: kepong
+
+OrderName       Price   Quantity           Total
+salad            9.90          5           49.50
+
+Subtotal: 49.5

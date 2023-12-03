@@ -5,21 +5,23 @@
 package com.customerViews;
 
 import com.dao.AddItemDao;
+import com.model.Notifications;
 import com.tool.TableRowFilter;
 import com.tool.TableWithButtons;
-import com.vendorViews.*;
 import com.tool.Tools;
+import com.windows.Login;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -44,13 +46,15 @@ public class CustomerCartView extends JPanel{
         TableModel tableModel;
 	DefaultTableModel model;
 	TableColumnModel columnModel;
+        String VendorID;
         AddItemDao itemfunc = new AddItemDao();
 
-	public CustomerCartView(int x,int y, int width, int height, TableModel tableModel) {
+	public CustomerCartView(int x,int y, int width, int height, TableModel tableModel,String vendorId) {
 		// separate 2 windows ?????? 
 		this.setBounds(x,y,width,height);
 		this.WIDTH = width;
                 this.tableModel = tableModel;
+                this.VendorID = vendorId;
 		Init();
 	}
         void Init() {
@@ -143,6 +147,23 @@ public class CustomerCartView extends JPanel{
                 // pay button 
                 paybutton.addActionListener (new ActionListener () {
                 public void actionPerformed(ActionEvent e) {
+                    if(cmbfoodservice.getSelectedIndex()!=0){
+                        String account = Login.account;
+                        String vendor = VendorID;
+                        Calendar cal = Calendar.getInstance();
+                        String date = Tools.formatter.format(cal.getTime());
+                        String timeStamp = new SimpleDateFormat("MMddHHmmss").format(new java.util.Date()); 
+                        String orderid = "o" +  timeStamp;
+//                        System.out.println(orderid);
+                        Notifications noti = new Notifications(account,vendor,orderid,"NEW ORDER + 1",date);
+                        Tools.appendFile("src/data/notifications.txt", noti.toString()); 
+                        // pending order
+                        Tools.appendFile("src/data/pending.txt", orderid); 
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null,"Select a Service Method","Invalid Operation",JOptionPane.WARNING_MESSAGE);
+ 
+                    }
 
                         
                 }
@@ -166,7 +187,7 @@ public class CustomerCartView extends JPanel{
         }
         
         
-          void tablefood() {
+        void tablefood() {
 		tableitem = TableSetup();
                 jsrcollpane = new JScrollPane(tableitem);
 		jsrcollpane.setPreferredSize(new Dimension(WIDTH-20,250));
