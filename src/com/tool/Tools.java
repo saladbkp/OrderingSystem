@@ -1,5 +1,6 @@
 package com.tool;
 
+import com.model.Orders;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.FileWriter;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import javax.swing.JTable;
 
 public class Tools {
@@ -79,7 +81,19 @@ public class Tools {
 		
 		return model;
 	}
-	
+	public static ArrayList<Object> loadTableToArr(JTable table,int numObj){
+            ArrayList<Object> list = new ArrayList<Object>();
+            System.out.println(table.getRowCount() + " "+ table.getColumnCount());
+            for(int row = 0; row < table.getRowCount(); row++) {
+                Object obj[] = new Object[numObj]; 
+                for(int column = 0; column < table.getColumnCount(); column++) {
+                    obj[column] = table.getValueAt(row, column);
+                }
+                list.add(obj);
+            }
+            return list;
+        }
+
         public static void writeFile(String filename,String content){
                     try {
                         FileWriter myWriter = new FileWriter(filename);

@@ -99,6 +99,14 @@ Interact with each roles
 customer: pay+back(back to ori?), top up, reorder 
 loading spin
 vendor: can accept or decline 
+20231203
+order withour runner done 
+-> random choose runner (not yet)
+done vendor can accept and decline order
+can read order, but cannot update (model issue)????
+20231205
+ordering flow done ?
+do the payment section ....
 
 ```
 

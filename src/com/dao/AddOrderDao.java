@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.model.Customers;
 import com.model.Orders;
 import com.tool.TextFunction;
 
@@ -17,8 +16,8 @@ public class AddOrderDao {
 	}
 
 	// view
-        public List<Orders> findDataByOrder(String id) {
-		List<Orders> findarray = this.orderarray.stream().filter(x->x.getOrderId().equals(id)).toList();
+        public Orders findDataByOrder(String id) {
+		Orders findarray = this.orderarray.stream().filter(x->x.getOrderId().equals(id)).toList().get(0);
 		return findarray;
 	}
 	public List<Orders> findDataByCus(String id) {

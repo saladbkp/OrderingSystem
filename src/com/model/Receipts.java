@@ -11,17 +11,16 @@ import com.dao.AddRunnerDao;
 import com.dao.AddVendorDao;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  *
  * @author khwon
  */
-public class Receipts{
+public class Receipts {
+
     //private int receiptNo;
-    private List<Orders> order = new ArrayList<Orders>();
+    private Orders order;
     private Customers customer;
     private Vendors vendor;
     private Runners runner;
@@ -32,43 +31,46 @@ public class Receipts{
     AddRunnerDao addrunnerdao = new AddRunnerDao();
     AddOrderDao addorderdao = new AddOrderDao();
     AddItemDao additemdao = new AddItemDao();
-    
-    public Receipts(String orderid){
+
+    public Receipts(String orderid) {
         Calendar cal = Calendar.getInstance();
         this.DateTime = cal.getTime();
         this.order = addorderdao.findDataByOrder(orderid);
-        this.customer = addcustomerdao.findDataByID(order.get(0).getCustomerId()).get(0);
-        this.vendor = addvendordao.findDataByID(order.get(0).getVendorId()).get(0);
-        this.runner = addrunnerdao.findDataByID(order.get(0).getRunnerId()).get(0);
+        this.customer = addcustomerdao.findDataByID(order.getCustomerId()).get(0);
+        this.vendor = addvendordao.findDataByID(order.getVendorId()).get(0);
+        this.runner = addrunnerdao.findDataByID(order.getRunnerId()).get(0);
     }
-    private String customerInfo(){
+
+    private String customerInfo() {
         String infotxt = "";
-        infotxt += "Username: "+this.customer.getUsername()+"\n";
-        infotxt += "Phone: "+this.customer.getCustomerPhone()+"\n";
-        infotxt += "Address: "+this.customer.getCustomerAddress()+"\n";
+        infotxt += "Username: " + this.customer.getUsername() + "\n";
+        infotxt += "Phone: " + this.customer.getCustomerPhone() + "\n";
+        infotxt += "Address: " + this.customer.getCustomerAddress() + "\n";
         return infotxt;
     }
-    private String OrderInfo(){
+
+    private String OrderInfo() {
         String ordertxt = "";
         float amount = 0;
-        for(Orders ord : this.order){
-            Items fooditem = additemdao.findDataByItem(ord.getItemId()).get(0);
-            float price = fooditem.getPrice();
-            int quantity = ord.getQuantity();
-            float total = price*quantity;
-            amount += total;
-            String linetxt = String.format("%-10s %10.2f %10d %15.2f\n",fooditem.getItemName(),price,quantity,total);
-            ordertxt += linetxt;
-        }
-        String subtotal = "\nSubtotal: "+amount;
+
+        Items fooditem = additemdao.findDataByItem(order.getItemId()).get(0);
+        float price = fooditem.getPrice();
+        int quantity = order.getQuantity();
+        float total = price * quantity;
+        amount += total;
+        String linetxt = String.format("%-10s %10.2f %10d %15.2f\n", fooditem.getItemName(), price, quantity, total);
+        ordertxt += linetxt;
+
+        String subtotal = "\nSubtotal: " + amount;
         ordertxt += subtotal;
         return ordertxt;
     }
-    public String toString(){
-        return "Date:"+formatter.format(DateTime)+"\nOrder No:"+order.get(0).getOrderId()+
-                "\n\nCustomer Details\n"+customerInfo()+
-                String.format("\n%-10s %10s %10s %15s\n","OrderName","Price","Quantity","Total")+OrderInfo();
-        
+
+    public String toString() {
+        return "Date:" + formatter.format(DateTime) + "\nOrder No:" + order.getOrderId()
+                + "\n\nCustomer Details\n" + customerInfo()
+                + String.format("\n%-10s %10s %10s %15s\n", "OrderName", "Price", "Quantity", "Total") + OrderInfo();
+
     }
-    
+
 }

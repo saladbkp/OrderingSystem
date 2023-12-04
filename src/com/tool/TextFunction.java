@@ -17,6 +17,7 @@ import com.model.Transactions;
 import com.model.Users;
 import com.model.Vendors;
 import com.model_cus.Reviews;
+import com.model_run.Tasks;
 
 public class TextFunction {
 	String filepath;
@@ -71,6 +72,9 @@ public class TextFunction {
 	            }           else if (clazz.equals(PendingOrders.class)) {
 					PendingOrders pending = new PendingOrders(spt[0],spt[1],spt[2],spt[3]);
 	                txtarray.add(clazz.cast(pending));
+	            }           else if (clazz.equals(Tasks.class)) {
+					Tasks task = new Tasks(spt[0],spt[1],spt[2],spt[3],spt[4],spt[5],spt[6]);
+	                txtarray.add(clazz.cast(task));
 	            }
 				//System.out.println(spt[0]);
 			}

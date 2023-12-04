@@ -10,8 +10,10 @@ public class OrderSystem {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		Login login = new Login();
-                
+                Login logincus = new Login();
+//                Login loginvendor = new Login();
+//                Login loginrun = new Login();
+
 //              this is with login page
 //              to easy debug u can comment code above, and open ur certain view 
 //		ManageVendorView manageVendor = new ManageVendorView();

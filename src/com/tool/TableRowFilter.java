@@ -11,9 +11,9 @@ import javax.swing.RowFilter;
  * @author khwon
  */
 public class TableRowFilter extends RowFilter{
-    private int filterkey;
+    private String filterkey;
     private int numberCol;
-    public TableRowFilter(int num,int key){
+    public TableRowFilter(int num,String key){
         filterkey = key;
         numberCol = num;
     }
@@ -22,6 +22,12 @@ public class TableRowFilter extends RowFilter{
     public boolean include(Entry entry){
         
 //        System.out.println(entry.getStringValue(0));
-        return Integer.parseInt(entry.getValue(this.numberCol).toString())>this.filterkey;
+        boolean isNumeric = filterkey.chars().allMatch( Character::isDigit );
+        if(isNumeric){
+            return Integer.parseInt(entry.getValue(this.numberCol).toString())>Integer.parseInt(this.filterkey);
+        }
+        else{
+            return entry.getValue(this.numberCol).toString().equals(this.filterkey);
+        }
     }
 }

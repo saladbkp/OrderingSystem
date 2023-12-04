@@ -4,6 +4,13 @@
  */
 package com.model_run;
 
+import com.model.Orders;
+import com.tool.Tools;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author ivann
@@ -12,74 +19,73 @@ public class Tasks {
     private String OrderID;
     private String VendorID;
     private String RunnerID;
-    private String VendorName;
-    private String FoodID;
-    private String FoodName;
-    private String Amount;
-    private String FoodServiceType;
+    private String CustomerID;
     private double TotalCost;
-    private String Time;
+    private Date Time;
     private String Status;
+
+    public Tasks(String OrderID, String VendorID, String RunnerID, String CustomerID, String TotalCost, String Time, String Status) {
+        this.OrderID = OrderID;
+        this.VendorID = VendorID;
+        this.RunnerID = RunnerID;
+        this.CustomerID = CustomerID;
+        this.TotalCost = Double.parseDouble(TotalCost);
+        try {
+            this.Time = Tools.formatter.parse(Time);
+        } catch (ParseException ex) {
+            Logger.getLogger(Tasks.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.Status = Status;
+    }
     
-    public Tasks(String orderid, String vendorid, String runnerid, String vendorname, String foodid, String foodname, String amount, String foodservicetype, String totalcost, String time, String status){
-        this.OrderID = orderid;
-        this.VendorID = vendorid;
-        this.RunnerID = runnerid;
-        this.VendorName = vendorname;
-        this.FoodID = foodid;
-        this.FoodName = foodname;
-        this.Amount = amount;
-        this.FoodServiceType = foodservicetype;
-        this.TotalCost = Double.parseDouble(totalcost);
-        this.Time = time;
-        this.Status = status;
+    public Tasks(Orders order){
+        this.OrderID = order.getOrderId();
+        this.VendorID = order.getVendorId();
+        this.RunnerID = order.getRunnerId();
+        this.CustomerID = order.getCustomerId();
+        this.TotalCost = 5.00;
+        this.Time = order.getDatetime();
+        this.Status = "Preparing Food";
         
     
 }
-    public String getOrderID(){
+
+    public String getOrderID() {
         return OrderID;
     }
-    
-    public String getVendorID(){
+
+    public String getVendorID() {
         return VendorID;
     }
-    
-    public String getRunnerID(){
+
+    public String getRunnerID() {
         return RunnerID;
     }
-    
-    public String getVendorName(){
-        return VendorName;
+
+    public String getCustomerID() {
+        return CustomerID;
     }
-    
-    public String getFoodID(){
-        return FoodID;
-    }
-    
-    public String getFoodName(){
-        return FoodName;
-    }
-    
-    public String getAmount(){
-        return Amount;
-    }
-    
-    public String getFoodServiceType(){
-        return FoodServiceType;
-    }
-    
-    public double getTotalCost(){
+
+    public double getTotalCost() {
         return TotalCost;
     }
-    
-    public String getTime(){
+
+    public Date getTime() {
         return Time;
     }
     
     public String getStatus(){
         return Status;
     }
+
+    public void setStatus(String Status) {
+        this.Status = Status;
+    }
+    
+    
     public String toString(){
-        return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",this.OrderID,this.VendorID,this.RunnerID,this.VendorName,this.FoodID, this.FoodName,this.Amount,this.FoodServiceType,this.TotalCost, this.Time, this.Status);
+        return String.format("%s,%s,%s,%s,%s,%s,%s",
+                this.OrderID,this.VendorID,this.RunnerID,this.CustomerID,this.TotalCost, 
+                Tools.formatter.format( this.Time), this.Status);
     }
 }

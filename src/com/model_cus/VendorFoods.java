@@ -6,12 +6,14 @@ package com.model_cus;
 import com.model.Items;
 
 public class VendorFoods {
+                private String foodID; 
                 private String foodName;
                 private double foodCost;
                 private int amount;
 
 	
 	public VendorFoods(Items item) {
+                this.foodID = item.getItemId();
 		this.foodName = item.getItemName();
 		this.foodCost = item.getPrice();
                 this.amount = 0;
@@ -22,7 +24,7 @@ public class VendorFoods {
                  
 
 	public String toString() {
-		String output = String.format("%s,%.2f,%s",this.foodName,this.foodCost,this.amount);
+		String output = String.format("%s,%s,%.2f,%s",this.foodID,this.foodName,this.foodCost,this.amount);
 		return output;
 	}
 }

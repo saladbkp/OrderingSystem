@@ -34,6 +34,21 @@ public class Orders {
                     Logger.getLogger(Orders.class.getName()).log(Level.SEVERE, null, ex);
                 }
 	}
+        public Orders(Object[] data) {
+		this.OrderID = data[0].toString();
+                this.CustomerID = data[1].toString();
+		this.ItemID = data[2].toString();
+		this.VendorID = data[3].toString();
+		this.RunnerID = data[4].toString();
+		this.Quantity = Integer.parseInt(data[5].toString());
+		this.Type = data[6].toString();
+                this.Status = data[8].toString();   
+                try {
+                    this.DateTime = formatter.parse(data[7].toString());
+                } catch (ParseException ex) {
+                    Logger.getLogger(Orders.class.getName()).log(Level.SEVERE, null, ex);
+                }
+        }
         public String getOrderId(){return this.OrderID;}
 	public String getCustomerId() {return this.CustomerID;}
 	public String getVendorId() {return this.VendorID;}
@@ -43,7 +58,9 @@ public class Orders {
 	public int getQuantity() {return this.Quantity;}
 	public String getType() {return this.Type;}
 	public String getStatus() {return this.Status;}
-        
+        public void setStatus(String status){
+            this.Status = status;
+        }
 	public String toString() {
 		String output = String.format("%s,%s,%s,%s,%s,%d,%s,%s,%s", this.OrderID,this.CustomerID,this.ItemID,this.VendorID,this.RunnerID,this.Quantity,this.Type,formatter.format(DateTime),this.Status);
 		return output;
