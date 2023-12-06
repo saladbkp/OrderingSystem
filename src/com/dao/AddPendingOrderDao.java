@@ -27,6 +27,7 @@ public class AddPendingOrderDao {
             return !findarray.isEmpty()?new ArrayList<>(findarray):new ArrayList<Orders>();
     }
     public Orders findDataByOrder(String id) {
+            updateArray();
             Orders findarray = this.orderarray.stream().filter(x->x.getOrderId().equals(id)).toList().get(0);
             return findarray;
     }
@@ -35,5 +36,9 @@ public class AddPendingOrderDao {
     }
     public List<Orders> findData(){
         return orderarray;
+    }
+    public void updateArray(){
+        TextFunction txtfunc = new TextFunction("src/data/pendingOrders.txt");
+        orderarray = txtfunc.readfile(Orders.class);
     }
 }

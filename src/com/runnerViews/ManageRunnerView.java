@@ -8,6 +8,7 @@ import com.customerViews.CustomerNotificationView;
 import com.customerViews.CustomerOrderView;
 import com.dao.AddOrderDao;
 import com.dao.AddPendingOrderDao;
+import com.dao.AddPendingTaskDao;
 import com.model.Notifications;
 import com.model.Orders;
 import com.model_run.Tasks;
@@ -27,6 +28,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
@@ -47,8 +49,7 @@ public class ManageRunnerView {
     FlowLayout flowlayout;
     public  ArrayList<String> pendingOrderList = new ArrayList<String>();
     AddOrderDao orderfunc = new AddOrderDao();
-    AddTaskDao taskfunc = new AddTaskDao();
-    AddPendingOrderDao penorderfunc = new AddPendingOrderDao();
+    AddPendingTaskDao pentaskfunc = new AddPendingTaskDao();
     
     public ManageRunnerView() {
         Init();
@@ -73,29 +74,47 @@ public class ManageRunnerView {
                 String customerId = pendinglist[0];
                 String orderid = pendinglist[1];
                 String status = pendinglist[2];
-                
                 String statusStr;
+                Orders order = orderfunc.findDataByOrder(orderid);
                 if(status.equals("0")){
                     statusStr = "Accepted";
-                    Orders order = orderfunc.findDataByOrder(orderid);
+                    List<Orders> allOrders = orderfunc.findOrderData();
+                    
+                    List<Orders> orderWithID = orderfunc.findDataByOrderMul(orderid);
+                    allOrders.removeAll(orderWithID);
+                    orderWithID.forEach(item -> item.setStatus("1"));
+                    orderWithID.forEach(item -> item.setRunnerID(account));
+                    allOrders.addAll(orderWithID);
+                    Tools.writeFile("src/data/orders.txt", "");
+                    // rewrite order txt
+                    for(Orders ord:allOrders){
+                        Tools.appendFile("src/data/orders.txt", ord.toString());
+                    }
+                    // add new task
                     Tasks task = new Tasks(order);
                     taskarray.add(task);
+                    //write tasks into task file
+                    task.setStatus(statusStr);
+                    Tools.appendFile("src/data/tasks.txt", task.toString());
                 }
                 else{
                     statusStr = "Declined";
+                    Tasks task = new Tasks(order);   
+                    task.setStatus(statusStr);
+                    Tools.appendFile("src/data/tasks.txt", task.toString());
                 }
 
                 
                 Notifications noti = new Notifications(account, customerId, orderid, "Runner "+statusStr +" your Order", date);
                 Tools.appendFile("src/data/notifications.txt", noti.toString());
             }
-            
+
             for (var task: taskarray){
                 task.setStatus("Preparing Food");
                 Tools.appendFile("src/data/pendingTasks.txt", task.toString());
             }
             // after all processing then add previous data 
-            taskarray.addAll(taskfunc.findDataByVen(account)); 
+            taskarray.addAll(pentaskfunc.findDataByRun(account)); 
             
             model = Tools.addDataTable(taskarray, model);
             tasktable.setModel(model);
@@ -121,7 +140,7 @@ public class ManageRunnerView {
         RunnerTaskView task = new RunnerTaskView(0, 0, viewWidth, viewHeight); //HIII
         CustomerReviewView review = new CustomerReviewView(0, 0, viewWidth, viewHeight);
         RevenueDashboardView revenue = new RevenueDashboardView(0, 0, viewWidth, viewHeight);
-        CustomerOrderView history = new CustomerOrderView(0, 0, viewWidth, viewHeight);
+        RunnerTaskHistoryView history = new RunnerTaskHistoryView(0, 0, viewWidth, viewHeight);
         CustomerNotificationView notification = new CustomerNotificationView(0, 0, viewWidth, viewHeight);
         // default vendor view
         jpanel2.add(task, (Integer) (JLayeredPane.PALETTE_LAYER));

@@ -6,7 +6,7 @@ package com.customerViews;
 
 import com.dao.AddCustomerDao;
 import com.dao.AddTransactionDao;
-import com.vendorViews.*;
+import com.model.Notifications;
 import com.tool.Tools;
 import com.windows.Login;
 import java.awt.Color;
@@ -14,12 +14,10 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -34,7 +32,9 @@ public class CustomerCreditView extends JPanel{
 	int HEIGHT = 150;
 	AddTransactionDao tranfunc = new AddTransactionDao();
         AddCustomerDao cusfunc = new AddCustomerDao();
-
+        public static JLabel jlabelbalance;
+        public static DefaultListModel model = new DefaultListModel();   
+        
 	public CustomerCreditView(int x,int y, int width, int height) {
 		// separate 2 windows ?????? 
 		this.setBounds(x,y,width,height);
@@ -61,6 +61,16 @@ public class CustomerCreditView extends JPanel{
 		//JButton updateitembutton = new JButton("Update item");
                 
                 jpanel1.add(topupbutton);
+                topupbutton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        String account = Login.account;
+                        Calendar cal = Calendar.getInstance();
+                        String date = Tools.formatter.format(cal.getTime());
+                        Notifications noti = new Notifications(account, "root", "Reload", jtextfieldtopup.getText(), date);
+                        Tools.appendFile("src/data/notifications.txt", noti.toString());
+                        jtextfieldtopup.setText("");
+                    }
+                });
 		//jpanel1.add(removeitembutton);
 		//jpanel1.add(readitembutton);
 		//jpanel1.add(updateitembutton);
@@ -70,11 +80,11 @@ public class CustomerCreditView extends JPanel{
                 jpanel2.setLayout(new FlowLayout(FlowLayout.LEFT,10,10));
 		jpanel2.setBounds(0,60,WIDTH,50);
                 
-                JLabel jlabelbalance = new JLabel("Current Balance:");
+                jlabelbalance = new JLabel("Current Balance:");
 		jpanel2.add(jlabelbalance);
                 
                 String account = Login.account;
-                int newbalance = cusfunc.getCustomerBalance(account);
+                double newbalance = cusfunc.getCustomerBalance(account);
                 jlabelbalance.setText(newbalance!=-1?"Current Balance: "+newbalance:"Current Balance: --");
                 
                 
@@ -91,11 +101,13 @@ public class CustomerCreditView extends JPanel{
 		jpanel4.setBounds(0,170,WIDTH,380);
 
                 // Create an ArrayList of Strings   **********GET DATA FROM TXT FILE THEN INPUT*******************
-                List<String> transactionList = tranfunc.updateCombox();
                
                 // Create a JList and populate it with the ArrayList
-                JList<String> list = new JList<>(transactionList.toArray(new String[0]));
-                         
+                 for(String val :  tranfunc.updateCombox())
+                    model.addElement(val);
+                 
+                JList list = new JList(model);
+                    
                 // Increase the height of each item in the JList
                 list.setFixedCellHeight(45); // Set the desired height in pixels
 
@@ -109,7 +121,7 @@ public class CustomerCreditView extends JPanel{
                 scrollpanel.setPreferredSize(new Dimension(500, 330)); // Set the desired width and height
 
                 // Add the panel to the jpanel3
-                  jpanel4.add(scrollpanel);
+                jpanel4.add(scrollpanel);
 
                 this.add(jpanel4);
                 // **** jpanel 1 for selection

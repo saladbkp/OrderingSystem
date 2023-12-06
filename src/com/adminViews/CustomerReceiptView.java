@@ -68,24 +68,7 @@ public class CustomerReceiptView extends JPanel {
         cmbord.insertItemAt("--Select Order--", 0);
         cmbord.setSelectedIndex(0);
         jpanel2.add(cmbord);
-        JLabel jlabelcus = new JLabel("Customer ID");
-        jpanel2.add(jlabelcus);
-        JComboBox cmbcus = new JComboBox(orderfunc.updateComboxCus().toArray());
-        cmbcus.insertItemAt("--Select Customer--", 0);
-        cmbcus.setSelectedIndex(0);
-        jpanel2.add(cmbcus);
-        JLabel jlabelvendor = new JLabel("Vendor ID");
-        jpanel2.add(jlabelvendor);
-        JComboBox cmbvendor = new JComboBox(orderfunc.updateComboxVen().toArray());
-        cmbvendor.insertItemAt("--Select Vendor--", 0);
-        cmbvendor.setSelectedIndex(0);
-        jpanel2.add(cmbvendor);
-        JLabel jlabelrunner = new JLabel("Runner ID");
-        jpanel2.add(jlabelrunner);
-        JComboBox cmbrunner = new JComboBox(orderfunc.updateComboxRun().toArray());
-        cmbrunner.insertItemAt("--Select Runner--", 0);
-        cmbrunner.setSelectedIndex(0);
-        jpanel2.add(cmbrunner);
+
 
         this.add(jpanel2);
         this.add(jpanel1);
@@ -97,62 +80,17 @@ public class CustomerReceiptView extends JPanel {
                 if (cmbord.getSelectedIndex() == 0) {
                     return;
                 }
-                cmbcus.setSelectedIndex(0);
-                cmbvendor.setSelectedIndex(0);
-                cmbrunner.setSelectedIndex(0);
                 String id = cmbord.getSelectedItem().toString();
                 List<Orders> order = new ArrayList<Orders>();
                 order.add(orderfunc.findDataByOrder(id));
                 model = Tools.addDataTable(order, model);
             }
         });
-        cmbcus.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (cmbcus.getSelectedIndex() == 0) {
-                    return;
-                }
-                cmbvendor.setSelectedIndex(0);
-                cmbrunner.setSelectedIndex(0);
-                cmbord.setSelectedIndex(0);
-                String id = cmbcus.getSelectedItem().toString();
-                model = Tools.addDataTable(orderfunc.findDataByCus(id), model);
-            }
-        });
-        cmbvendor.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (cmbvendor.getSelectedIndex() == 0) {
-                    return;
-                }
-                cmbcus.setSelectedIndex(0);
-                cmbrunner.setSelectedIndex(0);
-                String id = cmbvendor.getSelectedItem().toString();
-                model = Tools.addDataTable(orderfunc.findDataByVen(id), model);
-            }
-        });
-        cmbrunner.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (cmbrunner.getSelectedIndex() == 0) {
-                    return;
-                }
-                cmbvendor.setSelectedIndex(0);
-                cmbcus.setSelectedIndex(0);
-                cmbord.setSelectedIndex(0);
-                String id = cmbrunner.getSelectedItem().toString();
-                model = Tools.addDataTable(orderfunc.findDataByRun(id), model);
-            }
-        });
+
         sendbutton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String choice = "Nothing";
-                if (cmbcus.getSelectedIndex() != 0) {
-                    choice = "Customer";
-                }
-                if (cmbvendor.getSelectedIndex() != 0) {
-                    choice = "Vendor";
-                }
-                if (cmbrunner.getSelectedIndex() != 0) {
-                    choice = "Runner";
-                }
+
                 if (cmbord.getSelectedIndex() != 0) {
                     choice = "Order";
                     // generate receipt

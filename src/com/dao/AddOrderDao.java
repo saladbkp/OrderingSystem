@@ -20,6 +20,10 @@ public class AddOrderDao {
 		Orders findarray = this.orderarray.stream().filter(x->x.getOrderId().equals(id)).toList().get(0);
 		return findarray;
 	}
+        public List<Orders> findDataByOrderMul(String id) {
+		List<Orders> findarray = this.orderarray.stream().filter(x->x.getOrderId().equals(id)).toList();
+		return findarray;
+	}
 	public List<Orders> findDataByCus(String id) {
 		List<Orders> findarray = this.orderarray.stream().filter(x->x.getCustomerId().equals(id)).toList();
 		return findarray;

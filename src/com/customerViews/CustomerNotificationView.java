@@ -67,7 +67,7 @@ public class CustomerNotificationView extends JPanel{
                 //jpanel3.add(scrollpanel);
 
                 // Add the panel to the jpanel3
-                  jpanel2.add(scrollpanel);
+                jpanel2.add(scrollpanel);
                
                 // **** jpanel 1 for selection
                 // **** jpanel 2 for table content 

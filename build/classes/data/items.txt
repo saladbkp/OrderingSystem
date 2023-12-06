@@ -1,4 +1,12 @@
-i1,salad,9.9,v1
-i2,chicken,10.0,v2
-i3,lasak,5.4,v1
-i4,nasilemak,8.0,v3
+i1,Chiken Zinger,9.9,v1
+i2,Hot Wings,5.9,v1
+i3,Rice Bowlz,10.0,v1
+i4,CheeseBurger,5.4,v2
+i5,Bubur Ayam,5.4,v2
+i6,Nasi Lemak,8.0,v2
+i1v3,Fried Chicken,12.5,v3
+i2v3,Sheesy Fries,3.6,v3
+i3v3,Onion Rings,8.0,v3
+i1v4,Brewed Coffee,10.0,v4
+i2v4,Mocha,15.0,v4
+i3v4,Lattle,12.0,v4

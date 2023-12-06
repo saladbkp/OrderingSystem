@@ -1,5 +1,7 @@
 package com.vendorViews;
 
+import com.customerViews.ManageCustomerView;
+import com.dao.AddOrderDao;
 import com.dao.AddPendingOrderDao;
 import com.model.Notifications;
 import com.model.Orders;
@@ -50,7 +52,7 @@ public class OrderStatusView extends JPanel {
     TableColumnModel columnModel;
     TableRowSorter tableSorter;
     AddPendingOrderDao penorderfunc = new AddPendingOrderDao();
-    
+    AddOrderDao orderfunc = new AddOrderDao();
     void Init() {
 
         // layout 
@@ -113,6 +115,7 @@ public class OrderStatusView extends JPanel {
                     tableitem.setValueAt("Complete", selectedRow, 7);
                     // remove complete tasks from pending 
                     String orderId = tableitem.getValueAt(selectedRow, 0).toString();
+                    
                     Orders order = penorderfunc.findDataByOrder(orderId);
                     penorderfunc.removeOrders(order);
                     List<Orders> orderarray = penorderfunc.findData();
@@ -124,8 +127,28 @@ public class OrderStatusView extends JPanel {
                     String cusId = tableitem.getValueAt(selectedRow, 1).toString();
                     Calendar cal = Calendar.getInstance();
                     String date = Tools.formatter.format(cal.getTime());
-                    Notifications noti = new Notifications(account, cusId, orderId, "Your ORDER is Completed, finding Runner...", date);
+                    Notifications noti = new Notifications(account, cusId, orderId, "Your ORDER is Completed -- finding Runner...", date);
                     Tools.appendFile("src/data/notifications.txt", noti.toString());
+                    
+                    String runnerID = tableitem.getValueAt(selectedRow, 3).toString();
+                    if(runnerID.equals("-")){
+                        List<Orders> allOrders = orderfunc.findOrderData();
+                    
+                        List<Orders> orderWithID = orderfunc.findDataByOrderMul(orderId);
+                        allOrders.removeAll(orderWithID);
+                        orderWithID.forEach(item -> item.setStatus("1"));
+                        orderWithID.forEach(item -> item.setRunnerID(account));
+                        allOrders.addAll(orderWithID);
+                        Tools.writeFile("src/data/orders.txt", "");
+                        // rewrite order txt
+                        for(Orders ord:allOrders){
+                            Tools.appendFile("src/data/orders.txt", ord.toString());
+                        }
+                    
+                        String pendingtxt = cusId + "," + orderId + ",Done";
+                        Tools.writeFile("src/data/pending.txt", pendingtxt);
+                        ManageCustomerView.orderingStatus=1;
+                    }
                 } else {
                     JOptionPane.showMessageDialog(null, "Please select food", "Invalid Operation", JOptionPane.WARNING_MESSAGE);
                 }

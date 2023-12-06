@@ -47,6 +47,12 @@ public class AddItemDao{
         public List<VendorFoods> findFoodByVendor(String id) {
                 return itemarray.stream().filter(x->x.getItemVendor().equals(id)).map(VendorFoods::new).collect(Collectors.toList());
         }
+        public String findFoodID(String name){
+            for (int i=0;i<itemarray.size();i++) {
+                    if(itemarray.get(i).getItemName().equals(name)) {return itemarray.get(i).getItemId();}
+            }
+            return "";
+        }
 	public void addData(Object obj) {
                 Items c = Items.class.cast(obj);
 		itemarray.add(c);

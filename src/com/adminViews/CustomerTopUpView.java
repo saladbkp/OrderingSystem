@@ -98,7 +98,7 @@ public class CustomerTopUpView extends JPanel{
 		cmbcustomer.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 		    	String id = cmbcustomer.getSelectedItem().toString();
-		    	int balance = cusfunc.getCustomerBalance(id);
+		    	double balance = cusfunc.getCustomerBalance(id);
 		    	cuslabel2.setText(balance!=-1?""+balance:"--"); 
 		    	jlabel1.setText("Customer Name: "+cusfunc.getCustomerName(id)); 
 		    }
@@ -107,9 +107,9 @@ public class CustomerTopUpView extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				if(cmbcustomer.getSelectedIndex()!=0 && !jtextfield2.getText().equals("")) {
 					String id = cmbcustomer.getSelectedItem().toString();
-					int balance = Integer.parseInt(jtextfield2.getText());
+					double balance = Double.parseDouble(jtextfield2.getText());
 					cusfunc.customerTopUp(id, balance);
-					int newbalance = cusfunc.getCustomerBalance(id);
+					double newbalance = cusfunc.getCustomerBalance(id);
 			    	cuslabel2.setText(newbalance!=-1?""+newbalance:"--");
 			    	updatearray = cusfunc.findData();
 				}

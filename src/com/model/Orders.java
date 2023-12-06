@@ -49,6 +49,10 @@ public class Orders {
                     Logger.getLogger(Orders.class.getName()).log(Level.SEVERE, null, ex);
                 }
         }
+
+    public void setRunnerID(String RunnerID) {
+        this.RunnerID = RunnerID;
+    }
         public String getOrderId(){return this.OrderID;}
 	public String getCustomerId() {return this.CustomerID;}
 	public String getVendorId() {return this.VendorID;}

@@ -4,8 +4,14 @@
  */
 package com.customerViews;
 
+import com.dao.AddCustomerDao;
 import com.dao.AddItemDao;
+import com.dao.AddOrderDao;
+import com.dao.AddTransactionDao;
 import com.model.Notifications;
+import com.model.Orders;
+import com.model.Receipts;
+import com.model.Transactions;
 import com.tool.TableRowFilter;
 import com.tool.TableWithButtons;
 import com.tool.Tools;
@@ -50,7 +56,10 @@ public class CustomerCartView extends JPanel {
     TableColumnModel columnModel;
     String VendorID;
     AddItemDao itemfunc = new AddItemDao();
-
+    AddOrderDao orderfunc = new AddOrderDao();
+    AddCustomerDao cusfunc = new AddCustomerDao();
+    static String currentOrderID = "";
+    
     public CustomerCartView(int x, int y, int width, int height, TableModel tableModel, String vendorId) {
         // separate 2 windows ?????? 
         this.setBounds(x, y, width, height);
@@ -137,7 +146,43 @@ public class CustomerCartView extends JPanel {
         int height = 70;
         icon.setImage(icon.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
         JLabel labelpic = new JLabel("", icon, JLabel.CENTER);
-        JLabel labelmsg = new JLabel("Waiting Confirmation from Vendor...");
+        JLabel labelmsg = new JLabel("Waiting Confirmation...");
+        
+        // payment section 
+        if(ManageCustomerView.orderingStatus == 1){
+            Orders order = orderfunc.findDataByOrder(currentOrderID);
+            String account = Login.account;
+            String vendor = VendorID;
+            String runner = order.getRunnerId();
+            Calendar cal = Calendar.getInstance();
+            String date = Tools.formatter.format(cal.getTime());
+            AddTransactionDao tranfunc = new AddTransactionDao();
+            int Deliveryfee = DeliveryFee(cmbfoodservice.getSelectedIndex());
+            Transactions tran = new Transactions(account,vendor,currentOrderID,Tools.decimformatter.format(Deliveryfee + subTotal()),date);
+            tranfunc.addData(tran);
+            if(cmbfoodservice.getSelectedIndex()==3){
+                Transactions tranrun = new Transactions(account,runner,currentOrderID,"5.00",date);
+                tranfunc.addData(tranrun);
+            }
+            
+            icon = new ImageIcon("src/img/donePayment.png");
+            icon.setImage(icon.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
+            labelpic = new JLabel("", icon, JLabel.CENTER);
+            labelmsg = new JLabel("Payment Success...");
+            
+            Receipts rc = new Receipts(order.getOrderId());
+            JOptionPane.showMessageDialog(null, rc.toString(), "Thank You", JOptionPane.WARNING_MESSAGE);
+
+
+        }
+        else if (ManageCustomerView.orderingStatus == 2){
+            icon = new ImageIcon("src/img/failPayment.png");
+            icon.setImage(icon.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
+            labelpic = new JLabel("", icon, JLabel.CENTER);
+            labelmsg = new JLabel("Payment Failed...");
+        }
+        System.out.println("IN CART");
+
         jpanel7.add(labelpic);
         jpanel7.add(labelmsg);
         jpanel7.setVisible(false);
@@ -163,6 +208,7 @@ public class CustomerCartView extends JPanel {
         paybutton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (cmbfoodservice.getSelectedIndex() != 0) {
+
                     String account = Login.account;
                     String vendor = VendorID;
                     Calendar cal = Calendar.getInstance();
@@ -170,26 +216,42 @@ public class CustomerCartView extends JPanel {
                     String timeStamp = new SimpleDateFormat("MMddHHmmss").format(new java.util.Date());
                     String orderid = "o" + timeStamp;
                     String serviceMethod =  cmbfoodservice.getSelectedItem().toString();
-                    // write notification
-                    Notifications noti = new Notifications(account, vendor, orderid, "NEW ORDER + 1", date);
-                    Tools.appendFile("src/data/notifications.txt", noti.toString());
-                    // pending order
-                    String pendingtxt = vendor + "," + orderid;
-                    Tools.appendFile("src/data/pending.txt", pendingtxt);
-                    // make an order 
-                    String runnerid = serviceMethod.equals("Delivery")?"r":"-";
-                    for (int i = 0; i < tableitem.getRowCount(); i++) {
-                        String itemid = tableitem.getValueAt(i, 0).toString();
-                        String Amount = tableitem.getValueAt(i, 3).toString();
-                        String ordertxt = String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s", 
-                                orderid,account,itemid,vendor,runnerid,Amount,serviceMethod,date,"0");
-                        Tools.appendFile("src/data/orders.txt", ordertxt);
+                    
+                    double newbalance = cusfunc.getCustomerBalance(account);
+                    int Deliveryfee = DeliveryFee(cmbfoodservice.getSelectedIndex());
+                    if(newbalance>Deliveryfee + subTotal()){
+                        // set page to payment 
+                        ManageCustomerView.MakingPayment = 1;
+                        ManageCustomerView.tableitem = tableModel;
+                        ManageCustomerView.vendorID = VendorID;
+                        ManageCustomerView.serviceMethod = cmbfoodservice.getSelectedIndex();
+                        currentOrderID = orderid;
+                        // write notification
+                        Notifications noti = new Notifications(account, vendor, orderid, "NEW ORDER + 1", date);
+                        Tools.appendFile("src/data/notifications.txt", noti.toString());
+                        // pending order
+                        String pendingtxt = vendor + "," + orderid+",pending";
+                        Tools.appendFile("src/data/pending.txt", pendingtxt);
+                        // make an order 
+                        String runnerid = serviceMethod.equals("Delivery")?"?":"-";
+                        for (int i = 0; i < tableitem.getRowCount(); i++) {
+                            String itemid = tableitem.getValueAt(i, 0).toString();
+                            String Amount = tableitem.getValueAt(i, 3).toString();
+                            String ordertxt = String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s", 
+                                    orderid,account,itemid,vendor,runnerid,Amount,serviceMethod,date,"0");
+                            Tools.appendFile("src/data/orders.txt", ordertxt);
+                        }
+
+                        jpanel7.setVisible(true);
+                        paybutton.setEnabled(false);
+                        backbutton.setEnabled(false);
                     }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Not enough credit. Please Top Up!", "Invalid Operation", JOptionPane.WARNING_MESSAGE);
+
+                    }
+
                     
-                    
-                    jpanel7.setVisible(true);
-                    paybutton.setEnabled(false);
-                    backbutton.setEnabled(false);
                 } else {
                     JOptionPane.showMessageDialog(null, "Select a Service Method", "Invalid Operation", JOptionPane.WARNING_MESSAGE);
 
@@ -197,8 +259,16 @@ public class CustomerCartView extends JPanel {
 
             }
         });
+        
+        if(ManageCustomerView.MakingPayment==1 && paybutton.isEnabled()){
+            jpanel7.setVisible(true);
+            paybutton.setEnabled(false);
+            backbutton.setEnabled(false);
+            cmbfoodservice.setSelectedIndex(ManageCustomerView.serviceMethod);
+        }
 
     }
+
 
     double subTotal() {
         double total = 0;

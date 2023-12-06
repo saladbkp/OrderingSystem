@@ -6,7 +6,6 @@ JAVA -- Assignment APU
 First update: User Interface
 
 ```
-
 20231006
 TextFunction -> readtext
 Login
@@ -107,6 +106,32 @@ can read order, but cannot update (model issue)????
 20231205
 ordering flow done ?
 do the payment section ....
+do top up section ....
 
+to do list
+done runner task clear previous task
+done customer back to payment page 
+done receive noti, everytime change ... txt format not same 
+done register add to user.txt
+done need clear pending 
+done payment 
+done upadate credit
+done top up 
+done receipt not check service type
+done admin notification 
+done order update runner id
+done reorder (small bug: cannot make a new order)
+done print receipt after order
+
+order history + filtering features ?
+```
+
+List OOP code
+
+```
+abstraction 
+inheritance 
+encapsulation
+polymorphism 
 ```
 

@@ -5,10 +5,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.model.Customers;
+import com.model.Users;
 import com.tool.TextFunction;
+import com.tool.Tools;
 
 public class AddCustomerDao implements IOperation{
         AddCommonDao commonfunc = new AddCommonDao();
+        AddUserDao userfunc = new AddUserDao();
 	ArrayList<Customers> cusarray = new ArrayList<Customers>();
         TextFunction txtfunc = new TextFunction("src/data/customers.txt");
 
@@ -19,6 +22,10 @@ public class AddCustomerDao implements IOperation{
 		int index = seek(id);
 		return index;
 	}
+        public void updateArray(){
+            ArrayList<Customers> cusarray = new ArrayList<Customers>();
+            TextFunction txtfunc = new TextFunction("src/data/customers.txt");
+        }
         // interface 
         // seek index 
         @Override
@@ -42,6 +49,8 @@ public class AddCustomerDao implements IOperation{
                 Customers c = Customers.class.cast(obj);
 		cusarray.add(c);
                 txtfunc.arrayToStr(cusarray);
+                Users user = new Users(c.getId(),c.getPassword(),3);
+                userfunc.addUser(user);
 	}
 	// modify
 	public void updateData(Object obj) {
@@ -55,6 +64,8 @@ public class AddCustomerDao implements IOperation{
 		int index = seek(id);
 		cusarray.remove(index);
                 txtfunc.arrayToStr(cusarray);
+                Users user = userfunc.findUser(id);
+                userfunc.deleteUser(user);
 	}
         //////////////////////////////////////////
         
@@ -64,7 +75,8 @@ public class AddCustomerDao implements IOperation{
 	                   .map(Customers::getId)
 	                   .collect(Collectors.toList());
 	}
-	public int getCustomerBalance(String id) {
+	public double getCustomerBalance(String id) {
+                updateArray();
 		int index = seek(id);
 		return index!=-1?cusarray.get(index).getCustomerBalance():-1;
 	}
@@ -72,13 +84,14 @@ public class AddCustomerDao implements IOperation{
 		int index = seek(id);
 		return index!=-1?cusarray.get(index).getUsername():"";
 	}
-	public void customerTopUp(String id,int balance) {
+	public void customerTopUp(String id,double balance) {
 		int index = seek(id);
-		int currentbalance = cusarray.get(index).getCustomerBalance();
+		double currentbalance = cusarray.get(index).getCustomerBalance();
 //		System.out.println(currentbalance+" "+balance);
 		Customers cus =  cusarray.get(index);
 		cus.setCustomerBalance(currentbalance+balance);
 		updateData(cus);
 	}
+
 
 }

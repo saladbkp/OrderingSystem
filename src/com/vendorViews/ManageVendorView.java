@@ -82,9 +82,13 @@ public class ManageVendorView {
                 Notifications noti = new Notifications(account, customerId, orderid, "Your ORDER is "+statusStr, date);
                 Tools.appendFile("src/data/notifications.txt", noti.toString());
             }
-            Tools.writeFile("src/data/pending.txt", pendingUpdate);
-            
+            // not all vendor can clear the pending...
+         
             for (var order: orderarray){
+                if(order.getVendorId().equals(account)){
+                    Tools.writeFile("src/data/pending.txt", pendingUpdate);
+
+                }
                 order.setStatus("Pending");
                 Tools.appendFile("src/data/pendingOrders.txt", order.toString());
             }
@@ -94,9 +98,7 @@ public class ManageVendorView {
             model = Tools.addDataTable(orderarray, model);
             tableitem.setModel(model);
             tableitem.removeColumn(tableitem.getColumnModel().getColumn(2));
-            
-            
-           
+
         }
     // do all adding element code here
 

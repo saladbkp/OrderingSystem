@@ -9,6 +9,7 @@ import com.dao.AddItemDao;
 import com.dao.AddOrderDao;
 import com.dao.AddRunnerDao;
 import com.dao.AddVendorDao;
+import com.tool.Tools;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -38,7 +39,8 @@ public class Receipts {
         this.order = addorderdao.findDataByOrder(orderid);
         this.customer = addcustomerdao.findDataByID(order.getCustomerId()).get(0);
         this.vendor = addvendordao.findDataByID(order.getVendorId()).get(0);
-        this.runner = addrunnerdao.findDataByID(order.getRunnerId()).get(0);
+        var runnerList = addrunnerdao.findDataByID(order.getRunnerId());
+        this.runner = !runnerList.isEmpty()? runnerList.get(0): null;
     }
 
     private String customerInfo() {
@@ -61,10 +63,18 @@ public class Receipts {
         String linetxt = String.format("%-10s %10.2f %10d %15.2f\n", fooditem.getItemName(), price, quantity, total);
         ordertxt += linetxt;
 
-        String subtotal = "\nSubtotal: " + amount;
+        String subtotal = "\nSubtotal: RM" + Tools.decimformatter.format(amount);
         ordertxt += subtotal;
+        
+        if(runner!=null){
+            ordertxt += "\nDelivery fee: RM5";
+        }
+        ordertxt += "\n--------------------------";
+        ordertxt += "\nTotal: "+Tools.decimformatter.format(amount+5);
+        
         return ordertxt;
     }
+
 
     public String toString() {
         return "Date:" + formatter.format(DateTime) + "\nOrder No:" + order.getOrderId()

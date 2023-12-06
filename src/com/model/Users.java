@@ -15,6 +15,6 @@ public class Users extends CommonAttrs{
 	
         @Override
         public String toString(){
-            return String.format("%s,%s,%s", this.id,this.password,this.username);
+            return String.format("%s,%s,%s", this.id,this.password,this.role);
         }
 }

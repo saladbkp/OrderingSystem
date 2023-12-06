@@ -1,2 +1,4 @@
 v1,v1,kfc,fast food,kepong,kfc.png
 v2,v2,mcd,fast food,sri petaling,mcd.png
+v3,v3,burgerKing,Fast Food,KL,burgerKing.jpg
+v4,v4,Starbucks,Cafe,Pahang,Starbucks.jpg

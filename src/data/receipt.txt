@@ -1,13 +1,17 @@
-
-Date:28-11-2023 11:31
-Order No:o4
+Date:07-12-2023 01:38
+Order No:o1205102105
 
 Customer Details
-Username: c1
+Username: ian
 Phone: 1235123
 Address: kepong
 
 OrderName       Price   Quantity           Total
-salad            9.90          5           49.50
+Hot Wings        5.90          2           11.80
 
-Subtotal: 49.5
+Subtotal: RM11.80
+Delivery fee: RM5
+
+--------------------------
+
+Total: 16.80

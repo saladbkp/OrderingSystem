@@ -4,8 +4,12 @@
  */
 package com.services;
 
+import com.customerViews.ManageCustomerView;
 import com.dao.AddNotiDao;
+import com.dao.AddTransactionDao;
 import com.model.Notifications;
+import com.model.Transactions;
+import com.tool.Tools;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -45,10 +49,13 @@ public class ReceiveNotiService {
                 if(targetid.equals(target)){
                     int decision = JOptionPane.showConfirmDialog(null,"Do you want to accept?", "Receiving Order: "+orderid, YES_NO_OPTION );
                     String decStr = "," + decision;
-                    pendingOrderList.add(orderid+decStr);
+                    if(decision==0){
+                        pendingOrderList.add(orderid+decStr);
+                    }
+                    else{
+                        ManageCustomerView.orderingStatus=2;
+                    }
                 }
-
-
             }
 
             scanner.close();
@@ -57,8 +64,10 @@ public class ReceiveNotiService {
         }
         return pendingOrderList;
     }
-        public static void receiveFromPendingCustomer(String target) {
+        public static int receiveFromPendingCustomer(String target) {
         // from xxx to yyy
+        String statusReturn = "";
+
         try {
             Scanner scanner = new Scanner(new File("src/data/pending.txt"));
 
@@ -67,6 +76,7 @@ public class ReceiveNotiService {
                 String targetid = pendinglist[0];
                 String orderid = pendinglist[1];
                 String status = pendinglist[2];
+                statusReturn = status;
                 if(targetid.equals(target)){
                     JOptionPane.showMessageDialog(null, String.format("%s -- %s",orderid,status));
                 }
@@ -76,6 +86,15 @@ public class ReceiveNotiService {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        if(statusReturn.equals("Done")) {
+            Tools.writeFile("src/data/pending.txt", "");
+            // tran here ?
+            return 1;
+        }
+        else if(statusReturn.equals("pending")){
+            return 2;
+        }
+        return 0;
     }
         
         public static ArrayList<String> receiveFromPendingRunner() {
@@ -92,8 +111,14 @@ public class ReceiveNotiService {
                 if(status.equals("Accepted")){
                     int decision = JOptionPane.showConfirmDialog(null,"Do you want to accept?", "Receiving Task: "+orderid, YES_NO_OPTION );
                     String taskStr = targetid+","+orderid+"," + decision;
-                    pendingTaskList.add(taskStr);
+                    
                     System.out.println(taskStr);
+                    if(decision==0){
+                        pendingTaskList.add(taskStr);
+                    }
+                    else{
+                        ManageCustomerView.orderingStatus=2;
+                    }
                 }
 
             }

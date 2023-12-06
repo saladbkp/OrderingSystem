@@ -30,7 +30,7 @@ public class Transactions extends TargetAttrs{
 
         @Override
 	public String toString() {
-		String output = String.format("%s", this.getToString(),Tools.formatter.format(datetime));
+		String output = String.format("%s,%s", this.getToString(),Tools.formatter.format(datetime));
 		return output;
 	}
 }

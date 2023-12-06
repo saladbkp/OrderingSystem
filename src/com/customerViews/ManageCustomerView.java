@@ -4,6 +4,9 @@
  */
 package com.customerViews;
 
+import static com.customerViews.CustomerCreditView.model;
+import com.dao.AddCustomerDao;
+import com.dao.AddTransactionDao;
 import com.services.Client;
 import com.services.ReceiveNotiService;
 import com.style.Style;
@@ -22,7 +25,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -39,7 +44,12 @@ public class ManageCustomerView {
     FlowLayout flowlayout;
     private Socket socket;
     public static Client client;
-
+    // rmb customer page...
+    public static int MakingPayment = 0;
+    public static TableModel tableitem = null;
+    public static String vendorID = "";
+    public static int serviceMethod = 0;
+    public static int orderingStatus = 0;
     public ManageCustomerView() throws IOException {
         Init();
         jframe.setVisible(true);
@@ -48,10 +58,15 @@ public class ManageCustomerView {
         jframe.validate();
         //startClient(Login.account);
         // default pop out 
-        ReceiveNotiService.receiveFromPendingCustomer(Login.account); 
-
+        orderingStatus = ReceiveNotiService.receiveFromPendingCustomer(Login.account); 
+        // if order declined, clear pending txt  
+        // !!!!! ?????
+        System.out.println(orderingStatus);
+        if(orderingStatus == 2){
+            Tools.writeFile("src/data/pending.txt", "");
+        }
     }
-
+    
     void startClient(String username) throws IOException {
         socket = new Socket("localhost", 1234);
         client = new Client(socket, username);
@@ -83,13 +98,22 @@ public class ManageCustomerView {
         CustomerCreditView credit = new CustomerCreditView(0, 0, viewWidth, viewHeight);
 
         CustomerNotificationView notification = new CustomerNotificationView(0, 0, viewWidth, viewHeight);
+        
+
         // default vendor view
-        jpanel2.add(menu, (Integer) (JLayeredPane.PALETTE_LAYER));
+        if(ManageCustomerView.MakingPayment==0){
+            jpanel2.add(menu, (Integer) (JLayeredPane.PALETTE_LAYER));
+        }
+        else{
+            CustomerCartView cart = new CustomerCartView(0, 0, viewWidth, viewHeight, tableitem, vendorID);
+            jpanel2.add(cart, (Integer) (JLayeredPane.PALETTE_LAYER));
+        }
+        
         jpanel2.setBounds(215 - 50, 5, viewWidth, viewHeight);
 
         // add button name
         String buttonName[] = {"Menu", "Order", "Review", "Credit", "Notification"};
-//			String buttonName[] = {"Menu", "Review", "Credit", "Notification" };
+        //String buttonName[] = {"Menu", "Review", "Credit", "Notification" };
 
         for (int i = 0; i < buttonName.length; i++) {
             JButton btn = new JButton(buttonName[i]);
@@ -116,6 +140,15 @@ public class ManageCustomerView {
                     }
 
                     if (jbl.getName().equals(buttonName[3])) {
+                        AddCustomerDao cusfunc = new AddCustomerDao();
+                        AddTransactionDao tranfunc = new AddTransactionDao();
+                        String account = Login.account;
+                        double newbalance = cusfunc.getCustomerBalance(account);
+                        CustomerCreditView.jlabelbalance.setText(newbalance!=-1?"Current Balance: "+newbalance:"Current Balance: --");
+                        for(String val :  tranfunc.updateCombox())
+                            model.addElement(val);
+                        
+                        
                         jpanel2.add(credit, (Integer) (JLayeredPane.PALETTE_LAYER));
                         jpanel2.moveToFront(credit);
                     }

@@ -6,7 +6,10 @@ package com.runnerViews;
 
 import com.customerViews.CustomerCartView;
 import com.customerViews.ManageCustomerView;
+import com.dao.AddPendingTaskDao;
 import com.model.Notifications;
+import com.model.Orders;
+import com.model_run.Tasks;
 import com.runnerdao.AddTaskDao;
 import com.tool.Tools;
 import java.awt.Color;
@@ -26,6 +29,7 @@ import com.windows.Login;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -39,12 +43,13 @@ public class RunnerTaskView extends JPanel {
     final int viewWidth = 1100;
     final int viewHeight = 550;
 
-    String columns[] = {"Order ID", "Customer ID", "RunnerID", "Vendor ID", "TotalCost", "Time", "Status"};
+    String columns[] = {"Order ID", "Vendor ID", "RunnerID", "Customer ID", "TotalCost", "Time", "Status"};
     public static JTable tasktable = null;
     JScrollPane jscrollpane;
     public static DefaultTableModel model;
     TableColumnModel columnModel;
     AddTaskDao runnerfunc = new AddTaskDao();
+    AddPendingTaskDao penorderfunc = new AddPendingTaskDao();
     Style style = new Style();
 
     public RunnerTaskView(int x, int y, int width, int height) {
@@ -107,10 +112,26 @@ public class RunnerTaskView extends JPanel {
                 String account = Login.account;
                 Calendar cal = Calendar.getInstance();
                 String date = Tools.formatter.format(cal.getTime());
-                String customerId = tasktable.getValueAt(tasktable.getSelectedRow(), 1).toString();
+                String customerId = tasktable.getValueAt(tasktable.getSelectedRow(), 2).toString();
                 String orderid = tasktable.getValueAt(tasktable.getSelectedRow(), 0).toString();
                 Notifications noti = new Notifications(account, customerId, orderid, "Your ORDER is "+statusStr, date);
                 Tools.appendFile("src/data/notifications.txt", noti.toString());
+                // when task completed notify customer
+                if(statusStr.equals("Settled")){
+                    String pendingtxt = customerId + "," + orderid + ",Done";
+                    Tools.writeFile("src/data/pending.txt", pendingtxt);
+                    var orderList = penorderfunc.findDataByOrder(orderid);
+                    if(orderList.size()>0){
+                        Tasks order = orderList.get(0);
+                        penorderfunc.removeOrders(order);
+                        List<Tasks> orderarray = penorderfunc.findData();
+                        Tools.writeFile("src/data/pendingTasks.txt", "");
+                        for(int i=0;i<orderarray.size();i++){
+                            Tools.appendFile("src/data/pendingTasks.txt", orderarray.get(i).toString());
+                        }
+                    }
+                     ManageCustomerView.orderingStatus=1;
+                }
             } else {
                 JOptionPane.showMessageDialog(null, "Select a Task", "Invalid Operation", JOptionPane.WARNING_MESSAGE);
 

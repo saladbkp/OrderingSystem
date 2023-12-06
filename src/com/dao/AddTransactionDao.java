@@ -6,19 +6,18 @@ package com.dao;
 
 import com.model.Transactions;
 import com.tool.TextFunction;
+import com.tool.Tools;
 import com.windows.Login;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  *
  * @author ray
  */
 public class AddTransactionDao implements IOperation{
-    AddCommonDao commonfunc = new AddCommonDao();
+        AddCommonDao commonfunc = new AddCommonDao();
 	ArrayList<Transactions> tranarray = new ArrayList<Transactions>();
         TextFunction txtfunc = new TextFunction("src/data/transactions.txt");
 
@@ -58,11 +57,25 @@ public class AddTransactionDao implements IOperation{
 	
         @Override
 	public void addData(Object obj) {
+                String account = Login.account;
                 Transactions c = Transactions.class.cast(obj);
-		tranarray.add(c);
-                txtfunc.arrayToStr(tranarray);
+                System.out.println(c.toString());
+                int checkST = c.getSenderId().equals(account)?1:0;
+                String senderid = checkST==1?c.getSenderId():c.getContent();
+                double amount = Double.parseDouble(c.getContent());
+                double tranamount = checkST==1?amount*-1:amount;
+                tranarray.add(c);
+                Tools.appendFile("src/data/transactions.txt", c.toString());
+                //txtfunc.arrayToStr(tranarray);
+                AddCustomerDao cusfunc = new AddCustomerDao();
+                cusfunc.customerTopUp(senderid,tranamount);
 	}
+        public void updateArray(){
+            ArrayList<Transactions> tranarray = new ArrayList<Transactions>();
+            TextFunction txtfunc = new TextFunction("src/data/transactions.txt");
+        }
         public List<String> updateCombox() {
+            updateArray();
             String account = Login.account;
             List<String> output = new ArrayList<String>();
             for(int i=0;i<tranarray.size();i++){
