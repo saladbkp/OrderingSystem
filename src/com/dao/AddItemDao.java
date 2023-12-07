@@ -36,6 +36,9 @@ public class AddItemDao{
             }
             return -1;
 	}
+        public List<Items> findDataByItem(){
+            return this.itemarray;
+        }
         public List<Items> findDataByItem(String id) {
 		List<Items> findarray = this.itemarray.stream().filter(x->x.getItemId().equals(id)).toList();
 		return findarray;

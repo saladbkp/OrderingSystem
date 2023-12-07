@@ -129,9 +129,101 @@ order history + filtering features ?
 List OOP code
 
 ```
-abstraction 
-inheritance 
-encapsulation
-polymorphism 
+example link for explaination: 
+https://raygun.com/blog/oop-concepts-java/#:~:text=Abstraction%2C%20encapsulation%2C%20polymorphism%2C%20and,association%2C%20aggregation%2C%20and%20composition.
+
+1. abstraction
+abstract 
+- CommonAttrs using abstract class for **Users,Customers,Vendors,Runners**
+interface 
+- IOperation for function Dao : AddCustomerDao,AddNotiDao,AddRunnerDao,AddTransactionDao,AddVendorDao
+explain diff between abstract and interface 
+
+2. encapsulation
+Restricts direct access to data members (fields) of a class
+semua class I used encapsulation: those got getter and setter 
+like: private String name;
+
+3. inheritance 
+A class (child class) can extend another class (parent class) by inheriting its features
+Users extends CommonAttrs
+Customers extends CommonAttrs
+Vendors extends ...
+Runners extends ...
+Notifications extends TargetAttrs
+Transactions extends TargetAttrs
+Reviews extends TargetAttrs
+...
+
+4. polymorphism
+method overloading: AddItemDao
+public List<Items> findDataByItem(){
+	return this.itemarray;
+}
+public List<Items> findDataByItem(String id) {
+	List<Items> findarray = this.itemarray.stream().filter(x->x.getItemId().equals(id)).toList();
+	return findarray;
+}
+same function name, but pass diff parameter, diff function
+
+5. Association
+manual bind 2 class together
+I didnt bind 2 class directly but attribute all from them
+pendingOrder -> Order
+pendingTask -> Task 
+
+6. Aggregation
+runner in Order?
+runner without Order pun boleh run 
+
+7. Composition
+a strong “whole-part” relationship between two classes
+menu class cannot run without vendor 
+public Menus(Vendors vendor) {
+
+	this.vendor = vendor;
+	this.deliveryFee = 5;
+}
+Task cannot run without order
+public Tasks(Orders order){
+    this.OrderID = order.getOrderId();
+    this.VendorID = order.getVendorId();
+    this.RunnerID = order.getRunnerId();
+    this.CustomerID = order.getCustomerId();
+    this.TotalCost = 5.00;
+    this.Time = order.getDatetime();
+    this.Status = "Preparing Food";
+}
 ```
 
+Extra features 
+
+```
+com.service
+pop out notification: receiveNotiService
+- function: can pop out dialog for the noti service 
+simultaneously communication using socket: Client,ClientHandler,Server 
+- function: when up server, we can know how many client online
+- function: can send and receive msg simultaneously
+
+com.tools
+png in datatable: ImageRender
+- function: convert path to png
+- additional: upload png by filtering format: JPEGImageFileFilter
+filter table row: TableRowFilter
+- function: filter revenue by monthly 
+button in datatable: TableWithButtons
+- function: add food in cart using button
+- function: can add and remove food (show in quantity)
+load txt to arraylist: TextFunction
+- function: main reading txt function 
+- function: public <T> ArrayList<T> readfile(Class<T> clazz) using T for all object
+fixed dateformat: DateFormat formatter
+- function: fixed dateformat to 05-12-2023 10:21
+fixed double format: DecimalFormat decimformatter
+- function: only remain 2 decimal point 
+write and append file: writeFile, appendFile
+- function: common writefile tools 
+```
+
+ 
