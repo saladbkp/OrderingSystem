@@ -1,6 +1,5 @@
 package com.tool;
 
-import com.model.Orders;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.FileWriter;

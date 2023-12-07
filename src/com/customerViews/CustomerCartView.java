@@ -160,7 +160,7 @@ public class CustomerCartView extends JPanel {
             int Deliveryfee = DeliveryFee(cmbfoodservice.getSelectedIndex());
             Transactions tran = new Transactions(account,vendor,currentOrderID,Tools.decimformatter.format(Deliveryfee + subTotal()),date);
             tranfunc.addData(tran);
-            if(cmbfoodservice.getSelectedIndex()==3){
+            if(runner!="-"){
                 Transactions tranrun = new Transactions(account,runner,currentOrderID,"5.00",date);
                 tranfunc.addData(tranrun);
             }
