@@ -104,10 +104,12 @@ public class CustomerReceiptView extends JPanel {
                     Notifications noti = new Notifications(venid, cusid, orderid, "NEW RECEIPT ORDER", datetime);
                     Tools.writeFile("src/data/receipt.txt", rc.toString());
                     Tools.appendFile("src/data/notifications.txt", noti.toString());
+                    //ManageAdminView.client.sendMessasge("noti: Sending Receipt "+orderid);
                 }
                 JOptionPane.showMessageDialog(null, "Sending " + choice, "Notification", JOptionPane.WARNING_MESSAGE);
+                
                 // show dialog 
-                //ManageAdminView.client.sendMessasge("noti");
+                
 
             }
         });

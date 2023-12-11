@@ -73,14 +73,14 @@ public class RevenueDashboardView extends JPanel{
 		OrderPerMonth.setFont(style.title);
 		jpanel4.add(OrderPerMonth);
                 
-                JPanel jpanel5 = new JPanel();
-		jpanel5.setLayout(new FlowLayout(FlowLayout.LEFT,10,20)); // left alignment
-		jpanel5.setBounds(650,150,400,275);
-		jpanel5.setBackground(Color.YELLOW);
-                jpanel5.setLayout(new BoxLayout(jpanel5, BoxLayout.Y_AXIS));
-                JLabel graph = new JLabel("Graph");
-		graph.setFont(style.title);
-		jpanel5.add(graph);
+//                JPanel jpanel5 = new JPanel();
+//		jpanel5.setLayout(new FlowLayout(FlowLayout.LEFT,10,20)); // left alignment
+//		jpanel5.setBounds(650,150,400,275);
+//		jpanel5.setBackground(Color.YELLOW);
+//                jpanel5.setLayout(new BoxLayout(jpanel5, BoxLayout.Y_AXIS));
+//                JLabel graph = new JLabel("Graph");
+//		graph.setFont(style.title);
+//		jpanel5.add(graph);
                 
                 // add button sample
                 
@@ -106,7 +106,7 @@ public class RevenueDashboardView extends JPanel{
                 this.add(jpanel2);
                 this.add(jpanel3);
                 this.add(jpanel4);
-                this.add(jpanel5);
+//                this.add(jpanel5);
 
                 JLabel TotalRevenueValue = new JLabel("RM: 0");
                 TotalRevenueValue.setFont(style.account);

@@ -3,11 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/APU/OrderingSystem/src/com/dao/AddTransactionDao.java</file>
-            <file>file:/D:/APU/OrderingSystem/src/com/customerViews/CustomerCartView.java</file>
-            <file>file:/D:/APU/OrderingSystem/src/com/vendorViews/ManageVendorView.java</file>
-            <file>file:/D:/APU/OrderingSystem/src/com/customerViews/ManageCustomerView.java</file>
-            <file>file:/D:/APU/OrderingSystem/src/com/services/ReceiveNotiService.java</file>
+            <file>file:/D:/APU/OrderingSystem/src/com/vendorViews/RevenueDashboardView.java</file>
+            <file>file:/D:/APU/OrderingSystem/src/com/model/CommonAttrs.java</file>
         </group>
     </open-files>
 </project-private>

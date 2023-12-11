@@ -1,17 +1,14 @@
-Date:07-12-2023 01:38
-Order No:o1205102105
+Date:09-12-2023 17:39
+Order No:o1207021248
 
 Customer Details
-Username: ian
+Username: c1
 Phone: 1235123
 Address: kepong
 
 OrderName       Price   Quantity           Total
-Hot Wings        5.90          2           11.80
+Brewed Coffee      10.00          1           10.00
 
-Subtotal: RM11.80
-Delivery fee: RM5
-
+Subtotal: RM10.00
 --------------------------
-
-Total: 16.80
+Total: 15.00

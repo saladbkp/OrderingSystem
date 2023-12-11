@@ -71,7 +71,7 @@ public class ManageCustomerView {
         socket = new Socket("localhost", 1234);
         client = new Client(socket, username);
         client.listenForMessage();
-        client.sendMessasge("init");
+        client.sendMessasge("Customer init");
     }
 
     // do all adding element code here

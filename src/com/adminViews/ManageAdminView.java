@@ -50,7 +50,7 @@ public class ManageAdminView {
             socket = new Socket("localhost",1234);
             client = new Client(socket,username);
             client.listenForMessage();
-            client.sendMessasge("init");
+            client.sendMessasge("Admin init");
         }
 	void Init() {
 		// title 
